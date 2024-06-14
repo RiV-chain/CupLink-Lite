@@ -15,6 +15,7 @@ import android.hardware.display.DisplayManager
 import android.location.LocationManager
 import android.media.AudioManager
 import android.net.ConnectivityManager
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.PowerManager
 import android.os.Vibrator
@@ -27,7 +28,6 @@ import android.view.accessibility.AccessibilityManager
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-
 
 object ServiceUtil {
     fun getInputMethodManager(context: Context): InputMethodManager {
@@ -119,5 +119,9 @@ object ServiceUtil {
 
     fun getDownloadManager(context: Context): DownloadManager? {
         return ContextCompat.getSystemService(context, DownloadManager::class.java)
+    }
+
+    fun getWifiManager(context: Context): WifiManager {
+        return context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     }
 }
