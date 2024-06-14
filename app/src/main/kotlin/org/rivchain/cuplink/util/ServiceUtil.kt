@@ -97,7 +97,7 @@ object ServiceUtil {
     }
 
     @RequiresApi(22)
-    fun getSubscriptionManager(context: Context): SubscriptionManager? {
+    fun getSubscriptionManager(context: Context): SubscriptionManager {
         return context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
     }
 
