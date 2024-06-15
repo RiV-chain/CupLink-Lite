@@ -39,11 +39,6 @@
 
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="EditText.OutlinedBox" parent="Theme.MaterialComponents.DayNight">
         <item name="android:textColorHint"> @color/white </item>
         <item name="hintTextColor"> @color/white </item>
@@ -74,18 +69,8 @@
     </style>
 
     <!-- Custom style for the popup items -->
-    <style name="CustomPopupItem">
-        <item name="android:layout_height">48dp</item> <!-- Set the desired height -->
-        <item name="android:background">?attr/selectableItemBackground</item> <!-- Use a theme attribute or a custom background color -->
-        <item name="android:textColor">@color/light_grey</item> <!-- Use a theme attribute or a custom text color -->
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-    </style>
 
     <!-- Custom style for the popup background -->
-    <style name="CustomPopupBackground">
-        <item name="android:background">@color/colorPrimaryDark</item> <!-- Define a custom background color -->
-    </style>
 
     <!-- Style for rounded corners on ImageView -->
     <style name="RoundedCornerImageView" parent="">

@@ -28,7 +28,6 @@
     <string name="call_ended">Beendet</string>
     <string name="call_error">Verbindungsfehler</string>
     <string name="call_ringing">Klingelt…</string>
-    <string name="call_start_or_abort">Starten oder Abbrechen</string>
     <string name="call_waiting">Warten…</string>
     <string name="camera_back">Zurück</string>
     <string name="camera_front">Vorderseite</string>
@@ -55,11 +54,9 @@
     <string name="enter_contact_name">Name des Kontaktes eingeben.</string>
     <string name="enter_password">Passwort eingeben</string>
     <string name="error">Fehler</string>
-    <string name="import_dialog">Import fortsetzen und %d Kontakte und %d Ereignisse hinzufügen\?</string>
     <string name="invalid_name">Ungültiger Name</string>
     <string name="invalid_qr">Ungültiger QR Code</string>
     <string name="invalid_qr_code_data">Ungültige Daten</string>
-    <string name="listen_for_incoming_calls">Warte auf eingehende Anrufe.</string>
     <string name="menu_about">Über</string>
     <string name="menu_backup">Backup</string>
     <string name="menu_exit">Beenden</string>
@@ -79,7 +76,6 @@
     <string name="settings_connect_timeout">Verbindungsauszeit (ms)</string>
     <string name="settings_database_password">Passwort</string>
     <string name="settings_disable_audio_processing">Tonbearbeitung Abschalten</string>
-    <string name="settings_disable_call_history">Anrufhistorie Abstellen</string>
     <string name="settings_disable_proximity_sensor">Distanzsensor Deaktivieren</string>
     <string name="settings_enable_camera_by_default">Kamera Standardmäßig Aktivieren</string>
     <string name="settings_enable_microphone_by_default">Mikrofon Standardmäßig Aktivieren</string>
@@ -96,7 +92,6 @@
     <string name="settings_video_hardware_acceleration">Video Hardware Beschleunigung</string>
     <string name="setup_address">Adresse Einrichten</string>
     <string name="setup_no_address_found">MAC Adress der WLAN Karten nicht gefunden. WLAN anschalten (kein Internet nötig) oder überspringen um später zu konfigurieren.</string>
-    <string name="startup_hello">Hallo!</string>
     <string name="startup_name_prefix">Benutzer</string>
     <string name="startup_prompt_name">Wie wollen sie gennant werden?</string>
     <string name="title_contacts">Kontakte</string>
@@ -129,7 +124,6 @@
     <string name="title_activity_peer_list">Select peers</string>
     <string name="node_info_copied">copied</string>
     <string name="peers">Peers</string>
-    <string name="contact_menu_edit">Edit</string>
     <string name="is_calling">is calling</string>
     <string name="contact_is_invalid">Contact is invalid</string>
     <string name="add_contact_link_or_json">Enter contact link or contact JSON manually</string>
