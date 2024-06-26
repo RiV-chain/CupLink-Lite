@@ -42,6 +42,7 @@ import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.rivmesh.util.Utils
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.ServiceUtil
 import org.rivchain.cuplink.util.Utils.readInternalFile
 import org.rivchain.cuplink.util.Utils.writeInternalFile
 import java.io.File
@@ -365,9 +366,9 @@ class MainService : VpnService() {
         startForeground(SERVICE_NOTIFICATION_ID, notification)
 
         // Acquire multicast lock
-        val wifi = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
+        val wifi = ServiceUtil.getWifiManager(this)
         multicastLock = wifi.createMulticastLock("Mesh").apply {
-            setReferenceCounted(false)
+            setReferenceCounted(true)
             acquire()
         }
 
