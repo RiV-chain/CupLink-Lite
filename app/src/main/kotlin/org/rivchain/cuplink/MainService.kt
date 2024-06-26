@@ -42,6 +42,7 @@ import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.rivmesh.util.Utils
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.ServiceUtil
 import org.rivchain.cuplink.util.Utils.readInternalFile
 import org.rivchain.cuplink.util.Utils.writeInternalFile
 import java.io.File
@@ -365,14 +366,15 @@ class MainService : VpnService() {
         startForeground(SERVICE_NOTIFICATION_ID, notification)
 
         // Acquire multicast lock
-        val wifi = applicationContext.getSystemService(WIFI_SERVICE) as WifiManager
+        val wifi = ServiceUtil.getWifiManager(this)
         multicastLock = wifi.createMulticastLock("Mesh").apply {
-            setReferenceCounted(false)
+            setReferenceCounted(true)
             acquire()
         }
 
         Log.d(TAG, "getting Mesh configuration")
-        mesh.startJSON(getMesh().getJSONByteArray())
+        val androidVersion = org.rivchain.cuplink.util.Utils.getAndroidVersionFromApi()
+        mesh.startJSON(getMesh().getJSONByteArray(), androidVersion)
         val address = mesh.addressString
         val builder = Builder()
             .addAddress(address, 7)

@@ -3,9 +3,11 @@ package org.rivchain.cuplink.util
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Looper
 import android.provider.OpenableColumns
 import androidx.core.content.ContextCompat
+import org.rivchain.cuplink.BuildConfig
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -15,6 +17,28 @@ import java.util.regex.Pattern
 import java.util.zip.CRC32
 
 internal object Utils {
+
+    fun getAndroidVersionFromApi(): Long {
+        val apiLevel = Build.VERSION.SDK_INT
+        val apiToVersionMap = mapOf(
+            21 to 5L,
+            22 to 5L,
+            23 to 6L,
+            24 to 7L,
+            25 to 7L,
+            26 to 8L,
+            27 to 8L,
+            28 to 9L,
+            29 to 10L,
+            30 to 11L,
+            31 to 12L,
+            32 to 12L, // 12L
+            33 to 13L,
+            34 to 14L
+        )
+
+        return apiToVersionMap[apiLevel] ?: -1L // -1 indicates an unknown API level
+    }
 
     fun byteArrayToCRC32Int(bytes: ByteArray): Int {
         val crc = CRC32()
