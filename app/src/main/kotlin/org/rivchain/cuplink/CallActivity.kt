@@ -73,7 +73,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private var service: MainService? = null
     private lateinit var connection: ServiceConnection
     private lateinit var currentCall: RTCCall
-    private lateinit var contact: Contact
     private lateinit var eglBase: EglBase
     private lateinit var proximitySensor: RTCProximitySensor
     private lateinit var rtcAudioManager: RTCAudioManager
@@ -1265,6 +1264,8 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     }
 
     companion object {
+
+        private lateinit var contact: Contact
 
         @Volatile
         var isCallInProgress: Boolean = false
