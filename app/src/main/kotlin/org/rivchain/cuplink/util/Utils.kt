@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Looper
 import android.provider.OpenableColumns
 import androidx.core.content.ContextCompat
+import org.rivchain.cuplink.BuildConfig
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream

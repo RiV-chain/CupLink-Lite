@@ -215,7 +215,7 @@ class MainService : VpnService() {
         for (address in NetworkUtils.getAllSocketAddresses(contact, useNeighborTable)) {
             Log.d(this, "try address: $address")
             val socket = Socket()
-            socket.soTimeout = settings.connectTimeout
+
             try {
                 socket.connect(address, connectTimeout)
                 return socket
@@ -605,7 +605,6 @@ class MainService : VpnService() {
                 serverThread = Thread {
                     try {
                         serverSocket = ServerSocket(serverPort)
-                        serverSocket!!.soTimeout = getSettings().connectTimeout
                         while (true) {
                             Log.d(TAG, "Server listening on port $serverPort")
                             val clientSocket: Socket = serverSocket!!.accept()
