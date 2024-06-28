@@ -92,7 +92,7 @@ class CaptureQualityController(private val callActivity: CallActivity) {
         //This listener invoked only by a captureResolution or captureFramerate buttons
         degradationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             var check = 0
-            override fun onItemSelected(parent: AdapterView<*>?, view: View, pos: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 if (check++ > 0) {
                     degradationSpinnerValue = degradationValues[pos]
                     degradationSpinnerInitialized = true
