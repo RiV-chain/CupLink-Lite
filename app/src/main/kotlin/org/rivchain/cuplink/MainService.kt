@@ -163,8 +163,8 @@ class MainService : VpnService() {
             val localPeer = PeerInfo("tcp", InetAddress.getByName("0.0.0.0"), port, null, false)
             database.mesh.setListen(setOf(localPeer))
             database.mesh.multicastRegex = ".*"
-            database.mesh.multicastListen = false
-            database.mesh.multicastBeacon = false
+            database.mesh.multicastListen = true
+            database.mesh.multicastBeacon = true
             database.mesh.multicastPassword = ""
             firstStart = true
         }
@@ -185,14 +185,10 @@ class MainService : VpnService() {
         }
     }
 
-    fun importPeers(newDb: Database){
-        val oldDatabase = database
-        oldDatabase.mesh = newDb.mesh
-    }
-
     fun importSettings(newDb: Database){
         val oldDatabase = database
         oldDatabase.settings = newDb.settings
+        oldDatabase.mesh = newDb.mesh
     }
 
     fun saveDatabase() {

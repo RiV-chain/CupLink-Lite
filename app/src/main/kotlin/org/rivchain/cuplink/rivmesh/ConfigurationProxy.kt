@@ -30,7 +30,7 @@ class ConfigurationProxy() {
         }
     }
 
-    fun updateJSON(fn: (JSONObject) -> Unit) {
+    private fun updateJSON(fn: (JSONObject) -> Unit) {
         json = JSONObject(byteArray.toString(charset("UTF-8")))
         fn(json)
         val str = json.toString()

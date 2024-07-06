@@ -50,19 +50,6 @@
         app:layout_constraintTop_toBottomOf="@+id/contacts"/>
 
     <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/peers"
-        android:layout_width="wrap_content"
-        android:minWidth="@dimen/padding_50"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:checked="false"
-        android:textColor="@color/light_light_grey"
-        android:text="@string/peers"
-        app:checkedState="checked"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calls"/>
-
-    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/settings"
         android:layout_width="wrap_content"
         android:minWidth="@dimen/padding_50"
@@ -73,7 +60,7 @@
         android:text="@string/title_settings"
         app:checkedState="checked"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/peers"/>
+        app:layout_constraintTop_toBottomOf="@+id/calls"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/CancelButton"

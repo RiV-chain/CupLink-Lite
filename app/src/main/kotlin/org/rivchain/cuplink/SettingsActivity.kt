@@ -222,6 +222,24 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             }
         }
 
+        findViewById<SwitchMaterial>(R.id.searchMulticastPeersSwitch).apply {
+            isChecked = service!!.getMesh().multicastListen
+            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                service!!.getMesh().multicastListen = isChecked
+                service!!.saveDatabase()
+                restartService()
+            }
+        }
+
+        findViewById<SwitchMaterial>(R.id.discoverableOverMulticastSwitch).apply {
+            isChecked = service!!.getMesh().multicastBeacon
+            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                service!!.getMesh().multicastBeacon = isChecked
+                service!!.saveDatabase()
+                restartService()
+            }
+        }
+
         findViewById<SwitchMaterial>(R.id.pushToTalkSwitch).apply {
             isChecked = settings.pushToTalk
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->

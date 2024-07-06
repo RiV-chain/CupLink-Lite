@@ -34,6 +34,7 @@ import java.net.URL
 import java.net.UnknownHostException
 import java.nio.charset.Charset
 import java.util.Locale
+
 open class SelectPeerActivity : BaseActivity(), ServiceConnection {
 
     private var service: MainService? = null
