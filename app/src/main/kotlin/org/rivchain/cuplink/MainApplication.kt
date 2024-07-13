@@ -124,12 +124,12 @@ fun createServiceNotification(context: Context, state: State): Notification {
     val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, flags)
 
     val text = when (state) {
-        State.Disabled -> context.getText(R.string.tile_disabled)
+        State.Disabled -> context.getText(R.string.tile_connecting)
         State.Enabled -> context.getText(R.string.tile_enabled)
         State.Connected -> context.getText(R.string.tile_connected)
         State.Calling -> context.getText(R.string.is_calling)
         State.CallEnded -> context.getText(R.string.call_ended)
-        else -> context.getText(R.string.tile_disabled)
+        else -> context.getText(R.string.tile_connecting)
     }
 
     return NotificationCompat.Builder(context, MAIN_CHANNEL_ID)
