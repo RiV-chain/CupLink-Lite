@@ -323,6 +323,7 @@ class MainService : VpnService() {
                 Log.d(TAG, "Connecting...")
                 if (started.get()) {
                     connect()
+                    acquireMulticastLock()
                 } else {
                     startPacketsStream()
                 }
@@ -348,6 +349,15 @@ class MainService : VpnService() {
 
     }
 
+    private fun acquireMulticastLock(){
+        // Acquire multicast lock
+        val wifi = ServiceUtil.getWifiManager(this)
+        multicastLock = wifi.createMulticastLock("Mesh").apply {
+            setReferenceCounted(true)
+            acquire()
+        }
+    }
+
     private fun startPacketsStream() {
         // !this::database.isInitialized means db is encrypted
         // we will re-try to load it after the next db password prompt
@@ -358,15 +368,10 @@ class MainService : VpnService() {
         // handle incoming connections
         startServer()
 
+        acquireMulticastLock()
+
         val notification = createServiceNotification(this, State.Enabled)
         startForeground(SERVICE_NOTIFICATION_ID, notification)
-
-        // Acquire multicast lock
-        val wifi = ServiceUtil.getWifiManager(this)
-        multicastLock = wifi.createMulticastLock("Mesh").apply {
-            setReferenceCounted(true)
-            acquire()
-        }
 
         Log.d(TAG, "getting Mesh configuration")
         val androidVersion = org.rivchain.cuplink.util.Utils.getAndroidVersionFromApi()
