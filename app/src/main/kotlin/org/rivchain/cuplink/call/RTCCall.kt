@@ -2,6 +2,7 @@ package org.rivchain.cuplink.call
 
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import org.json.JSONException
 import org.json.JSONObject
 import org.rivchain.cuplink.Crypto
@@ -285,7 +286,40 @@ class RTCCall : RTCPeerConnection {
         Log.d(this, "initOutgoing()")
         Utils.checkIsOnMainThread()
 
+        // Max number of reconnection attempts
+        val maxReconnectionAttempts = 5
+        var reconnectionAttempts = 0
+
         execute {
+
+            fun createDataChannel(){
+                val init = DataChannel.Init()
+                init.ordered = true
+                dataChannel = peerConnection!!.createDataChannel("data", init)
+                dataChannel!!.registerObserver(dataChannelObserver)
+            }
+
+            fun createOffer(){
+                peerConnection!!.createOffer(object : DefaultSdpObserver() {
+
+                    override fun onCreateFailure(s: String) {
+                        super.onCreateFailure(s)
+                        if (reconnectionAttempts < maxReconnectionAttempts){
+                            reconnectionAttempts++
+                            createOffer()
+                        } else {
+                            // end up with reconnection attempts
+                            reportStateChange(CallState.ENDED)
+                        }
+                    }
+
+                    override fun onCreateSuccess(sessionDescription: SessionDescription) {
+                        super.onCreateSuccess(sessionDescription)
+                        peerConnection!!.setLocalDescription(DefaultSdpObserver(), sessionDescription)
+                    }
+                }, sdpMediaConstraints)
+            }
+
             Log.d(this, "initOutgoing() executor start")
             val rtcConfig = RTCConfiguration(emptyList())
             val settings = service.getSettings()
@@ -307,7 +341,11 @@ class RTCCall : RTCPeerConnection {
                     Log.d(this, "onIceConnectionChange() state=$iceConnectionState")
                     super.onIceConnectionChange(iceConnectionState)
                     when (iceConnectionState) {
-                        IceConnectionState.DISCONNECTED -> reportStateChange(CallState.ENDED)
+                        IceConnectionState.DISCONNECTED -> {
+                            // process disconnections here
+                            createOffer()
+                            // reportStateChange(CallState.ENDED)
+                        }
                         IceConnectionState.FAILED -> reportStateChange(CallState.ERROR_COMMUNICATION)
                         IceConnectionState.CONNECTED -> reportStateChange(CallState.CONNECTED)
                         else -> return
@@ -325,19 +363,11 @@ class RTCCall : RTCPeerConnection {
                 }
             })!!
 
-            val init = DataChannel.Init()
-            init.ordered = true
-            dataChannel = peerConnection!!.createDataChannel("data", init)
-            dataChannel!!.registerObserver(dataChannelObserver)
+            createDataChannel()
 
             addTracks()
 
-            peerConnection!!.createOffer(object : DefaultSdpObserver() {
-                override fun onCreateSuccess(sessionDescription: SessionDescription) {
-                    super.onCreateSuccess(sessionDescription)
-                    peerConnection!!.setLocalDescription(DefaultSdpObserver(), sessionDescription)
-                }
-            }, sdpMediaConstraints)
+            createOffer()
 
             Log.d(this, "initOutgoing() executor end")
         }
@@ -645,6 +675,10 @@ class RTCCall : RTCPeerConnection {
         Log.d(this, "initIncoming()")
         Utils.checkIsOnMainThread()
 
+        // Timer and Handler to handle the 5 seconds delay
+        val handler = Handler(Looper.getMainLooper())
+        var disconnectTimer: Runnable? = null
+
         execute {
             Log.d(this, "initIncoming() executor start")
             val settings = service.getSettings()
@@ -654,7 +688,32 @@ class RTCCall : RTCPeerConnection {
             rtcConfig.continualGatheringPolicy = ContinualGatheringPolicy.GATHER_ONCE
             rtcConfig.enableCpuOveruseDetection = !settings.disableCpuOveruseDetection // true by default
 
+            fun setRemoteDescription(){
+                peerConnection!!.setRemoteDescription(object : DefaultSdpObserver() {
+                    override fun onSetSuccess() {
+                        super.onSetSuccess()
+                        Log.d(this, "creating answer...")
+                        peerConnection!!.createAnswer(object : DefaultSdpObserver() {
+                            override fun onCreateSuccess(sessionDescription: SessionDescription) {
+                                Log.d(this, "onCreateSuccess")
+                                super.onCreateSuccess(sessionDescription)
+                                peerConnection!!.setLocalDescription(
+                                    DefaultSdpObserver(),
+                                    sessionDescription
+                                )
+                            }
+
+                            override fun onCreateFailure(s: String) {
+                                super.onCreateFailure(s)
+                                Log.d(this, "onCreateFailure: $s")
+                            }
+                        }, sdpMediaConstraints)
+                    }
+                }, SessionDescription(SessionDescription.Type.OFFER, offer))
+            }
+
             peerConnection = factory.createPeerConnection(rtcConfig, object : DefaultObserver() {
+
                 override fun onIceGatheringChange(iceGatheringState: IceGatheringState) {
                     Log.d(this, "onIceGatheringChange() $iceGatheringState")
                     super.onIceGatheringChange(iceGatheringState)
@@ -695,9 +754,22 @@ class RTCCall : RTCPeerConnection {
                     Log.d(this, "onIceConnectionChange() $iceConnectionState")
                     super.onIceConnectionChange(iceConnectionState)
                     when (iceConnectionState) {
-                        IceConnectionState.DISCONNECTED -> reportStateChange(CallState.ENDED)
+                        IceConnectionState.DISCONNECTED -> {
+                            disconnectTimer?.let { handler.removeCallbacks(it) }
+                            disconnectTimer = Runnable {
+                                Log.d(this, "Disconnect timer expired, reporting call end.")
+                                reportStateChange(CallState.ENDED)
+                            }
+                            handler.postDelayed(disconnectTimer!!, 5000)
+                        }
                         IceConnectionState.FAILED -> reportStateChange(CallState.ERROR_COMMUNICATION)
-                        IceConnectionState.CONNECTED -> reportStateChange(CallState.CONNECTED)
+                        IceConnectionState.CONNECTED -> {
+                            disconnectTimer?.let {
+                                Log.d(this, "Connection re-established, canceling disconnect timer.")
+                                handler.removeCallbacks(it)
+                            }
+                            reportStateChange(CallState.CONNECTED)
+                        }
                         else -> return
                     }
                     closeSocket(commSocket!!)
@@ -724,27 +796,8 @@ class RTCCall : RTCPeerConnection {
             addTracks()
 
             Log.d(this, "setting remote description")
-            peerConnection!!.setRemoteDescription(object : DefaultSdpObserver() {
-                override fun onSetSuccess() {
-                    super.onSetSuccess()
-                    Log.d(this, "creating answer...")
-                    peerConnection!!.createAnswer(object : DefaultSdpObserver() {
-                        override fun onCreateSuccess(sessionDescription: SessionDescription) {
-                            Log.d(this, "onCreateSuccess")
-                            super.onCreateSuccess(sessionDescription)
-                            peerConnection!!.setLocalDescription(
-                                DefaultSdpObserver(),
-                                sessionDescription
-                            )
-                        }
 
-                        override fun onCreateFailure(s: String) {
-                            super.onCreateFailure(s)
-                            Log.d(this, "onCreateFailure: $s")
-                        }
-                    }, sdpMediaConstraints)
-                }
-            }, SessionDescription(SessionDescription.Type.OFFER, offer))
+            setRemoteDescription()
 
             Log.d(this, "initIncoming() executor end")
         }

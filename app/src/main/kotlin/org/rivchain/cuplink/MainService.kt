@@ -163,8 +163,8 @@ class MainService : VpnService() {
             val localPeer = PeerInfo("tcp", InetAddress.getByName("0.0.0.0"), port, null, false)
             database.mesh.setListen(setOf(localPeer))
             database.mesh.multicastRegex = ".*"
-            database.mesh.multicastListen = false
-            database.mesh.multicastBeacon = false
+            database.mesh.multicastListen = true
+            database.mesh.multicastBeacon = true
             database.mesh.multicastPassword = ""
             firstStart = true
         }
@@ -185,14 +185,10 @@ class MainService : VpnService() {
         }
     }
 
-    fun importPeers(newDb: Database){
-        val oldDatabase = database
-        oldDatabase.mesh = newDb.mesh
-    }
-
     fun importSettings(newDb: Database){
         val oldDatabase = database
         oldDatabase.settings = newDb.settings
+        oldDatabase.mesh = newDb.mesh
     }
 
     fun saveDatabase() {
@@ -327,6 +323,7 @@ class MainService : VpnService() {
                 Log.d(TAG, "Connecting...")
                 if (started.get()) {
                     connect()
+                    acquireMulticastLock()
                 } else {
                     startPacketsStream()
                 }
@@ -352,6 +349,15 @@ class MainService : VpnService() {
 
     }
 
+    private fun acquireMulticastLock(){
+        // Acquire multicast lock
+        val wifi = ServiceUtil.getWifiManager(this)
+        multicastLock = wifi.createMulticastLock("Mesh").apply {
+            setReferenceCounted(true)
+            acquire()
+        }
+    }
+
     private fun startPacketsStream() {
         // !this::database.isInitialized means db is encrypted
         // we will re-try to load it after the next db password prompt
@@ -362,15 +368,10 @@ class MainService : VpnService() {
         // handle incoming connections
         startServer()
 
+        acquireMulticastLock()
+
         val notification = createServiceNotification(this, State.Enabled)
         startForeground(SERVICE_NOTIFICATION_ID, notification)
-
-        // Acquire multicast lock
-        val wifi = ServiceUtil.getWifiManager(this)
-        multicastLock = wifi.createMulticastLock("Mesh").apply {
-            setReferenceCounted(true)
-            acquire()
-        }
 
         Log.d(TAG, "getting Mesh configuration")
         val androidVersion = org.rivchain.cuplink.util.Utils.getAndroidVersionFromApi()

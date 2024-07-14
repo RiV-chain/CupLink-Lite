@@ -163,6 +163,48 @@
                     app:layout_constraintBottom_toBottomOf="@id/startOnBootup"/>
 
                 <TextView
+                    android:id="@+id/searchMulticastPeers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/search_multicast_peers"
+                    android:textSize="@dimen/title_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/startOnBootupSwitch"
+                    android:layout_marginTop="@dimen/padding_40"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/searchMulticastPeersSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:theme="@style/SwitchTheme"
+                    app:layout_constraintEnd_toEndOf="@id/searchMulticastPeers"
+                    app:layout_constraintTop_toTopOf="@id/searchMulticastPeers"
+                    app:layout_constraintBottom_toBottomOf="@id/searchMulticastPeers"/>
+
+                <TextView
+                    android:id="@+id/discoverableOverMulticast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/discoverable_over_multicast"
+                    android:textSize="@dimen/title_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/searchMulticastPeersSwitch"
+                    android:layout_marginTop="@dimen/padding_40"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/discoverableOverMulticastSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:theme="@style/SwitchTheme"
+                    app:layout_constraintEnd_toEndOf="@id/discoverableOverMulticast"
+                    app:layout_constraintTop_toTopOf="@id/discoverableOverMulticast"
+                    app:layout_constraintBottom_toBottomOf="@id/discoverableOverMulticast"/>
+
+                <TextView
                     android:id="@+id/settingsModes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -170,7 +212,7 @@
                     android:text="@string/settings_settings_mode"
                     android:textSize="@dimen/title_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/startOnBootupSwitch"
+                    app:layout_constraintTop_toBottomOf="@+id/discoverableOverMulticastSwitch"
                     android:layout_marginTop="@dimen/padding_40"/>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -248,7 +290,7 @@
                     android:textSize="@dimen/title_text_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/publicPeerUrl"
-                    android:layout_marginTop="@dimen/padding_40"/>
+                    android:layout_marginTop="@dimen/padding_25"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/enableMicrophoneByDefaultSwitch"
@@ -438,19 +480,15 @@
 
                 <TextView
                     android:id="@+id/addressTv"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:singleLine="true"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
                     android:fontFamily="@font/poppins_regular"
+                    android:textIsSelectable="true"
+                    android:text=""
                     android:textSize="@dimen/options_text_size"
-                    android:ellipsize="middle"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/addressLayout"
-                    app:layout_constraintBottom_toBottomOf="@id/addressLayout"
-                    app:layout_constraintStart_toEndOf="@id/addressLayout"/>
+                    android:textAllCaps="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/addressLayout"/>
 
                 <TextView
                     android:id="@+id/textSpeakerphoneModes"

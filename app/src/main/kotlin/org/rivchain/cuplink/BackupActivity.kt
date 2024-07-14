@@ -157,7 +157,6 @@ class BackupActivity : BaseActivity(), ServiceConnection {
         val titleTextView = dialogView.findViewById<TextView>(R.id.checkboxDialogTitle)
         val contactsCheckbox = dialogView.findViewById<MaterialCheckBox>(R.id.contacts)
         val callsCheckbox = dialogView.findViewById<MaterialCheckBox>(R.id.calls)
-        val peersCheckbox = dialogView.findViewById<MaterialCheckBox>(R.id.peers)
         val settingsCheckbox = dialogView.findViewById<MaterialCheckBox>(R.id.settings)
         val cancelButton = dialogView.findViewById<MaterialButton>(R.id.CancelButton)
         val okButton = dialogView.findViewById<MaterialButton>(R.id.OkButton)
@@ -165,7 +164,6 @@ class BackupActivity : BaseActivity(), ServiceConnection {
         titleTextView.text = getString(R.string.dialog_title_import_backup)
         contactsCheckbox.text = getString(R.string.title_contacts) + "($contactCount)"
         callsCheckbox.text = getString(R.string.title_calls) + "($eventCount)"
-        peersCheckbox.text = getString(R.string.peers) + "($peersCount)"
 
         // Define the color state list for the checkbox text color
         val colorStateList = ColorStateList(
@@ -182,7 +180,6 @@ class BackupActivity : BaseActivity(), ServiceConnection {
         // Apply the color state list to the checkboxes
         contactsCheckbox.setTextColor(colorStateList)
         callsCheckbox.setTextColor(colorStateList)
-        peersCheckbox.setTextColor(colorStateList)
         settingsCheckbox.setTextColor(colorStateList)
 
         val builder = AlertDialog.Builder(this, R.style.PPTCDialog).setView(dialogView)
@@ -195,7 +192,6 @@ class BackupActivity : BaseActivity(), ServiceConnection {
         okButton.setOnClickListener {
             if (!contactsCheckbox.isChecked &&
                 !callsCheckbox.isChecked &&
-                !peersCheckbox.isChecked &&
                 !settingsCheckbox.isChecked){
                 Toast.makeText(this, "Please select Contacts, Calls, Peers or Settings", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -207,10 +203,6 @@ class BackupActivity : BaseActivity(), ServiceConnection {
             if (callsCheckbox.isChecked) {
                 // Handle calls import
                 service.importCalls(newDatabase)
-            }
-            if (peersCheckbox.isChecked) {
-                // Handle peers import
-                service.importPeers(newDatabase)
             }
             if (settingsCheckbox.isChecked) {
                 // Handle peers import

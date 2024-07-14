@@ -108,7 +108,7 @@ class MeshTileService: TileService(), AppStateReceiver.StateReceiver {
                 State.Connected -> getText(R.string.tile_connected)
                 State.Calling -> getText(R.string.is_calling)
                 State.CallEnded -> getText(R.string.call_ended)
-                else -> getText(R.string.tile_disabled)
+                else -> getText(R.string.tile_connecting)
             }
             changed = changed || (oldText != tile.subtitle)
         }

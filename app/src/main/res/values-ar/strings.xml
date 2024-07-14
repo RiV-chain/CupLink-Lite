@@ -52,7 +52,7 @@
     <string name="wrong_password">كلمة مرور خاطئة</string>
     <string name="report_dialog_text">Sorry, the application crashed.</string>
     <string name="report_dialog_comment">Please describe what were you doing when the app crashed:</string>
-    <string name="tile_disabled">Disabled</string>
+    <string name="tile_connecting">Connecting</string>
     <string name="tile_enabled">Enabled</string>
     <string name="tile_connected">Connected</string>
     <string name="permission_notification_text">Permission is missing. Please grant it in order to receive notifications.</string>
@@ -70,4 +70,6 @@
     <string name="settings_connect_as_public_peer">Connect as Public Peer</string>
     <string name="qr_code_image">Contact QR code image</string>
     <string name="port_status">Port status</string>
+    <string name="search_multicast_peers">Search multicast peers</string>
+    <string name="discoverable_over_multicast">Discoverable over multicast</string>
 </resources>
