@@ -19,7 +19,6 @@ import org.acra.ktx.initAcra
 import org.acra.sender.HttpSender
 import org.rivchain.cuplink.rivmesh.AppStateReceiver
 import org.rivchain.cuplink.rivmesh.MeshTileService
-import org.rivchain.cuplink.rivmesh.NetworkStateCallback
 import org.rivchain.cuplink.rivmesh.State
 
 const val PREF_KEY_ENABLED = "enabled"
@@ -65,8 +64,6 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver {
 
     override fun onCreate() {
         super.onCreate()
-        val callback = NetworkStateCallback(this)
-        callback.register()
         val receiver = AppStateReceiver(this)
         receiver.register(this)
     }

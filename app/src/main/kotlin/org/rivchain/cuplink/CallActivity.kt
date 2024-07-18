@@ -130,6 +130,8 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     private var pressedTime: Long = 0
 
+    private lateinit var contact: Contact
+
     private val statsCollector = object : RTCStatsCollectorCallback {
         var statsReportUtil = StatsReportUtil()
 
@@ -140,6 +142,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(this, "onCreate()")
 
@@ -241,7 +244,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
         PendingIntent.getBroadcast(
             this,
-            0,
+            System.currentTimeMillis().toInt(),
             Intent().apply {
                 action = CallService.START_CALL_ACTION
                 putExtra("EXTRA_CONTACT", contact)
@@ -352,7 +355,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             val setContactState = { state: Contact.State ->
                 val b = service
                 if (b != null) {
-                    val storedContact = b.getContacts().getContactByPublicKey(contact.publicKey)
+                    val storedContact = Load.database.contacts.getContactByPublicKey(contact.publicKey)
                     if (storedContact != null) {
                         storedContact.state = state
                     } else {
@@ -597,7 +600,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         }
 
         // set background
-        val settings = service!!.getSettings()
+        val settings = Load.database.settings
         if (settings.pushToTalk) {
             val backgroundId = when (enabled) {
                 true -> R.drawable.ic_button_background_enabled_border
@@ -613,7 +616,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             updateCameraButtons()
             updateControlDisplay()
 
-            val settings = service!!.getSettings()
+            val settings = Load.database.settings
             if (settings.enableMicrophoneByDefault != currentCall.getMicrophoneEnabled()) {
                 if (!settings.pushToTalk) {
                     Log.d(this, "onDataChannelReady() toggle microphone")
@@ -685,14 +688,14 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 currentCall = RTCCall(service!!, contact)
                 currentCall.setCallContext(this@CallActivity)
 
-                captureQualityController.initFromSettings(service!!.getSettings())
+                captureQualityController.initFromSettings(Load.database.settings)
 
                 updateControlDisplay()
                 updateVideoDisplay()
 
                 continueCallSetup()
 
-                if (!service!!.getSettings().promptOutgoingCalls) {
+                if (!Load.database.settings.promptOutgoingCalls) {
                     // start outgoing call immediately
                     acceptButton.performClick()
                 }
@@ -789,7 +792,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 currentCall.setCallContext(this@CallActivity)
                 currentCall.setEglBase(eglBase)
 
-                captureQualityController.initFromSettings(service!!.getSettings())
+                captureQualityController.initFromSettings(Load.database.settings)
 
                 Thread {
                     currentCall.continueOnIncomingSocket()
@@ -838,7 +841,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             + ", video permissions: ${Utils.hasPermission(this, Manifest.permission.CAMERA)}"
         )
 
-        val settings = service!!.getSettings()
+        val settings = Load.database.settings
 
         // swap pip and fullscreen content
         pipContainer.setOnClickListener {
@@ -971,7 +974,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     }
 
     private fun initCall() {
-        val settings = service!!.getSettings()
+        val settings = Load.database.settings
 
         Log.d(this, "initCall() settings"
             + " microphone ${currentCall.getMicrophoneEnabled()} => ${settings.enableMicrophoneByDefault}"
@@ -1177,7 +1180,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
             if (callEventType != Event.Type.UNKNOWN) {
                 val event = Event(contact.publicKey, contact.lastWorkingAddress, callEventType, Date())
-                service!!.addEvent(event)
+                addEvent(event)
             }
 
             unbindService(connection)
@@ -1264,8 +1267,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     }
 
     companion object {
-
-        private lateinit var contact: Contact
 
         @Volatile
         var isCallInProgress: Boolean = false

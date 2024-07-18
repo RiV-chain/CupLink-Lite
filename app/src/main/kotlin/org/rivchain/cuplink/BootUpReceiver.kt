@@ -8,38 +8,51 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.VpnService
 import android.widget.Toast
+import org.libsodium.jni.NaCl
 import org.rivchain.cuplink.util.Log
 
 /*
- * Start App on Android bootup. StartActivity is started to check
- * if a password for the database is need. the name and key-pair
- * is set.
+ * Start App on Android bootup. onReceive methods loads database and starts VPN service.
+ * Activity start is not allowed from background here.
  */
 class BootUpReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
-        if (intent != null && intent.action == Intent.ACTION_BOOT_COMPLETED) {
-            val i = Intent(context, StartActivity::class.java)
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            i.putExtra(IS_START_ON_BOOTUP, true) // start MainService only, not MainActivity
-            context.startActivity(i)
-        }
+        if (intent != null) {
+            if(intent.action == Intent.ACTION_BOOT_COMPLETED) {
+                Load.databasePath = context.filesDir.toString() + "/database.bin"
+                // Prevent UnsatisfiedLinkError
+                NaCl.sodium()
+                Log.d(this, "bootup: load database")
+                // open without password
+                try {
+                    Load.database()
+                } catch (e: Database.WrongPasswordException) {
+                    // ignore and continue with initialization,
+                    // the password dialog comes on the next startState
+                    Load.dbEncrypted = true
+                } catch (e: Exception) {
+                    Log.e(this, "${e.message}")
+                    return
+                }
 
-        if (intent?.action != Intent.ACTION_BOOT_COMPLETED) {
-            Log.w(TAG, "Wrong action: ${intent?.action}")
-        }
-        Log.i(TAG, "CupLink enabled, starting service")
-        val serviceIntent = Intent(context, MainService::class.java)
-        serviceIntent.action = MainService.ACTION_START
+                Log.d(this, "bootup: load database complete")
 
-        val vpnIntent = VpnService.prepare(context)
-        if (vpnIntent != null) {
-            Log.i(TAG, "Need to ask for VPN permission")
-            val notification = createPermissionMissingNotification(context)
-            val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.notify(444, notification)
-        } else {
-            context.startService(serviceIntent)
+                Log.i(TAG, "CupLink enabled, starting service")
+                val serviceIntent = Intent(context, MainService::class.java)
+                serviceIntent.action = MainService.ACTION_START
+
+                val vpnIntent = VpnService.prepare(context)
+                if (vpnIntent != null) {
+                    Log.i(TAG, "Need to ask for VPN permission")
+                    val notification = createPermissionMissingNotification(context)
+                    val manager =
+                        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    manager.notify(444, notification)
+                } else {
+                    context.startService(serviceIntent)
+                }
+            }
         }
     }
 

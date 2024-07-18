@@ -15,12 +15,11 @@ class NetworkStateCallback(val context: Context) : ConnectivityManager.NetworkCa
     override fun onAvailable(network: Network) {
         super.onAvailable(network)
         Log.d(this, "onAvailable")
-
         Thread {
             // The message often arrives before the connection is fully established
             Thread.sleep(1000)
             val intent = Intent(context, MainService::class.java)
-            intent.action = MainService.ACTION_CONNECT
+            intent.action = MainService.ACTION_START
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     context.startForegroundService(intent)
