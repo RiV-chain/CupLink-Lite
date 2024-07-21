@@ -39,6 +39,9 @@ class QRScanActivity : AddContactActivity(), BarcodeCallback {
         if (!Utils.hasPermission(this, Manifest.permission.CAMERA)) {
             enabledCameraForResult.launch(Manifest.permission.CAMERA)
         }
+        if (Utils.hasPermission(this, Manifest.permission.CAMERA)) {
+            initCamera()
+        }
     }
 
     private val enabledCameraForResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -69,12 +72,6 @@ class QRScanActivity : AddContactActivity(), BarcodeCallback {
         barcodeView.barcodeView?.decoderFactory = DefaultDecoderFactory(formats)
         barcodeView.decodeContinuous(this)
         barcodeView.resume()
-    }
-
-    override fun onServiceConnected(){
-        if (Utils.hasPermission(this, Manifest.permission.CAMERA)) {
-            initCamera()
-        }
     }
 
     override fun pause(){

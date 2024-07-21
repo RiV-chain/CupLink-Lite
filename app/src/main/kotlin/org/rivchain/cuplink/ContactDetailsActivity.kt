@@ -1,11 +1,7 @@
 package org.rivchain.cuplink
 
 import android.app.Activity
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +17,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.libsodium.jni.Sodium
-import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.model.AddressEntry
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.NetworkUtils
@@ -30,7 +25,7 @@ import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils
 import java.util.Locale
 
-class ContactDetailsActivity : BaseActivity(), ServiceConnection {
+class ContactDetailsActivity : BaseActivity() {
     private lateinit var publicKey: ByteArray
 
     private lateinit var contactNameEdit: TextView
@@ -40,8 +35,6 @@ class ContactDetailsActivity : BaseActivity(), ServiceConnection {
 
     private lateinit var addressListView: ListView
     private lateinit var addressListViewAdapter: AddressListAdapter
-
-    private var service: MainService? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,25 +65,15 @@ class ContactDetailsActivity : BaseActivity(), ServiceConnection {
         addressListViewAdapter = AddressListAdapter(this)
         addressListView.adapter = addressListViewAdapter
 
-        bindService(Intent(this, MainService::class.java), this, 0)
-    }
-
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
         try {
-            val mainService = (iBinder as MainBinder).getService()
             val publicKey = intent.extras!!["EXTRA_CONTACT_PUBLICKEY"] as ByteArray
             val contact = Load.database.contacts.getContactByPublicKey(publicKey)!!
-            service = mainService
             updateContact(contact)
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
             finish()
         }
-    }
-
-    override fun onServiceDisconnected(componentName: ComponentName) {
-        // nothing to do
     }
 
     private fun updateContact(newContact: Contact) {
@@ -238,13 +221,6 @@ class ContactDetailsActivity : BaseActivity(), ServiceConnection {
         }
 
         dialog.show()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (service != null) {
-            unbindService(this)
-        }
     }
 
     inner class AddressListAdapter(private val context: Activity): BaseAdapter() {

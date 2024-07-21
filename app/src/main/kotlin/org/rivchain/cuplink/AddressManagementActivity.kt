@@ -1,12 +1,8 @@
 package org.rivchain.cuplink
 
 import android.app.Activity
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
 import android.graphics.Color
 import android.os.Bundle
-import android.os.IBinder
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -18,14 +14,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
-import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.model.AddressEntry
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.NetworkUtils.AddressType
 import java.util.Locale
 
-class AddressManagementActivity : BaseActivity(), ServiceConnection {
-    private var service: MainService? = null
+class AddressManagementActivity : BaseActivity() {
+
     private lateinit var addressListView: ListView
     private lateinit var customAddressTextEdit: TextInputEditText
     private lateinit var addressListViewAdapter: AddressListAdapter
@@ -60,13 +55,22 @@ class AddressManagementActivity : BaseActivity(), ServiceConnection {
         customAddressTextEdit = findViewById(R.id.CustomAddressEditText)
         systemAddresses = NetworkUtils.collectAddresses().toMutableList()
 
-        bindService(Intent(this, MainService::class.java), this, 0)
+        // add extra information to stored addresses from system addresses
+        val addresses = mutableListOf<AddressEntry>()
+        for (address in Load.database.settings.addresses) {
+            val ae = systemAddresses.firstOrNull { it.address == address }
+            if (ae != null) {
+                addresses.add(AddressEntry(address, ae.device))
+            } else {
+                addresses.add(AddressEntry(address, ""))
+            }
+        }
+
+        initAddressList()
+        initViews()
     }
 
     private fun initViews() {
-        if (service == null) {
-            return
-        }
 
         val saveButton = findViewById<Button>(R.id.save_button)
         val resetButton = findViewById<Button>(R.id.reset_button)
@@ -114,33 +118,6 @@ class AddressManagementActivity : BaseActivity(), ServiceConnection {
         resetButton.setOnClickListener {
             initAddressList()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unbindService(this)
-    }
-
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
-        service = (iBinder as MainBinder).getService()
-
-        // add extra information to stored addresses from system addresses
-        val addresses = mutableListOf<AddressEntry>()
-        for (address in Load.database.settings.addresses) {
-            val ae = systemAddresses.firstOrNull { it.address == address }
-            if (ae != null) {
-                addresses.add(AddressEntry(address, ae.device))
-            } else {
-                addresses.add(AddressEntry(address, ""))
-            }
-        }
-
-        initAddressList()
-        initViews()
-    }
-
-    override fun onServiceDisconnected(componentName: ComponentName) {
-        // nothing to do
     }
 
     inner class AddressListAdapter(private val context: Activity): BaseAdapter() {

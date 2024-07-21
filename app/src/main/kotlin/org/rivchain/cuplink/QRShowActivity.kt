@@ -16,9 +16,8 @@ import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 
-class QRShowActivity : BaseActivity(), ServiceConnection {
+class QRShowActivity : BaseActivity() {
     private lateinit var publicKey: ByteArray
-    private var service: MainService? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +26,6 @@ class QRShowActivity : BaseActivity(), ServiceConnection {
         publicKey = intent.extras!!["EXTRA_CONTACT_PUBLICKEY"] as ByteArray
 
         title = getString(R.string.title_show_qr_code)
-
-        bindService(Intent(this, MainService::class.java), this, 0)
 
         findViewById<View>(R.id.fabPresenter).setOnClickListener {
             startActivity(Intent(this, QRScanActivity::class.java))
@@ -48,12 +45,16 @@ class QRShowActivity : BaseActivity(), ServiceConnection {
                 // ignore
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (service != null) {
-            unbindService(this)
+        try {
+            val contact = getContactOrOwn(publicKey)!!
+            generateDeepLinkQR(contact)
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+            Toast.makeText(this, "NPE", Toast.LENGTH_LONG).show()
+        } catch (e: Exception){
+            e.printStackTrace()
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            finish()
         }
     }
 
@@ -100,24 +101,5 @@ class QRShowActivity : BaseActivity(), ServiceConnection {
         val barcodeEncoder = BarcodeEncoder()
         val bitmap = barcodeEncoder.createBitmap(bitMatrix)
         findViewById<ImageView>(R.id.QRView).setImageBitmap(bitmap)
-    }
-
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
-        service = (iBinder as MainBinder).getService()
-        try {
-            val contact = getContactOrOwn(publicKey)!!
-            generateDeepLinkQR(contact)
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
-            Toast.makeText(this, "NPE", Toast.LENGTH_LONG).show()
-        } catch (e: Exception){
-            e.printStackTrace()
-            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
-            finish()
-        }
-    }
-
-    override fun onServiceDisconnected(componentName: ComponentName) {
-        // nothing to do
     }
 }

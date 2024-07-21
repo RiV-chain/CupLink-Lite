@@ -38,7 +38,7 @@ import org.rivchain.cuplink.util.ServiceUtil
 import org.rivchain.cuplink.util.Utils
 import java.lang.Integer.parseInt
 
-class SettingsActivity : BaseActivity(), ServiceConnection {
+class SettingsActivity : BaseActivity() {
 
     private var requestListenLauncher: ActivityResultLauncher<Intent>? = null
     private var requestPeersLauncher: ActivityResultLauncher<Intent>? = null
@@ -67,7 +67,6 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             setDisplayShowTitleEnabled(false)
         }
 
-        bindService(Intent(this, MainService::class.java), this, 0)
         initViews()
 
         requestPeersLauncher =
@@ -82,19 +81,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
                 saveDatabase()
                 initViews()
             }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unbindService(this)
-    }
-
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
         initViews()
-    }
-
-    override fun onServiceDisconnected(componentName: ComponentName) {
-        // nothing to do
     }
 
     private fun initViews() {

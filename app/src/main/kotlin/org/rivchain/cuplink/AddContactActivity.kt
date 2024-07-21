@@ -1,11 +1,8 @@
 package org.rivchain.cuplink
 
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -19,32 +16,24 @@ import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 import org.rivchain.cuplink.util.Utils
 
-open class AddContactActivity: BaseActivity(), ServiceConnection {
-
-    protected var service: MainService? = null
+open class AddContactActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindService(Intent(this, MainService::class.java), this, 0)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unbindService(this)
+        onServiceConnected()
+        if(intent!=null && intent.extras!=null) {
+            addContact(intent.extras!!["EXTRA_CONTACT"] as Contact)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (service != null) {
-            resume()
-        }
+        resume()
     }
 
     override fun onPause() {
         super.onPause()
-        if (service != null) {
-            pause()
-        }
+        pause()
     }
 
     protected open fun onServiceConnected(){
@@ -56,17 +45,6 @@ open class AddContactActivity: BaseActivity(), ServiceConnection {
     }
 
     protected open fun resume(){
-        // nothing to do
-    }
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
-        service = (iBinder as MainService.MainBinder).getService()
-        onServiceConnected()
-        if(intent!=null && intent.extras!=null) {
-            addContact(intent.extras!!["EXTRA_CONTACT"] as Contact)
-        }
-    }
-
-    override fun onServiceDisconnected(componentName: ComponentName) {
         // nothing to do
     }
 
