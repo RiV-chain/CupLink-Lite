@@ -240,7 +240,8 @@ class MainService : VpnService() {
 
         Log.d(TAG, "getting Mesh configuration")
         val androidVersion = org.rivchain.cuplink.util.Utils.getAndroidVersionFromApi()
-        mesh.startJSON(DatabaseCache.database.mesh.getJSONByteArray(), androidVersion)
+        val jsonConfig = DatabaseCache.database.mesh.getJSONByteArray()
+        mesh.startJSON(jsonConfig, androidVersion)
         val address = mesh.addressString
         val builder = Builder()
             .addAddress(address, 7)
