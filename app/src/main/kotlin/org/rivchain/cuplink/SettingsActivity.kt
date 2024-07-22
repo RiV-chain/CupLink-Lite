@@ -1,14 +1,11 @@
 package org.rivchain.cuplink
 
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -78,7 +75,7 @@ class SettingsActivity : BaseActivity() {
         requestListenLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 // refresh settings
-                saveDatabase()
+                DatabaseCache.save()
                 initViews()
             }
         initViews()
@@ -86,7 +83,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun initViews() {
 
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
 
         findViewById<TextView>(R.id.nameTv)
             .text = settings.username.ifEmpty { getString(R.string.no_value) }
@@ -107,7 +104,7 @@ class SettingsActivity : BaseActivity() {
                 requestPeersLauncher!!.launch(intent)
             }
 
-        val databasePassword = Load.databasePassword
+        val databasePassword = DatabaseCache.databasePassword
         findViewById<TextView>(R.id.databasePasswordTv)
             .text = if (databasePassword.isEmpty()) getString(R.string.no_value) else "*".repeat(databasePassword.length)
         findViewById<View>(R.id.databasePasswordLayout)
@@ -119,7 +116,7 @@ class SettingsActivity : BaseActivity() {
             .setOnClickListener { Toast.makeText(this@SettingsActivity, R.string.setting_read_only, Toast.LENGTH_SHORT).show() }
 
         findViewById<TextView>(R.id.publicPeerUrl)
-            .text = jsonArrayToString(Load.database.mesh.getListen())
+            .text = jsonArrayToString(DatabaseCache.database.mesh.getListen())
         findViewById<View>(R.id.publicPeerLayout)
             .setOnClickListener {
                 val intent = Intent(this, ConfigurePublicPeerActivity::class.java)
@@ -130,7 +127,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.blockUnknown
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.blockUnknown = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -143,7 +140,7 @@ class SettingsActivity : BaseActivity() {
                 override fun call(newValue: String?) {
                     if (newValue != null) {
                         settings.nightMode = newValue
-                        saveDatabase()
+                        DatabaseCache.save()
                         setDefaultNightMode(newValue)
                         applyNightMode()
                         startActivity(Intent(this@SettingsActivity, SettingsActivity::class.java))
@@ -161,7 +158,7 @@ class SettingsActivity : BaseActivity() {
                 override fun call(newValue: String?) {
                     if (newValue != null) {
                         settings.speakerphoneMode = newValue
-                        saveDatabase()
+                        DatabaseCache.save()
                     }
                 }
             })
@@ -180,7 +177,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.promptOutgoingCalls
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.promptOutgoingCalls = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -192,7 +189,7 @@ class SettingsActivity : BaseActivity() {
                 if (isChecked) {
                     binder.clearEvents()
                 }
-                saveDatabase()
+                Load.saveDatabase()
             }
         }*/
 
@@ -201,24 +198,24 @@ class SettingsActivity : BaseActivity() {
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.startOnBootup = isChecked
                 BootUpReceiver.setEnabled(this@SettingsActivity, isChecked) // apply setting
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
         findViewById<SwitchMaterial>(R.id.searchMulticastPeersSwitch).apply {
-            isChecked = Load.database.mesh.multicastListen
+            isChecked = DatabaseCache.database.mesh.multicastListen
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                Load.database.mesh.multicastListen = isChecked
-                saveDatabase()
+                DatabaseCache.database.mesh.multicastListen = isChecked
+                DatabaseCache.save()
                 restartService()
             }
         }
 
         findViewById<SwitchMaterial>(R.id.discoverableOverMulticastSwitch).apply {
-            isChecked = Load.database.mesh.multicastBeacon
+            isChecked = DatabaseCache.database.mesh.multicastBeacon
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                Load.database.mesh.multicastBeacon = isChecked
-                saveDatabase()
+                DatabaseCache.database.mesh.multicastBeacon = isChecked
+                DatabaseCache.save()
                 restartService()
             }
         }
@@ -227,7 +224,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.pushToTalk
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.pushToTalk = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -235,7 +232,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.disableProximitySensor
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.disableProximitySensor = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -297,7 +294,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.useNeighborTable
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.useNeighborTable = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -305,7 +302,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.videoHardwareAcceleration
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.videoHardwareAcceleration = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -313,7 +310,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.disableAudioProcessing
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.disableAudioProcessing = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -321,7 +318,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.showUsernameAsLogo
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.showUsernameAsLogo = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -329,7 +326,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.enableMicrophoneByDefault
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.enableMicrophoneByDefault = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -337,7 +334,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.enableCameraByDefault
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.enableCameraByDefault = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -345,7 +342,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.selectFrontCameraByDefault
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.selectFrontCameraByDefault = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -353,7 +350,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.disableCpuOveruseDetection
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.disableCpuOveruseDetection = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -368,7 +365,7 @@ class SettingsActivity : BaseActivity() {
                     requestDrawOverlaysPermissionLauncher.launch(intent)
                 } else {
                     settings.autoAcceptCalls = isChecked
-                    saveDatabase()
+                    DatabaseCache.save()
                 }
             }
         }
@@ -377,7 +374,7 @@ class SettingsActivity : BaseActivity() {
             isChecked = settings.automaticStatusUpdates
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.automaticStatusUpdates = isChecked
-                saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -414,14 +411,14 @@ class SettingsActivity : BaseActivity() {
                 }
             }
         } else {
-            Load.database.settings.autoAcceptCalls = true
-            saveDatabase()
+            DatabaseCache.database.settings.autoAcceptCalls = true
+            DatabaseCache.save()
         }
     }
 
     private fun showChangeUsernameDialog() {
         Log.d(this, "showChangeUsernameDialog()")
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         val dialog = b.setView(view).create()
@@ -435,7 +432,7 @@ class SettingsActivity : BaseActivity() {
             val newUsername = nameEditText.text.toString().trim { it <= ' ' }
             if (Utils.isValidName(newUsername)) {
                 settings.username = newUsername
-                saveDatabase()
+                DatabaseCache.save()
                 initViews()
             } else {
                 Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
@@ -452,7 +449,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun showChangeConnectRetriesDialog() {
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_retries, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         val dialog = b.setView(view).create()
@@ -473,7 +470,7 @@ class SettingsActivity : BaseActivity() {
 
             if (connectRetries in minValue..maxValue) {
                 settings.connectRetries = connectRetries
-                saveDatabase()
+                DatabaseCache.save()
                 initViews()
                 Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             } else {
@@ -488,7 +485,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun showChangeConnectTimeoutDialog() {
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_timeout, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         b.setView(view)
@@ -510,7 +507,7 @@ class SettingsActivity : BaseActivity() {
 
             if (connectTimeout in minValue..maxValue) {
                 settings.connectTimeout = connectTimeout
-                saveDatabase()
+                DatabaseCache.save()
                 initViews()
                 Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             } else {
@@ -532,11 +529,11 @@ class SettingsActivity : BaseActivity() {
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
 
-        passwordEditText.setText(Load.databasePassword)
+        passwordEditText.setText(DatabaseCache.databasePassword)
         okButton.setOnClickListener {
             val newPassword = passwordEditText.text.toString()
-            Load.databasePassword = newPassword
-            saveDatabase()
+            DatabaseCache.databasePassword = newPassword
+            DatabaseCache.save()
             Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             initViews()
             dialog.cancel()
@@ -546,7 +543,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun showMenuPasswordDialog() {
-        val menuPassword = Load.database.settings.menuPassword
+        val menuPassword = DatabaseCache.database.settings.menuPassword
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_menu_password, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         b.setView(view)
@@ -557,8 +554,8 @@ class SettingsActivity : BaseActivity() {
         passwordEditText.setText(menuPassword)
         okButton.setOnClickListener {
             val newPassword = passwordEditText.text.toString()
-            Load.database.settings.menuPassword = newPassword
-            saveDatabase()
+            DatabaseCache.database.settings.menuPassword = newPassword
+            DatabaseCache.save()
             Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             initViews()
             dialog.cancel()

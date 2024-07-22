@@ -6,7 +6,7 @@ import android.os.Looper
 import org.json.JSONException
 import org.json.JSONObject
 import org.rivchain.cuplink.Crypto
-import org.rivchain.cuplink.Load
+import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.Log
@@ -265,7 +265,7 @@ class RTCCall : RTCPeerConnection {
     }
 
     private fun createMediaConstraints() {
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
 
         sdpMediaConstraints.optional.add(MediaConstraints.KeyValuePair("offerToReceiveAudio", "true"))
         sdpMediaConstraints.optional.add(MediaConstraints.KeyValuePair("offerToReceiveVideo", "false"))
@@ -323,7 +323,7 @@ class RTCCall : RTCPeerConnection {
 
             Log.d(this, "initOutgoing() executor start")
             val rtcConfig = RTCConfiguration(emptyList())
-            val settings = Load.database.settings
+            val settings = DatabaseCache.database.settings
             rtcConfig.sdpSemantics = SdpSemantics.UNIFIED_PLAN
             rtcConfig.continualGatheringPolicy = ContinualGatheringPolicy.GATHER_ONCE
             rtcConfig.enableCpuOveruseDetection = !settings.disableCpuOveruseDetection // true by default
@@ -579,7 +579,7 @@ class RTCCall : RTCPeerConnection {
         Log.d(this, "initVideo()")
         Utils.checkIsOnMainThread()
 
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         reportStateChange(CallState.WAITING)
 
         // must be created in Main/GUI Thread!
@@ -594,7 +594,7 @@ class RTCCall : RTCPeerConnection {
 
         Log.d(this, "initVideo() video acceleration: ${settings.videoHardwareAcceleration}")
 
-        if (Load.database.settings.videoHardwareAcceleration) {
+        if (DatabaseCache.database.settings.videoHardwareAcceleration) {
             val enableIntelVp8Encoder = true
             val enableH264HighProfile = true
             encoderFactory = DefaultVideoEncoderFactory(eglBase.eglBaseContext, enableIntelVp8Encoder, enableH264HighProfile)
@@ -682,7 +682,7 @@ class RTCCall : RTCPeerConnection {
 
         execute {
             Log.d(this, "initIncoming() executor start")
-            val settings = Load.database.settings
+            val settings = DatabaseCache.database.settings
             val remoteAddress = commSocket!!.remoteSocketAddress as InetSocketAddress
             val rtcConfig = RTCConfiguration(emptyList())
             rtcConfig.sdpSemantics = SdpSemantics.UNIFIED_PLAN

@@ -355,7 +355,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             val setContactState = { state: Contact.State ->
                 val b = service
                 if (b != null) {
-                    val storedContact = Load.database.contacts.getContactByPublicKey(contact.publicKey)
+                    val storedContact = DatabaseCache.database.contacts.getContactByPublicKey(contact.publicKey)
                     if (storedContact != null) {
                         storedContact.state = state
                     } else {
@@ -600,7 +600,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         }
 
         // set background
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         if (settings.pushToTalk) {
             val backgroundId = when (enabled) {
                 true -> R.drawable.ic_button_background_enabled_border
@@ -616,7 +616,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             updateCameraButtons()
             updateControlDisplay()
 
-            val settings = Load.database.settings
+            val settings = DatabaseCache.database.settings
             if (settings.enableMicrophoneByDefault != currentCall.getMicrophoneEnabled()) {
                 if (!settings.pushToTalk) {
                     Log.d(this, "onDataChannelReady() toggle microphone")
@@ -688,14 +688,14 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 currentCall = RTCCall(service!!, contact)
                 currentCall.setCallContext(this@CallActivity)
 
-                captureQualityController.initFromSettings(Load.database.settings)
+                captureQualityController.initFromSettings(DatabaseCache.database.settings)
 
                 updateControlDisplay()
                 updateVideoDisplay()
 
                 continueCallSetup()
 
-                if (!Load.database.settings.promptOutgoingCalls) {
+                if (!DatabaseCache.database.settings.promptOutgoingCalls) {
                     // start outgoing call immediately
                     acceptButton.performClick()
                 }
@@ -792,7 +792,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 currentCall.setCallContext(this@CallActivity)
                 currentCall.setEglBase(eglBase)
 
-                captureQualityController.initFromSettings(Load.database.settings)
+                captureQualityController.initFromSettings(DatabaseCache.database.settings)
 
                 Thread {
                     currentCall.continueOnIncomingSocket()
@@ -841,7 +841,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             + ", video permissions: ${Utils.hasPermission(this, Manifest.permission.CAMERA)}"
         )
 
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
 
         // swap pip and fullscreen content
         pipContainer.setOnClickListener {
@@ -974,7 +974,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     }
 
     private fun initCall() {
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
 
         Log.d(this, "initCall() settings"
             + " microphone ${currentCall.getMicrophoneEnabled()} => ${settings.enableMicrophoneByDefault}"

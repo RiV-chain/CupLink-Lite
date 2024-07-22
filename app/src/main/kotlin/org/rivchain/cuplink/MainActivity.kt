@@ -79,7 +79,7 @@ class MainActivity : BaseActivity() {
 
         Log.d(this, "onServiceConnected()")
 
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
 
         // data source for the views was not ready before
         (viewPager.adapter as ViewPagerFragmentAdapter).let {
@@ -126,8 +126,8 @@ class MainActivity : BaseActivity() {
             addressWarningShown = true
         }
 
-        refreshEvents()
-        refreshContacts()
+        NotificationUtils.refreshEvents(this)
+        NotificationUtils.refreshContacts(this)
     }
 
     @SuppressLint("MissingSuperCall")
@@ -166,7 +166,7 @@ class MainActivity : BaseActivity() {
     private fun showInvalidAddressSettingsWarning() {
         Handler(Looper.getMainLooper()).postDelayed({
 
-            val storedAddresses = Load.database.settings.addresses
+            val storedAddresses = DatabaseCache.database.settings.addresses
             val storedIPAddresses = storedAddresses.filter { NetworkUtils.isIPAddress(it) || NetworkUtils.isMACAddress(it) }
             if (storedAddresses.isNotEmpty() && storedIPAddresses.isEmpty()) {
                 // ignore, we only have domains configured
@@ -239,7 +239,7 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d(this, "onOptionsItemSelected()")
 
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         if (settings.menuPassword.isEmpty()) {
             menuAction(item.itemId)
         } else {

@@ -28,7 +28,7 @@ class QRScanActivity : AddContactActivity(), BarcodeCallback {
         // qr show button
         findViewById<View>(R.id.fabScan).setOnClickListener {
             val intent = Intent(this, QRShowActivity::class.java)
-            intent.putExtra("EXTRA_CONTACT_PUBLICKEY", Load.database.settings.publicKey)
+            intent.putExtra("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
             startActivity(intent)
             finish()
         }

@@ -65,7 +65,7 @@ open class AddContactActivity: BaseActivity() {
         }
 
         // lookup existing contacts by key and name
-        val contacts = Load.database.contacts
+        val contacts = DatabaseCache.database.contacts
         val existingContactByPublicKey = contacts.getContactByPublicKey(contact.publicKey)
         val existingContactByName = contacts.getContactByName(contact.name)
         if (existingContactByPublicKey != null) {
@@ -133,7 +133,7 @@ open class AddContactActivity: BaseActivity() {
                 return@setOnClickListener
             }
 
-            if (Load.database.contacts.getContactByName(name) != null) {
+            if (DatabaseCache.database.contacts.getContactByName(name) != null) {
                 Toast.makeText(this, R.string.contact_name_exists, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }

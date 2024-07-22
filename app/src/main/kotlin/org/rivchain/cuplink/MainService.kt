@@ -76,7 +76,7 @@ class MainService : VpnService() {
     }
 
     private fun createCommSocket(contact: Contact): Socket? {
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         val useNeighborTable = settings.useNeighborTable
         val connectTimeout = settings.connectTimeout
 
@@ -115,7 +115,7 @@ class MainService : VpnService() {
         stopPacketsStream()
 
         // say goodbye
-        val database = Load.database
+        val database = DatabaseCache.database
         if (serverSocket != null && serverSocket!!.isBound && !serverSocket!!.isClosed) {
             try {
                 val ownPublicKey = database.settings.publicKey
@@ -240,7 +240,7 @@ class MainService : VpnService() {
 
         Log.d(TAG, "getting Mesh configuration")
         val androidVersion = org.rivchain.cuplink.util.Utils.getAndroidVersionFromApi()
-        mesh.startJSON(Load.database.mesh.getJSONByteArray(), androidVersion)
+        mesh.startJSON(DatabaseCache.database.mesh.getJSONByteArray(), androidVersion)
         val address = mesh.addressString
         val builder = Builder()
             .addAddress(address, 7)

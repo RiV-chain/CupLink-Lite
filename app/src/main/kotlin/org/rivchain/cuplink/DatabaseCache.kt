@@ -2,10 +2,12 @@ package org.rivchain.cuplink
 
 import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.util.Utils.readInternalFile
+import org.rivchain.cuplink.util.Utils.writeInternalFile
 import java.io.File
 import java.net.InetAddress
 
-class Load {
+class DatabaseCache {
+
     companion object {
 
         lateinit var databasePath: String
@@ -15,7 +17,7 @@ class Load {
 
         lateinit var database: Database
 
-        fun database(): Database {
+        fun load(): Database {
             if (File(databasePath).exists()) {
                 // Open an existing database
                 val db = readInternalFile(databasePath)
@@ -36,6 +38,18 @@ class Load {
                 firstStart = true
             }
             return database
+        }
+
+        fun save() {
+            try {
+                val db = database
+                val dbData = Database.toData(db, databasePassword)
+                if (dbData != null) {
+                    writeInternalFile(databasePath, dbData)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

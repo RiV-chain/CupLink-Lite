@@ -60,7 +60,7 @@ class ContactListFragment() : Fragment() {
 
         fabGen.setOnClickListener {
             val intent = Intent(activity, QRShowActivity::class.java)
-            intent.putExtra("EXTRA_CONTACT_PUBLICKEY", Load.database.settings.publicKey)
+            intent.putExtra("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
             startActivity(intent)
         }
 
@@ -166,16 +166,16 @@ class ContactListFragment() : Fragment() {
         Log.d(this, "onResume()")
         super.onResume()
 
-        if (Load.database.settings.automaticStatusUpdates) {
+        if (DatabaseCache.database.settings.automaticStatusUpdates) {
             // ping all contacts
-            activity.pingContacts(Load.database.contacts.contactList)
+            activity.pingContacts(DatabaseCache.database.contacts.contactList)
         }
 
-        activity.refreshContacts()
+        NotificationUtils.refreshContacts(activity)
     }
 
     private fun showPingAllButton(): Boolean {
-        return !Load.database.settings.automaticStatusUpdates
+        return !DatabaseCache.database.settings.automaticStatusUpdates
     }
 
     private fun runFabAnimation(fab: View) {
@@ -262,7 +262,7 @@ class ContactListFragment() : Fragment() {
     }
 
     private fun pingAllContacts() {
-        activity.pingContacts(Load.database.contacts.contactList)
+        activity.pingContacts(DatabaseCache.database.contacts.contactList)
         val message = String.format(getString(R.string.ping_all_contacts))
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
@@ -288,7 +288,7 @@ class ContactListFragment() : Fragment() {
     private fun refreshContactList() {
         Log.d(this, "refreshContactList")
         val activity = requireActivity()
-        val contacts = Load.database.contacts.contactList
+        val contacts = DatabaseCache.database.contacts.contactList
 
         activity.runOnUiThread {
             contactListView.adapter = ContactListAdapter(activity, R.layout.item_contact, contacts)

@@ -4,8 +4,8 @@ import org.json.JSONObject
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.BaseActivity
 import org.rivchain.cuplink.Crypto
-import org.rivchain.cuplink.Load
-import org.rivchain.cuplink.MainService
+import org.rivchain.cuplink.DatabaseCache
+import org.rivchain.cuplink.NotificationUtils
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
@@ -22,7 +22,7 @@ class Pinger(val context: BaseActivity, val contacts: List<Contact>) : Runnable 
         Log.d(this, "pingContact() contact: ${contact.name}")
 
         val otherPublicKey = ByteArray(Sodium.crypto_sign_publickeybytes())
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         val useNeighborTable = settings.useNeighborTable
         val connectTimeout = settings.connectTimeout
         val ownPublicKey = settings.publicKey
@@ -129,13 +129,13 @@ class Pinger(val context: BaseActivity, val contacts: List<Contact>) : Runnable 
     override fun run() {
         // set all states to unknown
         for (contact in contacts) {
-            Load.database.contacts
+            DatabaseCache.database.contacts
                 .getContactByPublicKey(contact.publicKey)
                 ?.state = Contact.State.PENDING
         }
 
-        context.refreshContacts()
-        context.refreshEvents()
+        NotificationUtils.refreshContacts(context)
+        NotificationUtils.refreshEvents(context)
 
         // ping contacts
         for (contact in contacts) {
@@ -143,12 +143,12 @@ class Pinger(val context: BaseActivity, val contacts: List<Contact>) : Runnable 
             Log.d(this, "contact state is $state")
 
             // set contact state
-            Load.database.contacts
+            DatabaseCache.database.contacts
                 .getContactByPublicKey(contact.publicKey)
                 ?.state = state
         }
 
-        context.refreshContacts()
-        context.refreshEvents()
+        NotificationUtils.refreshContacts(context)
+        NotificationUtils.refreshEvents(context)
     }
 }

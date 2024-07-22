@@ -94,7 +94,7 @@ class BackupActivity : BaseActivity() {
     private fun exportDatabase(uri: Uri) {
         val password = passwordEditText.text.toString()
         try {
-            val database = Load.database
+            val database = DatabaseCache.database
             val dbData = Database.toData(database, password)
 
             if (dbData != null) {
@@ -182,7 +182,7 @@ class BackupActivity : BaseActivity() {
                 // Handle peers import
                 importSettings(newDatabase)
             }
-            saveDatabase()
+            DatabaseCache.save()
             Toast.makeText(this, R.string.done, Toast.LENGTH_SHORT).show()
 
             // Restart service

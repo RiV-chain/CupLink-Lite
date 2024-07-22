@@ -20,17 +20,17 @@ class BootUpReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent != null) {
             if(intent.action == Intent.ACTION_BOOT_COMPLETED) {
-                Load.databasePath = context.filesDir.toString() + "/database.bin"
+                DatabaseCache.databasePath = context.filesDir.toString() + "/database.bin"
                 // Prevent UnsatisfiedLinkError
                 NaCl.sodium()
                 Log.d(this, "bootup: load database")
                 // open without password
                 try {
-                    Load.database()
+                    DatabaseCache.load()
                 } catch (e: Database.WrongPasswordException) {
                     // ignore and continue with initialization,
                     // the password dialog comes on the next startState
-                    Load.dbEncrypted = true
+                    DatabaseCache.dbEncrypted = true
                 } catch (e: Exception) {
                     Log.e(this, "${e.message}")
                     return

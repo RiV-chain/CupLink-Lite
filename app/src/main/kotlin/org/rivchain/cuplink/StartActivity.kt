@@ -46,7 +46,6 @@ import org.rivchain.cuplink.util.Utils
 import java.util.UUID
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-
 /*
  * Show splash screen, name setup dialog, database password dialog and
  * start background service before starting the MainActivity.
@@ -84,11 +83,11 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         Log.d(this, "init 1: load database")
         // open without password
         try {
-            Load.database()
+            DatabaseCache.load()
         } catch (e: Database.WrongPasswordException) {
             // ignore and continue with initialization,
             // the password dialog comes on the next startState
-            Load.dbEncrypted = true
+            DatabaseCache.dbEncrypted = true
         } catch (e: Exception) {
             Log.e(this, "${e.message}")
             Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
@@ -164,7 +163,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             4 -> {
                 Log.d(this, "init $startState: check username")
-                if (Load.database.settings.username.isEmpty()) {
+                if (DatabaseCache.database.settings.username.isEmpty()) {
                     // set username
                     showMissingUsernameDialog()
                 } else {
@@ -173,7 +172,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             5 -> {
                 Log.d(this, "init $startState: check addresses")
-                if (Load.firstStart) {
+                if (DatabaseCache.firstStart) {
                     showMissingAddressDialog()
                 } else {
                     continueInit()
@@ -181,7 +180,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             6 -> {
                 Log.d(this, "init $startState: check key pair")
-                if (Load.database.settings.publicKey.isEmpty()) {
+                if (DatabaseCache.database.settings.publicKey.isEmpty()) {
                     // generate key pair
                     initKeyPair()
                 }
@@ -223,7 +222,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             10 -> {
                 Log.d(this, "init $startState: start MainActivity")
-                val settings = Load.database.settings
+                val settings = DatabaseCache.database.settings
                 // set in case we just updated the app
                 BootUpReceiver.setEnabled(this, settings.startOnBootup)
                 // set night mode
@@ -255,7 +254,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         if (startState == 1) {
             setContentView(R.layout.activity_splash)
             findViewById<TextView>(R.id.splashText).text = "CupLink ${BuildConfig.VERSION_NAME}. Copyright 2024 RiV Chain LTD.\nAll rights reserved."
-            if (Load.firstStart) {
+            if (DatabaseCache.firstStart) {
                 // show delayed splash page
                 continueInit()
             } else {
@@ -280,10 +279,10 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         val publicKey = ByteArray(Sodium.crypto_sign_publickeybytes())
         val secretKey = ByteArray(Sodium.crypto_sign_secretkeybytes())
         Sodium.crypto_sign_keypair(publicKey, secretKey)
-        val settings = Load.database.settings
+        val settings = DatabaseCache.database.settings
         settings.publicKey = publicKey
         settings.secretKey = secretKey
-        saveDatabase()
+        DatabaseCache.save()
     }
 
     private fun getDefaultAddress(): AddressEntry? {
@@ -333,8 +332,8 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
 
             adialog.show()
         } else {
-            Load.database.settings.addresses = mutableListOf(defaultAddress.address)
-            saveDatabase()
+            DatabaseCache.database.settings.addresses = mutableListOf(defaultAddress.address)
+            DatabaseCache.save()
             continueInit()
         }
     }
@@ -356,8 +355,8 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         .setNegativeButton(R.string.button_skip) { dialog: DialogInterface?, _: Int ->
             val username = generateRandomUserName()
             if (Utils.isValidName(username)) {
-                Load.database.settings.username = username
-                saveDatabase()
+                DatabaseCache.database.settings.username = username
+                DatabaseCache.save()
                 // close dialog
                 dialog?.dismiss()
                 continueInit()
@@ -368,8 +367,8 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         .setPositiveButton(R.string.button_next) { dialog: DialogInterface?, _: Int ->
             val username = etUsername.text.toString()
             if (Utils.isValidName(username)) {
-                Load.database.settings.username = username
-                saveDatabase()
+                DatabaseCache.database.settings.username = username
+                DatabaseCache.save()
                 // close dialog
                 dialog?.dismiss()
                 continueInit()
@@ -459,9 +458,9 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         val okButton = view.findViewById<Button>(R.id.change_password_ok_button)
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString()
-            Load.databasePassword = password
+            DatabaseCache.databasePassword = password
             try {
-                Load.database()
+                DatabaseCache.load()
                 //MainService first run wasn't success due to db encryption
                 MainService.startPacketsStream(this)
                 // close dialog

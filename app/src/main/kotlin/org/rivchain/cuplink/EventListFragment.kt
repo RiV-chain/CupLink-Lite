@@ -67,7 +67,7 @@ class EventListFragment() : Fragment() {
         // get last event that has an address
         val latestEvent = eventGroup.lastOrNull { it.address != null } ?: eventGroup.last()
 
-        val contact = Load.database.contacts.getContactByPublicKey(latestEvent.publicKey)
+        val contact = DatabaseCache.database.contacts.getContactByPublicKey(latestEvent.publicKey)
             ?: latestEvent.createUnknownContact("")
 
         if (contact.addresses.isEmpty()) {
@@ -93,7 +93,7 @@ class EventListFragment() : Fragment() {
         val delete = res.getString(R.string.contact_menu_delete)
         val block = res.getString(R.string.contact_menu_block)
         val unblock = res.getString(R.string.contact_menu_unblock)
-        val contact = Load.database.contacts.getContactByPublicKey(latestEvent.publicKey)
+        val contact = DatabaseCache.database.contacts.getContactByPublicKey(latestEvent.publicKey)
 
         // Create a list of options
         val options = mutableListOf<String>()
@@ -174,8 +174,8 @@ class EventListFragment() : Fragment() {
         Log.d(this, "refreshEventList")
 
         val activity = requireActivity() as MainActivity
-        val events = Load.database.events.eventList
-        val contacts = Load.database.contacts.contactList
+        val events = DatabaseCache.database.events.eventList
+        val contacts = DatabaseCache.database.contacts.contactList
 
         activity.runOnUiThread {
             activity.updateEventTabTitle()
@@ -193,10 +193,10 @@ class EventListFragment() : Fragment() {
     // only available for known contacts
     private fun setBlocked(event: Event, blocked: Boolean) {
 
-        val contact = Load.database.contacts.getContactByPublicKey(event.publicKey)
+        val contact = DatabaseCache.database.contacts.getContactByPublicKey(event.publicKey)
         if (contact != null) {
             contact.blocked = blocked
-            activity.saveDatabase()
+            DatabaseCache.save()
             LocalBroadcastManager.getInstance(requireContext())
                 .sendBroadcast(Intent("refresh_contact_list"))
             LocalBroadcastManager.getInstance(requireContext())
@@ -210,7 +210,7 @@ class EventListFragment() : Fragment() {
         Log.d(this, "onResume()")
         super.onResume()
         //service.updateNotification()
-        activity.refreshEvents()
+        NotificationUtils.refreshEvents(this.activity)
     }
 
     private fun deleteEventGroup(eventGroup: List<Event>) {
@@ -228,7 +228,7 @@ class EventListFragment() : Fragment() {
         builder.setCancelable(false) // prevent key shortcut to cancel dialog
         builder.setPositiveButton(R.string.button_yes) { dialog: DialogInterface, _: Int ->
             activity.clearEvents()
-            activity.saveDatabase()
+            DatabaseCache.save()
 
             refreshEventList()
             Toast.makeText(activity, R.string.done, Toast.LENGTH_SHORT).show()
@@ -263,7 +263,7 @@ class EventListFragment() : Fragment() {
                 return@setOnClickListener
             }
 
-            if (Load.database.contacts.getContactByName(name) != null) {
+            if (DatabaseCache.database.contacts.getContactByName(name) != null) {
                 Toast.makeText(activity, R.string.contact_name_exists, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }

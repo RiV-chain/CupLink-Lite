@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.rivchain.cuplink.BaseActivity
 import org.rivchain.cuplink.BuildConfig
-import org.rivchain.cuplink.Load
+import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.rivmesh.models.Status
@@ -80,8 +80,8 @@ open class SelectPeerActivity : BaseActivity(), ServiceConnection {
     }
 
     protected open fun saveSelectedPeers(selectedPeers: Set<PeerInfo>){
-        Load.database.mesh.setPeers(selectedPeers)
-        saveDatabase()
+        DatabaseCache.database.mesh.setPeers(selectedPeers)
+        DatabaseCache.save()
     }
 
     @OptIn(DelicateCoroutinesApi::class)

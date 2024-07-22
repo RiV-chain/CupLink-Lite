@@ -394,7 +394,7 @@ class CallService : Service() {
                 DECLINE_CALL_ACTION -> {
                     // Notify missed call
                     val event = Event(contact.publicKey, contact.lastWorkingAddress, Event.Type.INCOMING_MISSED, Date())
-                    Load.database.events.addEvent(event)
+                    addEvent(event)
                 }
                 else -> {
                     // For all other actions, do nothing
@@ -403,6 +403,19 @@ class CallService : Service() {
             stopRinging()
             stopSelf()
             (getSystemService(NOTIFICATION_SERVICE) as NotificationManager?)?.cancel(ID_ONGOING_CALL_NOTIFICATION)
+        }
+
+        private fun addEvent(event: Event) {
+            Log.d(this, "addEvent() event.type=${event.type}")
+
+            if (!DatabaseCache.database.settings.disableCallHistory) {
+                DatabaseCache.database.events.addEvent(event)
+                DatabaseCache.save()
+                NotificationUtils.refreshEvents(this@CallService)
+            }
+
+            // update notification
+            NotificationUtils.updateNotification(this@CallService)
         }
     }
 
