@@ -122,7 +122,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         startState += 1
         when (startState) {
             1 -> {
-                Log.d(this, "init 1: show policy and start VPN")
+                Log.d(this, "init $startState: show policy and start VPN")
                 if(preferences?.getString(POLICY, null) == null) {
                     showPolicy("En-Us")
                 } else {
@@ -138,7 +138,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 }
             }
             2 -> {
-                Log.d(this, "init 2: choose peers")
+                Log.d(this, "init $startState: choose peers")
                 if(preferences?.getString(PEERS, null) == null) {
                     val intent = Intent(this, AutoSelectPeerActivity::class.java)
                     intent.putStringArrayListExtra(
@@ -154,15 +154,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 }
             }
             3 -> {
-                Log.d(this, "init 3: check addresses")
-                if (Load.firstStart) {
-                    showMissingAddressDialog()
-                } else {
-                    continueInit()
-                }
-            }
-            4 -> {
-                Log.d(this, "init 4: check database")
+                Log.d(this, "init $startState: check database")
                 if (isDatabaseEncrypted()) {
                     // database is probably encrypted
                     showDatabasePasswordDialog()
@@ -170,8 +162,8 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                     continueInit()
                 }
             }
-            5 -> {
-                Log.d(this, "init 5: check username")
+            4 -> {
+                Log.d(this, "init $startState: check username")
                 if (Load.database.settings.username.isEmpty()) {
                     // set username
                     showMissingUsernameDialog()
@@ -179,8 +171,16 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                     continueInit()
                 }
             }
+            5 -> {
+                Log.d(this, "init $startState: check addresses")
+                if (Load.firstStart) {
+                    showMissingAddressDialog()
+                } else {
+                    continueInit()
+                }
+            }
             6 -> {
-                Log.d(this, "init 6: check key pair")
+                Log.d(this, "init $startState: check key pair")
                 if (Load.database.settings.publicKey.isEmpty()) {
                     // generate key pair
                     initKeyPair()
@@ -188,7 +188,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 continueInit()
             }
             7 -> {
-                Log.d(this, "init 7: test port")
+                Log.d(this, "init $startState: test port")
                 if(preferences?.getString(LISTEN, null) == null) {
                     val intent = Intent(this, AutoTestPublicPeerActivity::class.java)
                     requestListenLauncher!!.launch(intent)
@@ -197,7 +197,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 }
             }
             8 -> {
-                Log.d(this, "init 8: check all permissions")
+                Log.d(this, "init $startState: check all permissions")
                 if (!havePostNotificationPermission(this) ||
                     !haveMicrophonePermission(this) ||
                     !haveCameraPermission(this)
@@ -214,7 +214,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             9 -> {
                 // All persistent settings must be set up prior this step!
-                Log.d(this, "init 9: restart main service if needed")
+                Log.d(this, "init $startState: restart main service if needed")
                 if(restartService) {
                     restartService()
                 } else {
@@ -222,7 +222,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 }
             }
             10 -> {
-                Log.d(this, "init 10: start MainActivity")
+                Log.d(this, "init $startState: start MainActivity")
                 val settings = Load.database.settings
                 // set in case we just updated the app
                 BootUpReceiver.setEnabled(this, settings.startOnBootup)
