@@ -1,16 +1,13 @@
 package org.rivchain.cuplink
 
 import android.annotation.SuppressLint
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.Menu
@@ -30,15 +27,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.PowerManager
 
 // the main view with tabs
-class MainActivity : BaseActivity(), ServiceConnection {
+class MainActivity : BaseActivity() {
 
-    private var service: MainService? = null
     private lateinit var viewPager: ViewPager2
 
     private fun initToolbar() {
@@ -57,7 +52,6 @@ class MainActivity : BaseActivity(), ServiceConnection {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(this, "onCreate()")
-        bindService(Intent(this, MainService::class.java), this, 0)
         // need to be called before super.onCreate()
         applyNightMode()
         super.onCreate(savedInstanceState)
@@ -82,74 +76,10 @@ class MainActivity : BaseActivity(), ServiceConnection {
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(this.baseContext)
         preferences.edit(commit = true) { putBoolean(PREF_KEY_ENABLED, true) }
-    }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onBackPressed() {
-        val tabLayout = findViewById<TabLayout>(R.id.tabs)
-        if (tabLayout.selectedTabPosition == 0) {
-            super.onBackPressedDispatcher.onBackPressed()
-            finish()
-        } else {
-            tabLayout.getTabAt(0)?.select()
-        }
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        unbindService(this)
-    }
-
-    private fun isWifiConnected(): Boolean {
-        val context = this as Context
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val network = connectivityManager.activeNetwork ?: return false
-            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-
-            return when {
-                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                //activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                else -> false
-            }
-        } else {
-            val connManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-            @Suppress("DEPRECATION")
-            val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) ?: return false
-            @Suppress("DEPRECATION")
-            return mWifi.isConnected
-        }
-    }
-
-    private fun showInvalidAddressSettingsWarning() {
-        Handler(Looper.getMainLooper()).postDelayed({
-
-            val storedAddresses = service!!.getSettings().addresses
-            val storedIPAddresses = storedAddresses.filter { NetworkUtils.isIPAddress(it) || NetworkUtils.isMACAddress(it) }
-            if (storedAddresses.isNotEmpty() && storedIPAddresses.isEmpty()) {
-                // ignore, we only have domains configured
-            } else if (storedAddresses.isEmpty()) {
-                // no addresses configured at all
-                Toast.makeText(this, R.string.warning_no_addresses_configured, Toast.LENGTH_LONG).show()
-            } else {
-                if (isWifiConnected()) {
-                    val systemAddresses = NetworkUtils.collectAddresses().map { it.address }
-                    if (storedIPAddresses.intersect(systemAddresses.toSet()).isEmpty()) {
-                        // none of the configured addresses are used in the system
-                        // addresses might have changed!
-                        Toast.makeText(this, R.string.warning_no_addresses_found, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }, 700)
-    }
-
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
         Log.d(this, "onServiceConnected()")
-        val binder = iBinder as MainBinder
-        service = binder.getService()
 
-        val settings = service!!.getSettings()
+        val settings = DatabaseCache.database.settings
 
         // data source for the views was not ready before
         (viewPager.adapter as ViewPagerFragmentAdapter).let {
@@ -196,12 +126,64 @@ class MainActivity : BaseActivity(), ServiceConnection {
             addressWarningShown = true
         }
 
-        MainService.refreshEvents(this)
-        MainService.refreshContacts(this)
+        NotificationUtils.refreshEvents(this)
+        NotificationUtils.refreshContacts(this)
     }
 
-    override fun onServiceDisconnected(componentName: ComponentName) {
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        val tabLayout = findViewById<TabLayout>(R.id.tabs)
+        if (tabLayout.selectedTabPosition == 0) {
+            super.onBackPressedDispatcher.onBackPressed()
+            finish()
+        } else {
+            tabLayout.getTabAt(0)?.select()
+        }
+    }
 
+    private fun isWifiConnected(): Boolean {
+        val context = this as Context
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                //activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            val connManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+            @Suppress("DEPRECATION")
+            val mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI) ?: return false
+            @Suppress("DEPRECATION")
+            return mWifi.isConnected
+        }
+    }
+
+    private fun showInvalidAddressSettingsWarning() {
+        Handler(Looper.getMainLooper()).postDelayed({
+
+            val storedAddresses = DatabaseCache.database.settings.addresses
+            val storedIPAddresses = storedAddresses.filter { NetworkUtils.isIPAddress(it) || NetworkUtils.isMACAddress(it) }
+            if (storedAddresses.isNotEmpty() && storedIPAddresses.isEmpty()) {
+                // ignore, we only have domains configured
+            } else if (storedAddresses.isEmpty()) {
+                // no addresses configured at all
+                Toast.makeText(this, R.string.warning_no_addresses_configured, Toast.LENGTH_LONG).show()
+            } else {
+                if (isWifiConnected()) {
+                    val systemAddresses = NetworkUtils.collectAddresses().map { it.address }
+                    if (storedIPAddresses.intersect(systemAddresses.toSet()).isEmpty()) {
+                        // none of the configured addresses are used in the system
+                        // addresses might have changed!
+                        Toast.makeText(this, R.string.warning_no_addresses_found, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }, 700)
     }
 
     private fun menuAction(itemId: Int) {
@@ -257,7 +239,7 @@ class MainActivity : BaseActivity(), ServiceConnection {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d(this, "onOptionsItemSelected()")
 
-        val settings = service!!.getSettings()
+        val settings = DatabaseCache.database.settings
         if (settings.menuPassword.isEmpty()) {
             menuAction(item.itemId)
         } else {
@@ -297,12 +279,10 @@ class MainActivity : BaseActivity(), ServiceConnection {
             return when (position) {
                 0 -> {
                     val fragment = ContactListFragment()
-                    fragment.setService((fm as MainActivity).service!!)
                     fragment
                 }
                 else -> {
                     val fragment = EventListFragment()
-                    fragment.setService((fm as MainActivity).service!!)
                     fragment
                 }
             }

@@ -1,14 +1,10 @@
 package org.rivchain.cuplink
 
 import android.app.Activity
-import android.content.ComponentName
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.ServiceConnection
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.TextView
@@ -19,13 +15,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
-import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.util.Utils.readExternalFile
 import org.rivchain.cuplink.util.Utils.writeExternalFile
 
-class BackupActivity : BaseActivity(), ServiceConnection {
+class BackupActivity : BaseActivity() {
     private var dialog: AlertDialog? = null
-    private var service: MainService? = null
     private lateinit var exportButton: Button
     private lateinit var importButton: Button
     private lateinit var passwordEditText: TextView
@@ -53,34 +47,15 @@ class BackupActivity : BaseActivity(), ServiceConnection {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
         }
-        bindService(Intent(this, MainService::class.java), this, 0)
         initViews()
     }
 
     override fun onDestroy() {
         dialog?.dismiss()
-
         super.onDestroy()
-
-        if (service != null) {
-            unbindService(this)
-        }
-    }
-
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
-        service = (iBinder as MainBinder).getService()
-        initViews()
-    }
-
-    override fun onServiceDisconnected(componentName: ComponentName) {
-        // nothing to do
     }
 
     private fun initViews() {
-        if (service == null) {
-            return
-        }
-
         importButton = findViewById(R.id.ImportButton)
         exportButton = findViewById(R.id.ExportButton)
         passwordEditText = findViewById(R.id.PasswordEditText)
@@ -119,7 +94,7 @@ class BackupActivity : BaseActivity(), ServiceConnection {
     private fun exportDatabase(uri: Uri) {
         val password = passwordEditText.text.toString()
         try {
-            val database = service!!.getDatabase()
+            val database = DatabaseCache.database
             val dbData = Database.toData(database, password)
 
             if (dbData != null) {
@@ -134,7 +109,6 @@ class BackupActivity : BaseActivity(), ServiceConnection {
     }
 
     private fun importDatabase(uri: Uri) {
-        val service = this.service ?: return
         val newDatabase: Database
 
         try {
@@ -198,17 +172,17 @@ class BackupActivity : BaseActivity(), ServiceConnection {
             }
             if (contactsCheckbox.isChecked) {
                 // Handle contacts import
-                service.importContacts(newDatabase)
+                importContacts(newDatabase)
             }
             if (callsCheckbox.isChecked) {
                 // Handle calls import
-                service.importCalls(newDatabase)
+                importCalls(newDatabase)
             }
             if (settingsCheckbox.isChecked) {
                 // Handle peers import
-                service.importSettings(newDatabase)
+                importSettings(newDatabase)
             }
-            service.saveDatabase()
+            DatabaseCache.save()
             Toast.makeText(this, R.string.done, Toast.LENGTH_SHORT).show()
 
             // Restart service

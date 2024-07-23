@@ -1,15 +1,11 @@
 package org.rivchain.cuplink
 
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
-import android.os.PowerManager
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +25,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 import org.json.JSONArray
-import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.rivmesh.PeerListActivity
 import org.rivchain.cuplink.rivmesh.ConfigurePublicPeerActivity
 import org.rivchain.cuplink.rivmesh.SelectPeerActivity.Companion.PEER_LIST
@@ -40,12 +35,11 @@ import org.rivchain.cuplink.util.ServiceUtil
 import org.rivchain.cuplink.util.Utils
 import java.lang.Integer.parseInt
 
-class SettingsActivity : BaseActivity(), ServiceConnection {
+class SettingsActivity : BaseActivity() {
 
     private var requestListenLauncher: ActivityResultLauncher<Intent>? = null
     private var requestPeersLauncher: ActivityResultLauncher<Intent>? = null
 
-    private var service: MainService? = null
     private var currentPeers = setOf<PeerInfo>()
 
     companion object {
@@ -70,7 +64,6 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             setDisplayShowTitleEnabled(false)
         }
 
-        bindService(Intent(this, MainService::class.java), this, 0)
         initViews()
 
         requestPeersLauncher =
@@ -82,28 +75,15 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
         requestListenLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 // refresh settings
-                service!!.saveDatabase()
+                DatabaseCache.save()
                 initViews()
             }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unbindService(this)
-    }
-
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
-        service = (iBinder as MainBinder).getService()
         initViews()
     }
 
-    override fun onServiceDisconnected(componentName: ComponentName) {
-        // nothing to do
-    }
-
     private fun initViews() {
-        val binder = service ?: return
-        val settings = binder.getSettings()
+
+        val settings = DatabaseCache.database.settings
 
         findViewById<TextView>(R.id.nameTv)
             .text = settings.username.ifEmpty { getString(R.string.no_value) }
@@ -124,7 +104,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
                 requestPeersLauncher!!.launch(intent)
             }
 
-        val databasePassword = service!!.databasePassword
+        val databasePassword = DatabaseCache.databasePassword
         findViewById<TextView>(R.id.databasePasswordTv)
             .text = if (databasePassword.isEmpty()) getString(R.string.no_value) else "*".repeat(databasePassword.length)
         findViewById<View>(R.id.databasePasswordLayout)
@@ -136,7 +116,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             .setOnClickListener { Toast.makeText(this@SettingsActivity, R.string.setting_read_only, Toast.LENGTH_SHORT).show() }
 
         findViewById<TextView>(R.id.publicPeerUrl)
-            .text = jsonArrayToString(binder.getMesh().getListen())
+            .text = jsonArrayToString(DatabaseCache.database.mesh.getListen())
         findViewById<View>(R.id.publicPeerLayout)
             .setOnClickListener {
                 val intent = Intent(this, ConfigurePublicPeerActivity::class.java)
@@ -147,7 +127,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.blockUnknown
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.blockUnknown = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -160,7 +140,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
                 override fun call(newValue: String?) {
                     if (newValue != null) {
                         settings.nightMode = newValue
-                        binder.saveDatabase()
+                        DatabaseCache.save()
                         setDefaultNightMode(newValue)
                         applyNightMode()
                         startActivity(Intent(this@SettingsActivity, SettingsActivity::class.java))
@@ -178,7 +158,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
                 override fun call(newValue: String?) {
                     if (newValue != null) {
                         settings.speakerphoneMode = newValue
-                        binder.saveDatabase()
+                        DatabaseCache.save()
                     }
                 }
             })
@@ -197,7 +177,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.promptOutgoingCalls
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.promptOutgoingCalls = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -209,7 +189,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
                 if (isChecked) {
                     binder.clearEvents()
                 }
-                binder.saveDatabase()
+                Load.saveDatabase()
             }
         }*/
 
@@ -218,24 +198,24 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.startOnBootup = isChecked
                 BootUpReceiver.setEnabled(this@SettingsActivity, isChecked) // apply setting
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
         findViewById<SwitchMaterial>(R.id.searchMulticastPeersSwitch).apply {
-            isChecked = service!!.getMesh().multicastListen
+            isChecked = DatabaseCache.database.mesh.multicastListen
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                service!!.getMesh().multicastListen = isChecked
-                service!!.saveDatabase()
+                DatabaseCache.database.mesh.multicastListen = isChecked
+                DatabaseCache.save()
                 restartService()
             }
         }
 
         findViewById<SwitchMaterial>(R.id.discoverableOverMulticastSwitch).apply {
-            isChecked = service!!.getMesh().multicastBeacon
+            isChecked = DatabaseCache.database.mesh.multicastBeacon
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                service!!.getMesh().multicastBeacon = isChecked
-                service!!.saveDatabase()
+                DatabaseCache.database.mesh.multicastBeacon = isChecked
+                DatabaseCache.save()
                 restartService()
             }
         }
@@ -244,7 +224,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.pushToTalk
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.pushToTalk = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -252,7 +232,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.disableProximitySensor
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.disableProximitySensor = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -314,7 +294,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.useNeighborTable
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.useNeighborTable = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -322,7 +302,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.videoHardwareAcceleration
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.videoHardwareAcceleration = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -330,7 +310,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.disableAudioProcessing
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.disableAudioProcessing = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -338,7 +318,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.showUsernameAsLogo
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.showUsernameAsLogo = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -346,7 +326,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.enableMicrophoneByDefault
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.enableMicrophoneByDefault = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -354,7 +334,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.enableCameraByDefault
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.enableCameraByDefault = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -362,7 +342,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.selectFrontCameraByDefault
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.selectFrontCameraByDefault = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -370,7 +350,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.disableCpuOveruseDetection
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.disableCpuOveruseDetection = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -385,7 +365,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
                     requestDrawOverlaysPermissionLauncher.launch(intent)
                 } else {
                     settings.autoAcceptCalls = isChecked
-                    binder.saveDatabase()
+                    DatabaseCache.save()
                 }
             }
         }
@@ -394,7 +374,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             isChecked = settings.automaticStatusUpdates
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.automaticStatusUpdates = isChecked
-                binder.saveDatabase()
+                DatabaseCache.save()
             }
         }
 
@@ -431,17 +411,14 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
                 }
             }
         } else {
-            val binder = service ?: return@registerForActivityResult
-            binder.getSettings().autoAcceptCalls = true
-            binder.saveDatabase()
+            DatabaseCache.database.settings.autoAcceptCalls = true
+            DatabaseCache.save()
         }
     }
 
     private fun showChangeUsernameDialog() {
         Log.d(this, "showChangeUsernameDialog()")
-
-        val binder = service ?: return
-        val settings = binder.getSettings()
+        val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         val dialog = b.setView(view).create()
@@ -455,7 +432,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
             val newUsername = nameEditText.text.toString().trim { it <= ' ' }
             if (Utils.isValidName(newUsername)) {
                 settings.username = newUsername
-                binder.saveDatabase()
+                DatabaseCache.save()
                 initViews()
             } else {
                 Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
@@ -472,8 +449,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
     }
 
     private fun showChangeConnectRetriesDialog() {
-        val binder = service ?: return
-        val settings = binder.getSettings()
+        val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_retries, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         val dialog = b.setView(view).create()
@@ -494,7 +470,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
 
             if (connectRetries in minValue..maxValue) {
                 settings.connectRetries = connectRetries
-                binder.saveDatabase()
+                DatabaseCache.save()
                 initViews()
                 Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             } else {
@@ -509,8 +485,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
     }
 
     private fun showChangeConnectTimeoutDialog() {
-        val binder = service ?: return
-        val settings = binder.getSettings()
+        val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_timeout, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         b.setView(view)
@@ -532,7 +507,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
 
             if (connectTimeout in minValue..maxValue) {
                 settings.connectTimeout = connectTimeout
-                binder.saveDatabase()
+                DatabaseCache.save()
                 initViews()
                 Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             } else {
@@ -547,9 +522,6 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
     }
 
     private fun showDatabasePasswordDialog() {
-        val binder = service ?: return
-        val databasePassword = service!!.databasePassword
-
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_database_password, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         val dialog = b.setView(view).create()
@@ -557,11 +529,11 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
 
-        passwordEditText.setText(databasePassword)
+        passwordEditText.setText(DatabaseCache.databasePassword)
         okButton.setOnClickListener {
             val newPassword = passwordEditText.text.toString()
-            service!!.databasePassword = newPassword
-            binder.saveDatabase()
+            DatabaseCache.databasePassword = newPassword
+            DatabaseCache.save()
             Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             initViews()
             dialog.cancel()
@@ -571,8 +543,7 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
     }
 
     private fun showMenuPasswordDialog() {
-        val binder = service ?: return
-        val menuPassword = binder.getSettings().menuPassword
+        val menuPassword = DatabaseCache.database.settings.menuPassword
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_menu_password, null)
         val b = AlertDialog.Builder(this, R.style.PPTCDialog)
         b.setView(view)
@@ -583,8 +554,8 @@ class SettingsActivity : BaseActivity(), ServiceConnection {
         passwordEditText.setText(menuPassword)
         okButton.setOnClickListener {
             val newPassword = passwordEditText.text.toString()
-            binder.getSettings().menuPassword = newPassword
-            binder.saveDatabase()
+            DatabaseCache.database.settings.menuPassword = newPassword
+            DatabaseCache.save()
             Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             initViews()
             dialog.cancel()

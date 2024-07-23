@@ -269,16 +269,19 @@
             android:parentActivityName=".AboutActivity"
             android:configChanges="uiMode"/>
 
-        <activity android:name=".DeepLinkEntryActivity"
+        <activity
+            android:name=".DeepLinkEntryActivity"
             android:exported="true"
             android:noHistory="true"
             android:theme="@style/Theme.AppCompat.Light">
-            <intent-filter android:autoVerify="true">
+            <intent-filter
+                android:label="@string/app_name"
+                android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="cpl"
-                    android:host="localhost" />
+                <data android:scheme="https"
+                    android:host="cuplink.net" />
             </intent-filter>
         </activity>
 

@@ -1,11 +1,8 @@
 package org.rivchain.cuplink
 
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -19,32 +16,24 @@ import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 import org.rivchain.cuplink.util.Utils
 
-open class AddContactActivity: BaseActivity(), ServiceConnection {
-
-    protected var service: MainService? = null
+open class AddContactActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bindService(Intent(this, MainService::class.java), this, 0)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unbindService(this)
+        onServiceConnected()
+        if(intent!=null && intent.extras!=null) {
+            addContact(intent.extras!!["EXTRA_CONTACT"] as Contact)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        if (service != null) {
-            resume()
-        }
+        resume()
     }
 
     override fun onPause() {
         super.onPause()
-        if (service != null) {
-            pause()
-        }
+        pause()
     }
 
     protected open fun onServiceConnected(){
@@ -56,17 +45,6 @@ open class AddContactActivity: BaseActivity(), ServiceConnection {
     }
 
     protected open fun resume(){
-        // nothing to do
-    }
-    override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
-        service = (iBinder as MainService.MainBinder).getService()
-        onServiceConnected()
-        if(intent!=null && intent.extras!=null) {
-            addContact(intent.extras!!["EXTRA_CONTACT"] as Contact)
-        }
-    }
-
-    override fun onServiceDisconnected(componentName: ComponentName) {
         // nothing to do
     }
 
@@ -81,13 +59,13 @@ open class AddContactActivity: BaseActivity(), ServiceConnection {
         }
     }
 
-    private fun addContact(contact: Contact) {
+    override fun addContact(contact: Contact) {
         if (contact.addresses.isEmpty()) {
             Toast.makeText(this, R.string.contact_has_no_address_warning, Toast.LENGTH_LONG).show()
         }
 
         // lookup existing contacts by key and name
-        val contacts = service!!.getContacts()
+        val contacts = DatabaseCache.database.contacts
         val existingContactByPublicKey = contacts.getContactByPublicKey(contact.publicKey)
         val existingContactByName = contacts.getContactByName(contact.name)
         if (existingContactByPublicKey != null) {
@@ -98,7 +76,7 @@ open class AddContactActivity: BaseActivity(), ServiceConnection {
             showNameConflictDialog(contact, existingContactByName)
         } else {
             // no conflict
-            service!!.addContact(contact)
+            super.addContact(contact)
             finish()
         }
     }
@@ -114,8 +92,8 @@ open class AddContactActivity: BaseActivity(), ServiceConnection {
         val replaceButton = view.findViewById<Button>(R.id.public_key_conflict_replace_button)
         nameTextView.text = other_contact.name
         replaceButton.setOnClickListener {
-            service!!.deleteContact(other_contact.publicKey)
-            service!!.addContact(newContact)
+            deleteContact(other_contact.publicKey)
+            addContact(newContact)
 
             // done
             Toast.makeText(this@AddContactActivity, R.string.done, Toast.LENGTH_SHORT).show()
@@ -140,8 +118,8 @@ open class AddContactActivity: BaseActivity(), ServiceConnection {
         val renameButton = view.findViewById<Button>(R.id.conflict_contact_rename_button)
         nameEditText.setText(other_contact.name)
         replaceButton.setOnClickListener {
-            service!!.deleteContact(other_contact.publicKey)
-            service!!.addContact(newContact)
+            deleteContact(other_contact.publicKey)
+            addContact(newContact)
 
             // done
             Toast.makeText(this@AddContactActivity, R.string.done, Toast.LENGTH_SHORT).show()
@@ -155,14 +133,14 @@ open class AddContactActivity: BaseActivity(), ServiceConnection {
                 return@setOnClickListener
             }
 
-            if (service!!.getContacts().getContactByName(name) != null) {
+            if (DatabaseCache.database.contacts.getContactByName(name) != null) {
                 Toast.makeText(this, R.string.contact_name_exists, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             // rename
             newContact.name = name
-            service!!.addContact(newContact)
+            addContact(newContact)
 
             // done
             Toast.makeText(this@AddContactActivity, R.string.done, Toast.LENGTH_SHORT).show()

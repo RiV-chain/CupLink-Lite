@@ -18,10 +18,10 @@ class ConfigurationProxy() {
     }
 
     fun resetKeys() {
-        val newJson = JSONObject(String(Mobile.generateConfigJSON()))
-        updateJSON { json ->
-            json.put("PrivateKey", newJson.getString("PrivateKey"))
-        }
+        //val newJson = JSONObject(String(Mobile.generateConfigJSON()))
+        //updateJSON { json ->
+        //    json.put("PrivateKey", newJson.getString("PrivateKey"))
+        //}
     }
 
     fun setKeys(privateKey: String) {

@@ -28,7 +28,7 @@ class QRScanActivity : AddContactActivity(), BarcodeCallback {
         // qr show button
         findViewById<View>(R.id.fabScan).setOnClickListener {
             val intent = Intent(this, QRShowActivity::class.java)
-            intent.putExtra("EXTRA_CONTACT_PUBLICKEY", service!!.getSettings().publicKey)
+            intent.putExtra("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
             startActivity(intent)
             finish()
         }
@@ -38,6 +38,9 @@ class QRScanActivity : AddContactActivity(), BarcodeCallback {
 
         if (!Utils.hasPermission(this, Manifest.permission.CAMERA)) {
             enabledCameraForResult.launch(Manifest.permission.CAMERA)
+        }
+        if (Utils.hasPermission(this, Manifest.permission.CAMERA)) {
+            initCamera()
         }
     }
 
@@ -69,12 +72,6 @@ class QRScanActivity : AddContactActivity(), BarcodeCallback {
         barcodeView.barcodeView?.decoderFactory = DefaultDecoderFactory(formats)
         barcodeView.decodeContinuous(this)
         barcodeView.resume()
-    }
-
-    override fun onServiceConnected(){
-        if (Utils.hasPermission(this, Manifest.permission.CAMERA)) {
-            initCamera()
-        }
     }
 
     override fun pause(){

@@ -10,7 +10,11 @@ import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import org.rivchain.cuplink.call.Pinger
+import org.rivchain.cuplink.model.Contact
+import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
+import java.util.Date
 
 /*
  * Base class for every Activity
@@ -20,6 +24,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        DatabaseCache.databasePath = this.filesDir.toString() + "/database.bin"
     }
 
     protected open fun onServiceRestart(){
@@ -76,6 +81,93 @@ open class BaseActivity : AppCompatActivity() {
             Log.d(this, "Change night mode to $nightMode")
             AppCompatDelegate.setDefaultNightMode(nightMode)
         }
+    }
+
+    fun getContactOrOwn(otherPublicKey: ByteArray): Contact? {
+        val db = DatabaseCache.database
+        return if (db.settings.publicKey.contentEquals(otherPublicKey)) {
+            db.settings.getOwnContact()
+        } else {
+            db.contacts.getContactByPublicKey(otherPublicKey)
+        }
+    }
+
+    open fun addContact(contact: Contact) {
+        DatabaseCache.database.contacts.addContact(contact)
+        DatabaseCache.save()
+
+        pingContacts(listOf(contact))
+
+        NotificationUtils.refreshContacts(this)
+        NotificationUtils.refreshEvents(this)
+    }
+
+    fun deleteContact(publicKey: ByteArray) {
+        DatabaseCache.database.contacts.deleteContact(publicKey)
+        DatabaseCache.database.events.deleteEventsByPublicKey(publicKey)
+        DatabaseCache.save()
+
+        NotificationUtils.refreshContacts(this)
+        NotificationUtils.refreshEvents(this)
+    }
+
+    fun deleteEvents(eventDates: List<Date>) {
+        DatabaseCache.database.events.deleteEventsByDate(eventDates)
+        DatabaseCache.save()
+
+        NotificationUtils.refreshContacts(this)
+        NotificationUtils.refreshEvents(this)
+    }
+
+    fun pingContacts(contactList: List<Contact>) {
+        Log.d(this, "pingContacts()")
+        Thread(
+            //fix ConcurrentModificationException
+            Pinger(this, ArrayList(contactList))
+        ).start()
+    }
+
+    fun addEvent(event: Event) {
+        Log.d(this, "addEvent() event.type=${event.type}")
+
+        if (!DatabaseCache.database.settings.disableCallHistory) {
+            DatabaseCache.database.events.addEvent(event)
+            DatabaseCache.save()
+            NotificationUtils.refreshEvents(this)
+        }
+
+        // update notification
+        NotificationUtils.updateNotification(this)
+    }
+
+    fun clearEvents() {
+        DatabaseCache.database.events.clearEvents()
+        NotificationUtils.refreshEvents(this)
+    }
+
+    fun isDatabaseEncrypted(): Boolean {
+        return DatabaseCache.dbEncrypted
+    }
+
+
+    fun importContacts(newDb: Database){
+        val oldDatabase = DatabaseCache.database
+        for (contact in newDb.contacts.contactList) {
+            oldDatabase.contacts.addContact(contact)
+        }
+    }
+
+    fun importCalls(newDb: Database){
+        val oldDatabase = DatabaseCache.database
+        for (event in newDb.events.eventList) {
+            oldDatabase.events.addEvent(event)
+        }
+    }
+
+    fun importSettings(newDb: Database){
+        val oldDatabase = DatabaseCache.database
+        oldDatabase.settings = newDb.settings
+        oldDatabase.mesh = newDb.mesh
     }
 
     companion object {
