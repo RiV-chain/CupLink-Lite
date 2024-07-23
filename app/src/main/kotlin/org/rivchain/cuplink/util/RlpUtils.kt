@@ -5,9 +5,9 @@ import org.tdf.rlp.RLPCodec
 
 internal object RlpUtils {
 
-    private val URL_REGEX = """(cpl://)localhost/#c/([a-zA-Z0-9]+$)""".toRegex()
+    private val URL_REGEX = """(https://)cuplink.net/#c/([a-zA-Z0-9]+$)""".toRegex()
 
-    private val BASE_URL = """cpl://localhost/#c/"""
+    private val BASE_URL = """https://cuplink.net/#c/"""
 
     @JvmStatic
     fun parseLink(url: String): Contact? {
