@@ -35,11 +35,13 @@ class QRShowActivity : BaseActivity() {
         findViewById<View>(R.id.fabShare).setOnClickListener {
             try {
                 val contact = getContactOrOwn(publicKey)!!
-                val data = RlpUtils.generateLink(contact)
-                val i = Intent(Intent.ACTION_SEND)
-                i.putExtra(Intent.EXTRA_TEXT, data)
-                i.type = "text/plain"
-                startActivity(i)
+                Thread {
+                    val data = RlpUtils.generateLink(contact)
+                    val i = Intent(Intent.ACTION_SEND)
+                    i.putExtra(Intent.EXTRA_TEXT, data)
+                    i.type = "text/plain"
+                    startActivity(i)
+                }.start()
                 finish()
             } catch (e: Exception) {
                 // ignore
@@ -47,7 +49,9 @@ class QRShowActivity : BaseActivity() {
         }
         try {
             val contact = getContactOrOwn(publicKey)!!
-            generateDeepLinkQR(contact)
+            Thread {
+                generateDeepLinkQR(contact)
+            }.start()
         } catch (e: NullPointerException) {
             e.printStackTrace()
             Toast.makeText(this, "NPE", Toast.LENGTH_LONG).show()
@@ -100,6 +104,8 @@ class QRShowActivity : BaseActivity() {
         val bitMatrix = multiFormatWriter.encode(data, BarcodeFormat.QR_CODE, 1080, 1080)
         val barcodeEncoder = BarcodeEncoder()
         val bitmap = barcodeEncoder.createBitmap(bitMatrix)
-        findViewById<ImageView>(R.id.QRView).setImageBitmap(bitmap)
+        runOnUiThread {
+            findViewById<ImageView>(R.id.QRView).setImageBitmap(bitmap)
+        }
     }
 }

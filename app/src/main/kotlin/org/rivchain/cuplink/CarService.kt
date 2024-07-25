@@ -128,8 +128,4 @@ class SettingsSession(private var mainService: MainService?) : Session(), Defaul
         }
         return AutoControlScreen(carContext, DatabaseCache.database.contacts)
     }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-    }
 }
