@@ -4,6 +4,7 @@ import org.rivchain.cuplink.model.Contact
 import org.tdf.rlp.RLPCodec
 import org.tdf.rlp.RLPElement
 import org.tdf.rlp.RLPList
+import java.lang.RuntimeException
 import java.net.Inet4Address
 import java.net.Inet6Address
 
@@ -17,32 +18,35 @@ internal object RlpUtils {
     fun parseLink(url: String): Contact? {
         val match: MatchResult = URL_REGEX.find(url) ?: return null
         val path: String = match.groups[2]?.value ?: return null
-
-        val urlData = RLPCodec.decode(Utils.hexStringToByteArray(path), List::class.java)
-        val name = (urlData[0] as RLPElement).asString()
-        val publicKey = (urlData[1] as RLPElement).asBytes()
-        val addresses = (urlData[2] as RLPElement).asRLPList()
-        val addressList = mutableListOf<String>()
-        for (address in addresses){
-            val bytes = address.asBytes()
-            if(bytes.size == 4){
-                //ipv4
-                val ipv4 = Inet4Address.getByAddress(bytes).hostAddress
-                addressList.add(ipv4!!)
+        try {
+            val urlData = RLPCodec.decode(Utils.hexStringToByteArray(path), List::class.java)
+            val name = (urlData[0] as RLPElement).asString()
+            val publicKey = (urlData[1] as RLPElement).asBytes()
+            val addresses = (urlData[2] as RLPElement).asRLPList()
+            val addressList = mutableListOf<String>()
+            for (address in addresses){
+                val bytes = address.asBytes()
+                if(bytes.size == 4){
+                    //ipv4
+                    val ipv4 = Inet4Address.getByAddress(bytes).hostAddress
+                    addressList.add(ipv4!!)
+                }
+                if(bytes.size == 16){
+                    //ipv6
+                    val ipv6 = Inet6Address.getByAddress(bytes).hostAddress
+                    addressList.add(ipv6!!)
+                }
             }
-            if(bytes.size == 16){
-                //ipv6
-                val ipv6 = Inet6Address.getByAddress(bytes).hostAddress
-                addressList.add(ipv6!!)
+            if (name.isEmpty() ||
+                publicKey.isEmpty() ||
+                addressList.isEmpty()) {
+                return null
             }
-        }
-        if (name.isEmpty() ||
-            publicKey.isEmpty() ||
-            addressList.isEmpty()) {
+            val contact = Contact(name, publicKey, addressList)
+            return contact
+        } catch (ex: RuntimeException){
             return null
         }
-        val contact = Contact(name, publicKey, addressList)
-        return contact
     }
 
     @JvmStatic
