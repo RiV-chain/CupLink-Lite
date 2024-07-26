@@ -7,9 +7,23 @@ Voice and video calls without any server or Internet access. Simply scan each ot
 - Voice and video calls
 - No accounts or registration required
 - Encrypted communication
-- Database backup and encryption
+- Settings, calls and contacts backup and encryption
+- App Settings and Boot password protection
 - Ability to add custom addresses to reach contacts
+- P2P calls over Wi-Fi Direct
+- Neighbours peers auto discovery with IPv6 multicasting
+- Public peers publishing
+- Push-to-talk
+- Serverless
 
+## Supported devices
+- Android 5.0 LOLLIPOP and newer
+- Android Auto
+
+## Peers
+
+CupLink acts as a mesh network peer gathering many benefits from such topology. Ultimately it does not require any dedicated server to sustain the network. Each CupLink device may redirect traffic
+from other such peers.
 ## Documentation
 
 CupLink exchanges the contact name and IP address via QR code. An IP address is sufficient to connect to clients, and there is no need for a DHCP server. CupLink utilizes RiV Mesh virtual static IPv6 addresses to establish connections.
