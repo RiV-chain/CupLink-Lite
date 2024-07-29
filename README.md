@@ -32,4 +32,4 @@ For comprehensive details, please refer to the [Documentation](docs/Documentatio
 
 ## Build Instructions
 
-Starting from version 0.4.6.x, the WebRTC library must be pre-built and placed into the `app/libs` directory. Instructions for building the library can be found [here](https://dev.to/ethand91/webrtc-for-beginners-part-55-building-the-webrtc-android-library-e8l). Additionally, version 0.4.6.x has migrated to the [Unified Plan](https://www.callstats.io/blog/what-is-unified-plan-and-how-will-it-affect-your-webrtc-development).
+Starting from version 0.4.6.x, the WebRTC library is pre-built and published in Maven [repo](https://github.com/RiV-chain/artifact). Instructions for building the library can be found [here](https://dev.to/ethand91/webrtc-for-beginners-part-55-building-the-webrtc-android-library-e8l). Additionally, version 0.4.6.x has migrated to the [Unified Plan](https://www.callstats.io/blog/what-is-unified-plan-and-how-will-it-affect-your-webrtc-development).

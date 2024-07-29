@@ -64,8 +64,6 @@ dependencies {
     implementation 'com.hbb20:ccp:2.7.3'
     implementation 'com.vincentbrison.openlibraries.android:dualcache:3.1.1'
     implementation 'com.vincentbrison.openlibraries.android:dualcache-jsonserializer:3.1.1'
-//    implementation 'org.webrtc:google-webrtc:1.0.24064'
-    implementation 'org.rivchain:libwebrtc:1.0.0@aar'
     implementation 'com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.2'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
@@ -73,7 +71,8 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:1.0.0'
     implementation 'androidx.car.app:app:1.4.0'
-    implementation 'org.tdf:rlp:1.1.20'
     implementation 'net.mm2d.mmupnp:mmupnp:3.1.6'
+    implementation 'org.tdf:rlp:1.1.20'
+    implementation 'org.rivchain:libwebrtc:1.0.0@aar'
     implementation 'org.rivchain:mesh:0.4.7.8@aar'
 }
