@@ -98,7 +98,7 @@
     <string name="no_value">None</string>
     <string name="overlay_permission_missing">Overlay permission missing. Won\'t be able to receive calls while in background!</string>
     <string name="password_title">Password</string>
-    <string name="paste_qr_code_data">Paste Contact JSON Here</string>
+    <string name="paste_qr_code_data">Paste Contact Link Here</string>
     <string name="ping_all_contacts">Ping All Contacts</string>
     <string name="ping_contact">Ping %s</string>
     <string name="remove_all_events">Remove all events?</string>

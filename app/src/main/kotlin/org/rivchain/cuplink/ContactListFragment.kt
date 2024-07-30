@@ -24,6 +24,7 @@ import org.json.JSONException
 import org.rivchain.cuplink.adapter.ContactListAdapter
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.RlpUtils
 
 class ContactListFragment() : Fragment() {
 
@@ -129,7 +130,11 @@ class ContactListFragment() : Fragment() {
                     }
                     getString(R.string.contact_menu_delete) -> showDeleteDialog(publicKey, contact.name)
                     getString(R.string.contact_menu_ping) -> pingContact(contact)
-                    getString(R.string.contact_menu_share) -> shareContact(contact)
+                    getString(R.string.contact_menu_share) -> {
+                        Thread {
+                            shareContact(contact)
+                        }.start()
+                    }
                     getString(R.string.contact_menu_qrcode) -> {
                         val intent = Intent(activity, QRShowActivity::class.java)
                         intent.putExtra("EXTRA_CONTACT_PUBLICKEY", contact.publicKey)
@@ -304,7 +309,7 @@ class ContactListFragment() : Fragment() {
         try {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, Contact.toJSON(contact, false).toString())
+            intent.putExtra(Intent.EXTRA_TEXT, RlpUtils.generateLink(contact))
             startActivity(intent)
         } catch (e: JSONException) {
             e.printStackTrace()
