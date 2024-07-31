@@ -1282,7 +1282,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
             return intent
         }
-
     }
 
     @SuppressLint("MissingSuperCall")
@@ -1331,8 +1330,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             updateControlDisplay()
         }
     }
-
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     override fun onPictureInPictureModeChanged(

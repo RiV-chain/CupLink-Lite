@@ -622,7 +622,7 @@ abstract class RTCPeerConnection(
         private const val SOCKET_TIMEOUT_MS = 25000L
 
         // used to pass incoming RTCCall to CallActiviy
-        public var incomingRTCCall: RTCCall? = null
+        var incomingRTCCall: RTCCall? = null
 
 /*
         // for debug purposes

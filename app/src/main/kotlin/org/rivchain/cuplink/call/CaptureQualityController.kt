@@ -220,9 +220,11 @@ class CaptureQualityController(private val callActivity: CallActivity) {
         val format =  getSelectedFormat()
         val framerate = getSelectedFramerate()
 
-        callActivity
-            .getCurrentCall()
-            .changeCaptureFormat(degradation, format.width, format.height, framerate)
+        if(CallActivity.isCallInProgress) {
+            callActivity
+                .getCurrentCall()
+                .changeCaptureFormat(degradation, format.width, format.height, framerate)
+        }
     }
 
     private val compareFormats = Comparator<CaptureFormat> { first, second ->
