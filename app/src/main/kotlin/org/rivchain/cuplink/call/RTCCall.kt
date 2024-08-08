@@ -822,6 +822,7 @@ class RTCCall : RTCPeerConnection {
     fun hangup() {
         Log.d(this, "hangup")
         Utils.checkIsOnMainThread()
+        setMicrophoneEnabled(false)
 
         execute {
             Log.d(this, "hangup() executor start")
