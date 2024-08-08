@@ -175,8 +175,6 @@ class ContactListFragment() : Fragment() {
             // ping all contacts
             activity.pingContacts(DatabaseCache.database.contacts.contactList)
         }
-
-        NotificationUtils.refreshContacts(activity)
     }
 
     private fun showPingAllButton(): Boolean {
@@ -293,10 +291,12 @@ class ContactListFragment() : Fragment() {
     private fun refreshContactList() {
         Log.d(this, "refreshContactList")
         val activity = requireActivity()
-        val contacts = DatabaseCache.database.contacts.contactList
+        val contacts = DatabaseCache.database.contacts.contactList.toMutableList()  // Ensure the list is mutable
 
         activity.runOnUiThread {
-            contactListView.adapter = ContactListAdapter(activity, R.layout.item_contact, contacts)
+            val adapter = ContactListAdapter(activity, R.layout.item_contact, contacts)
+            contactListView.adapter = adapter
+            adapter.startPingingContacts()  // Start pinging contacts after setting the adapter
         }
     }
 

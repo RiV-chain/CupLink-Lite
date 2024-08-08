@@ -10,7 +10,6 @@ import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import org.rivchain.cuplink.call.Pinger
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
@@ -98,7 +97,6 @@ open class BaseActivity : AppCompatActivity() {
 
         pingContacts(listOf(contact))
 
-        NotificationUtils.refreshContacts(this)
         NotificationUtils.refreshEvents(this)
     }
 
@@ -121,10 +119,7 @@ open class BaseActivity : AppCompatActivity() {
 
     fun pingContacts(contactList: List<Contact>) {
         Log.d(this, "pingContacts()")
-        Thread(
-            //fix ConcurrentModificationException
-            Pinger(this, ArrayList(contactList))
-        ).start()
+        NotificationUtils.refreshContacts(this)
     }
 
     fun addEvent(event: Event) {
