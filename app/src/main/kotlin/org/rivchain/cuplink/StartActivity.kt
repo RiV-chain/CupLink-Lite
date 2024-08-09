@@ -30,7 +30,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
-import org.libsodium.jni.NaCl
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.model.AddressEntry
@@ -77,23 +76,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                     + "Model: ${Build.MODEL}, "
                     + "Product: ${Build.PRODUCT}"
         )
-        // Prevent UnsatisfiedLinkError
-        NaCl.sodium()
         super.onCreate(savedInstanceState)
-        Log.d(this, "init 1: load database")
-        // open without password
-        try {
-            DatabaseCache.load()
-        } catch (e: Database.WrongPasswordException) {
-            // ignore and continue with initialization,
-            // the password dialog comes on the next startState
-            DatabaseCache.dbEncrypted = true
-        } catch (e: Exception) {
-            Log.e(this, "${e.message}")
-            Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
-            finish()
-        }
-        Log.d(this, "init 1: load database complete")
         // set by BootUpReceiver
         isStartOnBootup = intent.getBooleanExtra(BootUpReceiver.IS_START_ON_BOOTUP, false)
         setContentView(R.layout.activity_empty)
@@ -484,11 +467,6 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         this.dialog = dialog
 
         dialog.show()
-    }
-
-    companion object {
-        // load libsodium for JNI access
-        private var sodium = NaCl.sodium()
     }
 
     private fun generateRandomUserName(): String {

@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.TileService
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import org.acra.config.dialog
@@ -17,9 +18,11 @@ import org.acra.config.httpSender
 import org.acra.data.StringFormat
 import org.acra.ktx.initAcra
 import org.acra.sender.HttpSender
+import org.libsodium.jni.NaCl
 import org.rivchain.cuplink.rivmesh.AppStateReceiver
 import org.rivchain.cuplink.rivmesh.MeshTileService
 import org.rivchain.cuplink.rivmesh.State
+import org.rivchain.cuplink.util.Log
 
 const val PREF_KEY_ENABLED = "enabled"
 const val MAIN_CHANNEL_ID = "CupLink Service"
@@ -66,6 +69,22 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver {
         super.onCreate()
         val receiver = AppStateReceiver(this)
         receiver.register(this)
+        // Prevent UnsatisfiedLinkError
+        NaCl.sodium()
+        // open without password
+        Log.d(this, "init 1: load database")
+        DatabaseCache.databasePath = this.filesDir.toString() + "/database.bin"
+        try {
+            DatabaseCache.load()
+        } catch (e: Database.WrongPasswordException) {
+            // ignore and continue with initialization,
+            // the password dialog comes on the next startState
+            DatabaseCache.dbEncrypted = true
+        } catch (e: Exception) {
+            Log.e(this, "${e.message}")
+            Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
+        }
+        Log.d(this, "init 1: load database complete")
     }
 
     fun subscribe() {

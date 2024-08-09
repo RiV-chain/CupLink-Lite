@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.VpnService
 import android.widget.Toast
-import org.libsodium.jni.NaCl
 import org.rivchain.cuplink.util.Log
 
 /*
@@ -20,24 +19,6 @@ class BootUpReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent != null) {
             if(intent.action == Intent.ACTION_BOOT_COMPLETED) {
-                DatabaseCache.databasePath = context.filesDir.toString() + "/database.bin"
-                // Prevent UnsatisfiedLinkError
-                NaCl.sodium()
-                Log.d(this, "bootup: load database")
-                // open without password
-                try {
-                    DatabaseCache.load()
-                } catch (e: Database.WrongPasswordException) {
-                    // ignore and continue with initialization,
-                    // the password dialog comes on the next startState
-                    DatabaseCache.dbEncrypted = true
-                } catch (e: Exception) {
-                    Log.e(this, "${e.message}")
-                    return
-                }
-
-                Log.d(this, "bootup: load database complete")
-
                 Log.i(TAG, "CupLink enabled, starting service")
                 val serviceIntent = Intent(context, MainService::class.java)
                 serviceIntent.action = MainService.ACTION_START
