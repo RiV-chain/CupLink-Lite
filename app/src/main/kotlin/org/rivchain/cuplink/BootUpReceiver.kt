@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.VpnService
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import org.rivchain.cuplink.util.Log
 
 /*
@@ -18,7 +19,7 @@ class BootUpReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent != null) {
-            if(intent.action == Intent.ACTION_BOOT_COMPLETED) {
+            if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
                 Log.i(TAG, "CupLink enabled, starting service")
                 val serviceIntent = Intent(context, MainService::class.java)
                 serviceIntent.action = MainService.ACTION_START
@@ -31,7 +32,7 @@ class BootUpReceiver : BroadcastReceiver() {
                         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     manager.notify(444, notification)
                 } else {
-                    context.startService(serviceIntent)
+                    ContextCompat.startForegroundService(context, serviceIntent)
                 }
             }
         }
