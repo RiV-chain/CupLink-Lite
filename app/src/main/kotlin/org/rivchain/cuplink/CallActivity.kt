@@ -128,8 +128,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private var isLocalVideoAvailable = false // own camera is on/off
     private var isRemoteVideoAvailable = false // we receive a video feed
 
-    private var pressedTime: Long = 0
-
     private lateinit var contact: Contact
 
     private val statsCollector = object : RTCStatsCollectorCallback {
@@ -1286,13 +1284,9 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        if (pressedTime + 2000 > System.currentTimeMillis()) {
-            super.onBackPressedDispatcher.onBackPressed()
-            finish()
-        } else {
-            Toast.makeText(baseContext, "Press back again will exit this call", Toast.LENGTH_SHORT).show()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            enterPictureInPictureMode(false)
         }
-        pressedTime = System.currentTimeMillis()
     }
 
     override fun onUserLeaveHint() {
