@@ -144,8 +144,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(this, "onCreate()")
 
-        isCallInProgress = true
-
         // keep screen on during the call
         window.addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON)
         super.onCreate(savedInstanceState)
@@ -684,6 +682,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 Log.d(this@CallActivity, "onServiceConnected")
                 service = (iBinder as MainService.MainBinder).getService()
                 currentCall = RTCCall(service!!, contact)
+                isCallInProgress = true
                 currentCall.setCallContext(this@CallActivity)
 
                 captureQualityController.initFromSettings(DatabaseCache.database.settings)
@@ -785,6 +784,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                     finish()
                     return
                 }
+                isCallInProgress = true
                 currentCall.setRemoteRenderer(remoteProxyVideoSink)
                 currentCall.setLocalRenderer(localProxyVideoSink)
                 currentCall.setCallContext(this@CallActivity)
@@ -1168,7 +1168,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     override fun onDestroy() {
         Log.d(this, "onDestroy()")
-
+        isCallInProgress = false
         try {
             proximitySensor.stop()
 
@@ -1205,7 +1205,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             Log.e(this, "onDestroy() e=$e")
         } finally {
             RTCPeerConnection.incomingRTCCall = null // free for the garbage collector
-            isCallInProgress = false
         }
         val intent = Intent(AppStateReceiver.APP_STATE_INTENT)
         //FIX me. Perhaps the state could be ENABLED
