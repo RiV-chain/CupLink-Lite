@@ -489,10 +489,14 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
         val updateDebug = { enable: Boolean ->
             if (enable) {
-                currentCall.setStatsCollector(statsCollector)
+                if (callWasStarted) {
+                    currentCall.setStatsCollector(statsCollector)
+                }
                 callStats.visibility = VISIBLE
             } else {
-                currentCall.setStatsCollector(null)
+                if (callWasStarted) {
+                    currentCall.setStatsCollector(null)
+                }
                 callStats.visibility = View.GONE
             }
         }
@@ -1335,7 +1339,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             // Hide the full-screen UI (controls, etc.) while in
             // picture-in-picture mode.
             uiMode = 1
-            updateControlDisplay()
             changeUiButton.visibility = INVISIBLE
             toggleFrontCameraButton.visibility = INVISIBLE
             setPipButtonEnabled(false)
@@ -1343,10 +1346,10 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         } else {
             // Restore the full-screen UI.
             uiMode = 0
-            updateControlDisplay()
             changeUiButton.visibility = VISIBLE
             toggleFrontCameraButton.visibility = VISIBLE
             Log.d(this,"Unhide navigation")
         }
+        updateControlDisplay()
     }
 }
