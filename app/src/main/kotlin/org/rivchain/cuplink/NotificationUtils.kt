@@ -7,10 +7,17 @@ import android.app.PendingIntent
 import android.app.Service.NOTIFICATION_SERVICE
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.widget.RemoteViews
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
 
@@ -72,15 +79,19 @@ internal object NotificationUtils {
 
             // Generate notifications for each callerChannelId if missedCount > 1
             for ((callerChannelId, missedCount) in missedCallCounts) {
-                val publicKey = lastMissedEvents.find { event ->
+                val e = lastMissedEvents.find { event ->
                     org.rivchain.cuplink.util.Utils.byteArrayToCRC32Int(event.last().publicKey) == callerChannelId
-                }?.last()!!.publicKey
+                }?.last()!!
 
-                val contact = publicKey.let { DatabaseCache.database.contacts.getContactByPublicKey(it) }
-                val name = contact?.name ?: context.getString(R.string.unknown_caller)
+                var contact = e.publicKey.let { DatabaseCache.database.contacts.getContactByPublicKey(it) }
+                if (contact == null) {
+                    // unknown caller
+                    contact = Contact(context.getString(R.string.unknown_caller), e.publicKey.clone(), listOf(e.address?.address?.hostAddress!!))
+                }
+                val name = contact.name
                 val message = String.format(context.getString(R.string.missed_call_from), name, missedCount)
 
-                val notification = createNotification(context, message, false)
+                val notification = createNotification(context, contact, message, false)
                 manager.notify(callerChannelId, notification)
             }
 
@@ -92,7 +103,7 @@ internal object NotificationUtils {
         }
     }
 
-    private fun createNotification(context: Context, text: String, showSinceWhen: Boolean): Notification {
+    private fun createNotification(context: Context, contact: Contact, text: String, showSinceWhen: Boolean): Notification {
         Log.d(this, "createNotification() text=$text setShowWhen=$showSinceWhen")
         val channelId = "cuplink_service"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -116,8 +127,36 @@ internal object NotificationUtils {
             PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
-        return NotificationCompat.Builder(context.applicationContext, channelId)
+        var endTitle: CharSequence =
+            context.getString(R.string.mark_as_read)
+        var answerTitle: CharSequence =
+            context.getString(R.string.call)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            endTitle = SpannableString(endTitle)
+            endTitle.setSpan(ForegroundColorSpan(-0xbbcca), 0, endTitle.length, 0)
+            answerTitle = SpannableString(answerTitle)
+            answerTitle.setSpan(ForegroundColorSpan(-0xff5600), 0, answerTitle.length, 0)
+        }
+
+        val flag =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                PendingIntent.FLAG_IMMUTABLE
+            else
+                0
+
+        val callPendingIntent = PendingIntent.getActivity(
+            context,
+            System.currentTimeMillis().toInt(),
+            Intent(
+                context,
+                CallActivity::class.java
+            ).setAction("ACTION_OUTGOING_CALL").putExtra("EXTRA_CONTACT", contact),
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val builder = NotificationCompat.Builder(context.applicationContext, channelId)
             .setSilent(true)
+            .setAutoCancel(true)
             .setOngoing(true)
             .setShowWhen(showSinceWhen)
             .setUsesChronometer(showSinceWhen)
@@ -126,6 +165,42 @@ internal object NotificationUtils {
             .setCategory(Notification.CATEGORY_SERVICE)
             .setContentText(text)
             .setContentIntent(pendingNotificationIntent)
-            .build()
+
+        builder.addAction(R.drawable.ic_audio_device_phone, answerTitle, callPendingIntent)
+        builder.setContentText(text)
+
+        val customView = RemoteViews(
+            context.packageName,
+            R.layout.notification_missed_call
+        )
+        customView.setTextViewText(R.id.name, contact.name)
+        customView.setTextViewText(
+            R.id.title,
+            text,
+        )
+
+        val avatar: Bitmap? = AppCompatResources.getDrawable(context, R.drawable.ic_contacts)?.toBitmap()
+        customView.setTextViewText(
+            R.id.answer_text,
+            context.getString(R.string.call)
+        )
+        customView.setTextViewText(
+            R.id.decline_text,
+            context.getString(R.string.mark_as_read)
+        )
+        //customView.setImageViewBitmap(R.id.photo, avatar)
+        customView.setOnClickPendingIntent(R.id.answer_btn, callPendingIntent)
+        //builder.setLargeIcon(avatar)
+        val n: Notification = builder.build()
+        n.bigContentView = customView
+        n.headsUpContentView = n.bigContentView
+
+        n.flags = n.flags or (Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT)
+        if(contact.name.isEmpty()){
+            contact.name = "Unknown caller"
+            contact.addresses = arrayListOf(contact.lastWorkingAddress!!.address.toString())
+        }
+
+        return n
     }
 }

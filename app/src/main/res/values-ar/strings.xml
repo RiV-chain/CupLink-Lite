@@ -72,4 +72,6 @@
     <string name="port_status">Port status</string>
     <string name="search_multicast_peers">Search multicast peers</string>
     <string name="discoverable_over_multicast">Discoverable over multicast</string>
+    <string name="mark_as_read">Mark as read</string>
+    <string name="call">Call</string>
 </resources>
