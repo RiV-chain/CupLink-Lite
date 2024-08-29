@@ -1,10 +1,7 @@
 package org.rivchain.cuplink
 
-import android.content.ComponentName
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,7 +9,6 @@ import android.widget.Toast
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 
