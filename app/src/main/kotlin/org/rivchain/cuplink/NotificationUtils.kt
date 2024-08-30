@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.app.Service.NOTIFICATION_SERVICE
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
@@ -17,6 +18,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import org.rivchain.cuplink.BaseActivity.Companion.isNightmodeEnabled
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
@@ -138,12 +140,6 @@ internal object NotificationUtils {
             answerTitle.setSpan(ForegroundColorSpan(-0xff5600), 0, answerTitle.length, 0)
         }
 
-        val flag =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                PendingIntent.FLAG_IMMUTABLE
-            else
-                0
-
         val callPendingIntent = PendingIntent.getActivity(
             context,
             System.currentTimeMillis().toInt(),
@@ -165,8 +161,8 @@ internal object NotificationUtils {
             .setCategory(Notification.CATEGORY_SERVICE)
             .setContentText(text)
             .setContentIntent(pendingNotificationIntent)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
 
-        builder.addAction(R.drawable.ic_audio_device_phone, answerTitle, callPendingIntent)
         builder.setContentText(text)
 
         val customView = RemoteViews(
@@ -176,7 +172,7 @@ internal object NotificationUtils {
         customView.setTextViewText(R.id.name, contact.name)
         customView.setTextViewText(
             R.id.title,
-            text,
+            text
         )
 
         val avatar: Bitmap? = AppCompatResources.getDrawable(context, R.drawable.ic_contacts)?.toBitmap()
@@ -187,6 +183,20 @@ internal object NotificationUtils {
         customView.setTextViewText(
             R.id.decline_text,
             context.getString(R.string.mark_as_read)
+        )
+
+        val defaultColor = Color.parseColor(if (isNightmodeEnabled(context)) "#ffffff" else "#000000")
+        customView.setTextColor(
+            R.id.title,
+            defaultColor
+        )
+        customView.setTextColor(
+            R.id.answer_text,
+            defaultColor
+        )
+        customView.setTextColor(
+            R.id.decline_text,
+            defaultColor
         )
         //customView.setImageViewBitmap(R.id.photo, avatar)
         customView.setOnClickPendingIntent(R.id.answer_btn, callPendingIntent)
@@ -200,6 +210,7 @@ internal object NotificationUtils {
             contact.name = "Unknown caller"
             contact.addresses = arrayListOf(contact.lastWorkingAddress!!.address.toString())
         }
+
 
         return n
     }
