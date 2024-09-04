@@ -175,7 +175,7 @@ class MainService : VpnService() {
                 startForeground(SERVICE_NOTIFICATION_ID, notification)
             } else {
                 startForeground(SERVICE_NOTIFICATION_ID, notification,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL)
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
             }
         }
 
