@@ -349,6 +349,12 @@ class Database {
                 newFrom = "0.6.6"
             }
 
+            // 0.6.6 => 0.6.10.19
+            if (newFrom == "0.6.6") {
+                settings.put("camera_on_when_screen_locked", false)
+                newFrom = "0.6.10.19"
+            }
+
             alignSettings(settings)
 
             db.put("version", newFrom)

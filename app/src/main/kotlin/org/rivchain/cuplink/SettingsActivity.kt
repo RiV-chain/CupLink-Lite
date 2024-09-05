@@ -378,6 +378,14 @@ class SettingsActivity : BaseActivity() {
             }
         }
 
+        findViewById<SwitchMaterial>(R.id.cameraOnWhenScreenLockedSwitch).apply {
+            isChecked = settings.cameraOnWhenScreenLocked
+            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                settings.cameraOnWhenScreenLocked = isChecked
+                DatabaseCache.save()
+            }
+        }
+
         val menuPassword = settings.menuPassword
         findViewById<TextView>(R.id.menuPasswordTv)
             .text = if (menuPassword.isEmpty()) getString(R.string.no_value) else "*".repeat(menuPassword.length)

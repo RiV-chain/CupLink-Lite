@@ -84,12 +84,16 @@ class RTCCall : RTCPeerConnection {
 
     override fun screenLocked() {
         // Disable video stream
-        setCameraEnabled(false)
+        if(!DatabaseCache.database.settings.cameraOnWhenScreenLocked) {
+            setCameraEnabled(false)
+        }
     }
 
     override fun screenUnlocked() {
         // Disable video stream (if needed)
-        setCameraEnabled(cameraWasEnabledBeforeScreenLocked)
+        if(!DatabaseCache.database.settings.cameraOnWhenScreenLocked) {
+            setCameraEnabled(cameraWasEnabledBeforeScreenLocked)
+        }
     }
 
     fun getMicrophoneEnabled(): Boolean {
@@ -269,7 +273,7 @@ class RTCCall : RTCPeerConnection {
         // Register the BroadcastReceiver to listen for screen on/off events
         val filter = IntentFilter().apply {
             addAction(Intent.ACTION_SCREEN_OFF)
-            addAction(Intent.ACTION_SCREEN_ON)
+            addAction(Intent.ACTION_USER_PRESENT)
         }
         service.registerReceiver(screenStateReceiver, filter)
     }
