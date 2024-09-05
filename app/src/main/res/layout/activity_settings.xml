@@ -764,6 +764,28 @@
                     app:layout_constraintTop_toTopOf="@id/useNeighborTable"
                     app:layout_constraintBottom_toBottomOf="@id/useNeighborTable"/>
 
+                <TextView
+                    android:id="@+id/cameraOnWhenScreenLockedLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/camera_on_when_screen_locked"
+                    android:textSize="@dimen/title_text_size"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/useNeighborTableSwitch"
+                    android:layout_marginTop="@dimen/padding_40"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/cameraOnWhenScreenLockedSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:theme="@style/SwitchTheme"
+                    android:contentDescription="@string/camera_on_when_screen_locked"
+                    app:layout_constraintEnd_toEndOf="@id/cameraOnWhenScreenLockedLabel"
+                    app:layout_constraintTop_toTopOf="@id/cameraOnWhenScreenLockedLabel"
+                    app:layout_constraintBottom_toBottomOf="@id/cameraOnWhenScreenLockedLabel"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
