@@ -1,6 +1,8 @@
 package org.rivchain.cuplink.call
 
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Handler
 import android.os.Looper
 import org.json.JSONException
@@ -78,6 +80,17 @@ class RTCCall : RTCPeerConnection {
     private var isCameraEnabled = false
     private var isMicrophoneEnabled = false
     private var useFrontFacingCamera = true
+    private var cameraWasEnabledBeforeScreenLocked = false
+
+    override fun screenLocked() {
+        // Disable video stream
+        setCameraEnabled(false)
+    }
+
+    override fun screenUnlocked() {
+        // Disable video stream (if needed)
+        setCameraEnabled(cameraWasEnabledBeforeScreenLocked)
+    }
 
     fun getMicrophoneEnabled(): Boolean {
         return isMicrophoneEnabled
@@ -133,7 +146,7 @@ class RTCCall : RTCPeerConnection {
                         callActivity!!.onLocalVideoEnabled(false)
                         videoCapturer!!.stopCapture()
                     }
-
+                    this.cameraWasEnabledBeforeScreenLocked = this.isCameraEnabled
                     this.isCameraEnabled = enabled
                 }
             } catch (e: InterruptedException) {
@@ -252,6 +265,13 @@ class RTCCall : RTCPeerConnection {
         this.offer = offer
 
         createMediaConstraints()
+
+        // Register the BroadcastReceiver to listen for screen on/off events
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_OFF)
+            addAction(Intent.ACTION_SCREEN_ON)
+        }
+        service.registerReceiver(screenStateReceiver, filter)
     }
 
     // called for outgoing calls
