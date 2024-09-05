@@ -12,6 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.content.pm.ServiceInfo
 import android.graphics.Bitmap
 import android.media.AudioAttributes
 import android.media.AudioManager
@@ -73,7 +74,7 @@ class CallService : Service() {
             val notificationManager =
                 getSystemService(NotificationManager::class.java)
             notificationManager.createNotificationChannel(channel)
-            startForeground(ID_ONGOING_CALL_NOTIFICATION, n)
+            startForeground(ID_ONGOING_CALL_NOTIFICATION, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL)
         }
         initRinging()
     }
@@ -377,7 +378,7 @@ class CallService : Service() {
                     .build()
             )
 
-            service.startForeground(ID_ONGOING_CALL_NOTIFICATION, incomingNotification)
+            service.startForeground(ID_ONGOING_CALL_NOTIFICATION, incomingNotification, ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL)
             CarNotificationManager.from(service).notify(ID_ONGOING_CALL_NOTIFICATION, builder)
         }.start()
     }

@@ -1129,13 +1129,13 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private fun switchMicrophoneEnabled() {
         Log.d(this, "switchMicrophoneEnabled()")
 
-        if (!currentCall.getMicrophoneEnabled()) {
-            // check permission
-            if (!Utils.hasPermission(this, Manifest.permission.RECORD_AUDIO)) {
-                enabledMicrophoneForResult.launch(Manifest.permission.RECORD_AUDIO)
-                return
-            }
+        // check permission
+        if (!Utils.hasPermission(this, Manifest.permission.RECORD_AUDIO)) {
+            enabledMicrophoneForResult.launch(Manifest.permission.RECORD_AUDIO)
+            return
+        }
 
+        if (!currentCall.getMicrophoneEnabled()) {
             // turn microphone on
             currentCall.setMicrophoneEnabled(true)
         } else {
