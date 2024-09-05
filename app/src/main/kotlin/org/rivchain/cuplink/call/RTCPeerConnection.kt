@@ -1,7 +1,10 @@
 package org.rivchain.cuplink.call
 
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.MediaPlayer
 import android.os.Build
 import androidx.core.content.ContextCompat
@@ -37,8 +40,31 @@ abstract class RTCPeerConnection(
     protected var state = CallState.WAITING
     protected var callActivity: RTCCall.CallContext? = null
     private val executor = Executors.newSingleThreadExecutor()
-
     private var mediaPlayer: MediaPlayer? = null
+
+    // BroadcastReceiver to listen for screen lock/unlock events
+    open val screenStateReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.action) {
+                Intent.ACTION_SCREEN_OFF -> {
+                    // Disable the video track when the screen is off
+                    screenLocked()
+                }
+                Intent.ACTION_USER_PRESENT -> {
+                    // Optionally enable the video track when the screen is on
+                    screenUnlocked()
+                }
+            }
+        }
+    }
+
+    open fun screenLocked() {
+
+    }
+
+    open fun screenUnlocked() {
+
+    }
 
     fun playTone(state: CallState) {
         stopTone() // Stop any currently playing tone
@@ -140,6 +166,13 @@ abstract class RTCPeerConnection(
                 reportStateChange(CallState.ERROR_COMMUNICATION)
             }
         }.start()
+
+        // Register the BroadcastReceiver to listen for screen on/off events
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_OFF)
+            addAction(Intent.ACTION_USER_PRESENT)
+        }
+        service.registerReceiver(screenStateReceiver, filter)
     }
 
     private fun createOutgoingCallInternal(contact: Contact, offer: String) {
