@@ -40,6 +40,7 @@
     <!-- Run server socket as foreground service. As such we must display a notification (sdk-28) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL"/>
     <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
@@ -177,7 +178,7 @@
             android:name=".MainService"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:exported="true"
-            android:foregroundServiceType="microphone"
+            android:foregroundServiceType="phoneCall"
             tools:node="merge">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
@@ -187,7 +188,8 @@
         <!--FIX me and add other foregroundServiceTypes below-->
         <service android:name=".CallService"
             android:enabled="true"
-            android:foregroundServiceType="microphone"/>
+            android:foregroundServiceType="phoneCall|microphone"
+            android:permission="android.permission.FOREGROUND_SERVICE"/>
 
         <service
             android:name=".CarService"

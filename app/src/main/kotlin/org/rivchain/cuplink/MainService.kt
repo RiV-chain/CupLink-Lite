@@ -169,13 +169,12 @@ class MainService : VpnService() {
         } else if (intent.action == ACTION_START) {
             Log.d(this, "onStartCommand() Received Start Foreground Intent")
             val notification = createServiceNotification(this, State.Starting)
-            startForeground(SERVICE_NOTIFICATION_ID, notification)
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 startForeground(SERVICE_NOTIFICATION_ID, notification)
             } else {
                 startForeground(SERVICE_NOTIFICATION_ID, notification,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL)
             }
         }
 
