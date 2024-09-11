@@ -63,6 +63,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     private val LISTEN = "listen"
     private var preferences: SharedPreferences? = null
     private var restartService = false
+    private var isServiceBound = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(this, "onCreate() CupLink version ${BuildConfig.VERSION_NAME}")
@@ -233,6 +234,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
         Log.d(this, "onServiceConnected")
         service = (iBinder as MainBinder).getService()
+        isServiceBound = true
 
         if (startState == 1) {
             setContentView(R.layout.activity_splash)
@@ -249,11 +251,15 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
 
     override fun onServiceDisconnected(componentName: ComponentName) {
         // nothing to do
+        isServiceBound = false
     }
 
     override fun onDestroy() {
         dialog?.dismiss()
-        unbindService(this)
+        if (isServiceBound) {
+            unbindService(this)
+            isServiceBound = false
+        }
         super.onDestroy()
     }
 
