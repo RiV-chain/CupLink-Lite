@@ -285,11 +285,9 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     private fun startCallStatusService() {
         val intent = Intent(this, CallStatusService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
-        }
+            .putExtra(CallService.SERVICE_CONTACT_KEY,
+                contact)
+        ContextCompat.startForegroundService(this, intent)
     }
 
     private val MICROPHONE_PERMISSION_REQUEST_CODE = 101

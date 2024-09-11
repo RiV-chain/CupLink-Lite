@@ -108,7 +108,7 @@ internal object NotificationUtils {
                 val name = contact.name
                 val message = String.format(context.getString(R.string.missed_call_from), name, missedCount)
 
-                val notification = createNotification(context, contact, message, false)
+                val notification = createNotification(context, contact, message, true)
                 manager.notify(callerChannelId, notification)
             }
 
@@ -170,7 +170,7 @@ internal object NotificationUtils {
             .setAutoCancel(true)
             .setOngoing(true)
             .setShowWhen(showSinceWhen)
-            .setUsesChronometer(showSinceWhen)
+            .setUsesChronometer(false)
             .setSmallIcon(R.drawable.cup_link_small)
             .setPriority(NotificationCompat.PRIORITY_MIN)
             .setCategory(Notification.CATEGORY_SERVICE)

@@ -1,45 +1,25 @@
 package org.rivchain.cuplink
 
-import android.app.Activity
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.Service
 import android.content.BroadcastReceiver
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
-import android.graphics.Bitmap
-import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.text.SpannableString
-import android.text.TextUtils
-import android.text.style.ForegroundColorSpan
-import android.view.View
-import android.widget.RemoteViews
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.car.app.notification.CarAppExtender
-import androidx.car.app.notification.CarNotificationManager
-import androidx.car.app.notification.CarPendingIntent
-import androidx.core.app.NotificationCompat
-import androidx.core.app.Person
-import androidx.core.graphics.drawable.toBitmap
 import org.rivchain.cuplink.call.RTCPeerConnection
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
-import org.rivchain.cuplink.util.RlpUtils
 import org.rivchain.cuplink.util.ServiceUtil
 import java.util.Date
 
@@ -53,40 +33,6 @@ class CallService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val bldr =
-                Notification.Builder(this, OTHER_NOTIFICATIONS_CHANNEL.toString())
-                    .setContentTitle(
-                        getString(
-                            R.string.is_calling
-                        )
-                    )
-                    .setShowWhen(false)
-            bldr.setSmallIcon(R.drawable.ic_audio_device_phone)
-
-            val channel = NotificationChannel(
-                OTHER_NOTIFICATIONS_CHANNEL.toString(),
-                "CupLink",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            channel.description = "CupLink calls channel for foreground service notification"
-            val n = bldr.build()
-            val notificationManager =
-                getSystemService(NotificationManager::class.java)
-            notificationManager.createNotificationChannel(channel)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startForeground(
-                    ID_ONGOING_CALL_NOTIFICATION,
-                    n,
-                    ServiceInfo.FOREGROUND_SERVICE_TYPE_PHONE_CALL
-                )
-            } else {
-                startForeground(
-                    ID_ONGOING_CALL_NOTIFICATION,
-                    n
-                )
-            }
-        }
         initRinging()
     }
 
@@ -251,7 +197,5 @@ class CallService : Service() {
         const val DECLINE_CALL_ACTION: String = "DeclineCall"
         const val SERVICE_CONTACT_KEY: String = "ServiceContactKey"
         const val ID_ONGOING_CALL_NOTIFICATION = 201
-
-        var OTHER_NOTIFICATIONS_CHANNEL = 99
     }
 }
