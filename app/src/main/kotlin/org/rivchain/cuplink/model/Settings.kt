@@ -27,7 +27,7 @@ class Settings {
     var showUsernameAsLogo = false
     var pushToTalk = false
     var startOnBootup = true
-    var connectRetries = 1
+    var connectRetries = 2
     var connectTimeout = 1500
     var enableMicrophoneByDefault = true
     var enableCameraByDefault = false
