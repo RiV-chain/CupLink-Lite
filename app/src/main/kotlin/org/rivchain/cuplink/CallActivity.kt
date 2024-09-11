@@ -8,6 +8,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -36,6 +37,8 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -250,7 +253,44 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             else
                 0
         ).send()
+        // Request microphone permission if not granted
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                MICROPHONE_PERMISSION_REQUEST_CODE
+            )
+        } else {
+            startCallStatusService()
+        }
     }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == MICROPHONE_PERMISSION_REQUEST_CODE) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                startCallStatusService()
+            } else {
+                // Handle permission denied case
+            }
+        }
+    }
+
+
+    private fun startCallStatusService() {
+        val intent = Intent(this, CallStatusService::class.java)
+            .putExtra(CallService.SERVICE_CONTACT_KEY,
+                contact)
+        ContextCompat.startForegroundService(this, intent)
+    }
+
+    private val MICROPHONE_PERMISSION_REQUEST_CODE = 101
 
     override fun onConfigurationChanged(newConfig: Configuration)
     {
@@ -1173,6 +1213,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     override fun onDestroy() {
         Log.d(this, "onDestroy()")
         isCallInProgress = false
+        stopService(Intent(this, CallStatusService::class.java))
         try {
             proximitySensor.stop()
 
