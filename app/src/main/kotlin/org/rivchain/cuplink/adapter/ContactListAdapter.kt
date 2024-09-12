@@ -1,31 +1,39 @@
 package org.rivchain.cuplink.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.nikhiljain.blockiesgenerator.BlockiesIconGenerator
 import org.json.JSONObject
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.BaseActivity
 import org.rivchain.cuplink.Crypto
 import org.rivchain.cuplink.DatabaseCache
-import org.rivchain.cuplink.NotificationUtils
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.call.PacketReader
 import org.rivchain.cuplink.call.PacketWriter
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
+import org.rivchain.cuplink.util.Utils
 import java.lang.Integer.max
 import java.lang.Integer.min
 import java.net.ConnectException
 import java.net.Socket
+import java.security.MessageDigest
 
 internal class ContactListAdapter(
     context: Context,
@@ -39,27 +47,18 @@ internal class ContactListAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = convertView ?: inflater.inflate(R.layout.item_contact, null)
         val contact = contacts[position]
-
+        val userIcon = itemView.findViewById<ImageView>(R.id.contact_state)
+        val statusCircle = itemView.findViewById<ImageView>(R.id.status_circle)
         itemView.findViewById<TextView>(R.id.contact_name).text = contact.name
-        itemView.findViewById<ImageView>(R.id.contact_state).setOnClickListener {
-            val state = when (contact.state) {
-                Contact.State.CONTACT_ONLINE -> R.string.state_contact_online
-                Contact.State.CONTACT_OFFLINE -> R.string.state_contact_offline
-                Contact.State.NETWORK_UNREACHABLE -> R.string.state_contact_network_unreachable
-                Contact.State.APP_NOT_RUNNING -> R.string.state_app_not_running
-                Contact.State.AUTHENTICATION_FAILED -> R.string.state_authentication_failed
-                Contact.State.COMMUNICATION_FAILED -> R.string.state_communication_failed
-                Contact.State.PENDING -> R.string.state_contact_pending
-            }
-            if (contact.blocked) {
-                val message = context.getString(state) + " / " + context.getString(R.string.contact_blocked)
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, state, Toast.LENGTH_SHORT).show()
-            }
-        }
 
-        val state = itemView.findViewById<ImageView>(R.id.contact_state)
+        // Generate the blockies icon from the user's public key
+        val blockiesBitmap = generateBlockies(contact.publicKey)
+
+        // Create a circular bitmap from the blockies image
+        val circularBitmap = getRoundedCroppedBitmap(blockiesBitmap)
+        userIcon.setImageBitmap(circularBitmap)
+
+
         val p = Paint()
         p.color = when (contact.state) {
             Contact.State.CONTACT_ONLINE -> Color.parseColor("#00ff0a") // green
@@ -70,9 +69,49 @@ internal class ContactListAdapter(
             Contact.State.COMMUNICATION_FAILED -> Color.parseColor("#808080") // grey
             Contact.State.PENDING -> Color.parseColor("#00000000") // transparent
         }
-        state.setColorFilter(p.color)
+        statusCircle.setColorFilter(p.color)
+
+
         return itemView
     }
+
+    private fun generateBlockies(publicKey: ByteArray): Bitmap {
+        // Prepare a buffer to hold the sha256 hash output
+        val sha256 = ByteArray(Sodium.crypto_hash_sha256_bytes())
+        // Compute sha256 hash
+        Sodium.crypto_hash_sha256(sha256, publicKey, publicKey.size)
+
+        val hash = Utils.byteArrayToHexString(sha256)
+
+        val iconGenerator = BlockiesIconGenerator(
+            seed = hash,
+            size = 10,
+            scale = 10,
+        )
+
+        return iconGenerator.generateIconBitmap()
+    }
+
+    private fun getRoundedCroppedBitmap(bitmap: Bitmap): Bitmap {
+        val output = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(output)
+
+        val color = 0xff424242.toInt()
+        val paint = Paint()
+        val rect = Rect(0, 0, bitmap.width, bitmap.height)
+        val rectF = RectF(rect)
+
+        paint.isAntiAlias = true
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.color = color
+        canvas.drawOval(rectF, paint)
+
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(bitmap, rect, rect, paint)
+
+        return output
+    }
+
 
     fun updateContact(contact: Contact) {
         val index = contacts.indexOfFirst { it.publicKey.contentEquals(contact.publicKey) }
