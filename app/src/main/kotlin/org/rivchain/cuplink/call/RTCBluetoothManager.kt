@@ -490,6 +490,9 @@ open class RTCBluetoothManager(contextArg: Context, audioManagerArg: RTCAudioMan
         // Bluetooth SCO should be connecting; check the latest result.
         var scoConnected = false
         val devices = bluetoothHeadset!!.connectedDevices
+        if (devices.isEmpty()){
+            return
+        }
         Log.d(this, "bluetoothTimeout() ${devices.size}")
         val bluetoothDevice = devices[0] //devices.firstOrNull { bluetoothHeadset!!.isAudioConnected(it) }
         if (bluetoothHeadset!!.isAudioConnected(bluetoothDevice)) {
