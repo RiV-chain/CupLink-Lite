@@ -79,7 +79,10 @@ open class TestPortActivity: AppCompatActivity(), ServiceConnection {
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    showToast("An error occurred: ${e.message}")
+                    //showToast("An error occurred: ${e.message}")
+                    runOnUiThread {
+                        portClosed(port)
+                    }
                 }
             }
         }
@@ -115,6 +118,7 @@ open class TestPortActivity: AppCompatActivity(), ServiceConnection {
                 } catch (e: Exception) {
                     e.printStackTrace()
                     showToast("An error occurred: ${e.message}")
+                    notConnectedAsPublicPeer(port)
                 }
             }
         }
