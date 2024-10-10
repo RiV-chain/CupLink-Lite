@@ -9,9 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.AnimationSet
-import android.view.animation.TranslateAnimation
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -30,11 +27,7 @@ class ContactListFragment() : Fragment() {
 
     private lateinit var activity: BaseActivity
     private lateinit var contactListView: ListView
-    private lateinit var fabScan: FloatingActionButton
     private lateinit var fabGen: FloatingActionButton
-    private lateinit var fabPingAll: FloatingActionButton
-    private lateinit var fab: FloatingActionButton
-    private var fabExpanded = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,32 +38,19 @@ class ContactListFragment() : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_contact_list, container, false)
         activity = requireActivity() as BaseActivity
 
-        fab = view.findViewById(R.id.fab)
-        fabScan = view.findViewById(R.id.fabScan)
+
         fabGen = view.findViewById(R.id.fabGenerate)
-        fabPingAll = view.findViewById(R.id.fabPing)
         contactListView = view.findViewById(R.id.contactList)
         contactListView.onItemClickListener = onContactClickListener
         contactListView.onItemLongClickListener = onContactLongClickListener
 
         val activity = requireActivity()
-        fabScan.setOnClickListener {
-            val intent = Intent(activity, QRScanActivity::class.java)
-            startActivity(intent)
-        }
 
         fabGen.setOnClickListener {
             val intent = Intent(activity, QRShowActivity::class.java)
             intent.putExtra("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
             startActivity(intent)
         }
-
-        fabPingAll.setOnClickListener {
-            pingAllContacts()
-            collapseFab()
-        }
-
-        fab.setOnClickListener { fab: View -> runFabAnimation(fab) }
 
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(refreshContactListReceiver, IntentFilter("refresh_contact_list"))
@@ -181,83 +161,6 @@ class ContactListFragment() : Fragment() {
         return !DatabaseCache.database.settings.automaticStatusUpdates
     }
 
-    private fun runFabAnimation(fab: View) {
-        Log.d(this, "runFabAnimation")
-        val activity = requireActivity()
-        val scanSet = AnimationSet(activity, null)
-        val showSet = AnimationSet(activity, null)
-        val pingSet = AnimationSet(activity, null)
-        val distance = 200f
-        val duration = 300f
-        val scanAnimation: TranslateAnimation
-        val showAnimation: TranslateAnimation
-        val pingAnimation: TranslateAnimation
-        val alphaAnimation: AlphaAnimation
-
-        if (fabExpanded) {
-            pingAnimation = TranslateAnimation(0f, 0f, -distance * 1, 0f)
-            scanAnimation = TranslateAnimation(0f, 0f, -distance * 2, 0f)
-            showAnimation = TranslateAnimation(0f, 0f, -distance * 3, 0f)
-            alphaAnimation = AlphaAnimation(1.0f, 0.0f)
-            (fab as FloatingActionButton).setImageResource(R.drawable.qr_glass)
-            fabGen.y += distance * 1
-            fabScan.y += distance * 2
-            fabPingAll.y += distance * 3
-        } else {
-            pingAnimation = TranslateAnimation(0f, 0f, distance * 1, 0f)
-            scanAnimation = TranslateAnimation(0f, 0f, distance * 2, 0f)
-            showAnimation = TranslateAnimation(0f, 0f, distance * 3, 0f)
-            alphaAnimation = AlphaAnimation(0.0f, 1.0f)
-            (fab as FloatingActionButton).setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
-            fabGen.y -= distance * 1
-            fabScan.y -= distance * 2
-            fabPingAll.y -= distance * 3
-        }
-
-        scanSet.addAnimation(scanAnimation)
-        scanSet.addAnimation(alphaAnimation)
-        scanSet.fillAfter = true
-        scanSet.duration = duration.toLong()
-
-        showSet.addAnimation(showAnimation)
-        showSet.addAnimation(alphaAnimation)
-        showSet.fillAfter = true
-        showSet.duration = duration.toLong()
-
-        pingSet.addAnimation(pingAnimation)
-        pingSet.addAnimation(alphaAnimation)
-        pingSet.fillAfter = true
-        pingSet.duration = duration.toLong()
-
-        fabGen.visibility = View.VISIBLE
-        fabScan.visibility = View.VISIBLE
-        if (showPingAllButton()) {
-            fabPingAll.visibility = View.VISIBLE
-        }
-
-        fabScan.startAnimation(scanSet)
-        fabGen.startAnimation(showSet)
-        fabPingAll.startAnimation(pingSet)
-
-        fabExpanded = !fabExpanded
-    }
-
-    private fun collapseFab() {
-        if (fabExpanded) {
-            fab.setImageResource(R.drawable.qr_glass)
-            fabScan.clearAnimation()
-            fabGen.clearAnimation()
-            fabPingAll.clearAnimation()
-
-            fabGen.y += 200 * 1
-            fabScan.y += 200 * 2
-            if (showPingAllButton()) {
-                fabPingAll.y += 200 * 3
-            }
-            fabExpanded = false
-        }
-    }
-
     private fun pingContact(contact: Contact) {
         activity.pingContacts(listOf(contact))
         val message = String.format(getString(R.string.ping_contact), contact.name)
@@ -314,10 +217,5 @@ class ContactListFragment() : Fragment() {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        collapseFab()
     }
 }
