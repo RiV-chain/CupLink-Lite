@@ -193,7 +193,12 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         toggleCameraButton.visibility = View.GONE
         toggleFrontCameraButton.visibility = View.GONE
 
-        contact = intent.extras!!["EXTRA_CONTACT"] as Contact
+        if(intent == null || intent.extras == null || intent.extras?.get("EXTRA_CONTACT") == null){
+            finish()
+            return
+        }
+
+        contact = intent.extras?.get("EXTRA_CONTACT") as Contact
 
         eglBase = EglBase.create()
         proximitySensor = RTCProximitySensor(applicationContext)
