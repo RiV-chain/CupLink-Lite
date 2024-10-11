@@ -19,6 +19,11 @@ class QRShowActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qrshow)
 
+        if(intent == null || intent.extras == null || intent.extras?.get("EXTRA_CONTACT_PUBLICKEY") == null){
+            finish()
+            return
+        }
+
         publicKey = intent.extras!!["EXTRA_CONTACT_PUBLICKEY"] as ByteArray
 
         title = getString(R.string.title_show_qr_code)
