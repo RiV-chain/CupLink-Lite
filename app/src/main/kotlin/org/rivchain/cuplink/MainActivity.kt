@@ -14,7 +14,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import com.google.android.material.textfield.TextInputEditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -25,15 +24,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import org.rivchain.cuplink.util.NetworkUtils
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.PowerManager
 
 // the main view with tabs
 class MainActivity : BaseActivity() {
 
+    private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var viewPager: ViewPager2
 
     private fun initToolbar() {
@@ -62,6 +62,34 @@ class MainActivity : BaseActivity() {
         viewPager = findViewById(R.id.container)
         viewPager.adapter = ViewPagerFragmentAdapter(this)
 
+        this.bottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.contacts -> {
+                    viewPager.currentItem = 0
+                }
+                R.id.history -> {
+                    viewPager.currentItem = 1
+                }
+                R.id.share_contact -> {
+                    viewPager.currentItem = 2
+                }
+                else -> {
+                    viewPager.currentItem = 0
+                }
+            }
+            true
+        }
+        bottomNavigationView.post {
+            bottomNavigationView.selectedItemId = R.id.contacts
+        }
+
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                bottomNavigationView.menu.getItem(position).isChecked = true
+            }
+        })
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (PowerManager.needsFixing(this)) {
                 PowerManager.callPowerManager(this)
@@ -87,15 +115,6 @@ class MainActivity : BaseActivity() {
             it.notifyDataSetChanged()
         }
 
-        val tabLayout = findViewById<TabLayout>(R.id.tabs)
-        if (settings.disableCallHistory) {
-            tabLayout.visibility = View.GONE
-        } else {
-            // default
-            //tabLayout.visibility = View.VISIBLE
-            tabLayout.visibility = View.GONE
-        }
-
         val toolbarLabel = findViewById<TextView>(R.id.toolbar_label)
         if (settings.showUsernameAsLogo) {
             toolbarLabel.visibility = View.VISIBLE
@@ -104,21 +123,6 @@ class MainActivity : BaseActivity() {
             // default
             toolbarLabel.visibility = View.GONE
         }
-
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.contentDescription = when (position) {
-                0 -> getString(R.string.title_contacts)
-                else -> {
-                    getString(R.string.title_calls)
-                }
-            }
-            tab.icon = when (position) {
-                0 -> resources.getDrawable(R.drawable.ic_contacts, theme)
-                else -> {
-                    resources.getDrawable(R.drawable.ic_call_accept, theme)
-                }
-            }
-        }.attach()
 
         if (!addressWarningShown) {
             // only show once since app start
@@ -132,12 +136,14 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        val tabLayout = findViewById<TabLayout>(R.id.tabs)
-        if (tabLayout.selectedTabPosition == 0) {
+        if (viewPager.currentItem == 0) {
+            // If already on the first page, exit the activity
             super.onBackPressedDispatcher.onBackPressed()
             finish()
         } else {
-            tabLayout.getTabAt(0)?.select()
+            // If not on the first page, navigate to the first page
+            viewPager.setCurrentItem(0, true) // true to animate the transition
+            bottomNavigationView.menu.getItem(0).isChecked = true // Sync BottomNavigationView
         }
     }
 
@@ -272,20 +278,25 @@ class MainActivity : BaseActivity() {
         var ready = false
 
         override fun getItemCount(): Int {
-            return if (ready) 2 else 0
+            return if (ready) 3 else 0
         }
 
         override fun createFragment(position: Int): Fragment {
-            return when (position) {
+            val fragment = when (position) {
                 0 -> {
-                    val fragment = ContactListFragment()
+                    ContactListFragment()
+                }
+                1 -> EventListFragment()
+                2 -> {
+                    val fragment = ShareContactFragment()
+                    val bundle = Bundle()
+                    bundle.putByteArray("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
+                    fragment.arguments = bundle
                     fragment
                 }
-                else -> {
-                    val fragment = EventListFragment()
-                    fragment
-                }
+                else -> ContactListFragment()
             }
+            return fragment
         }
     }
 

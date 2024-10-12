@@ -28,7 +28,6 @@ internal class EventListAdapter(
 ) {
     // group consecutive events from the same contact into one list entry
     private var eventGroups = compactEventList(events)
-    private val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     private fun appendIcon(iconsView: LinearLayout, eventType: Event.Type) {
         Log.d(this, "appendIcon() eventType: $eventType")
@@ -72,7 +71,7 @@ internal class EventListAdapter(
 
     override fun getView(position: Int, v: View?, parent: ViewGroup): View {
         // show list in reverse, latest element first
-        val view = v ?: inflater.inflate(R.layout.item_event, null)
+        val view = v ?: LayoutInflater.from(context).inflate(R.layout.item_event, parent, false)
         val eventGroup = eventGroups[eventGroups.size - position - 1]
         val latestEvent = eventGroup.last()
 

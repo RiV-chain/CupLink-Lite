@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/contacts"
+		android:icon="@drawable/selector_contact"
+		android:title="@string/title_contacts"/>
+	<item
+		android:id="@+id/history"
+		android:icon="@drawable/selector_history"
+		android:title="@string/title_calls"/>
+	<item
+		android:id="@+id/share_contact"
+		android:icon="@drawable/share_contact"
+		android:title="@string/contact_menu_share"/>
+</menu>
