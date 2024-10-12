@@ -122,7 +122,7 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
-            android:configChanges="uiMode"/>
+            android:configChanges="orientation|uiMode"/>
 
         <activity
             android:name=".QRShowActivity"
