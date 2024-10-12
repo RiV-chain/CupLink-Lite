@@ -296,12 +296,6 @@ class MainActivity : BaseActivity() {
                 }
                 else -> ContactListFragment()
             }
-
-            // Attach the fragment with a specific tag
-            //fm.supportFragmentManager.beginTransaction()
-            //    .replace(R.id.container, fragment, position.toString())
-            //    .commit()
-
             return fragment
         }
     }
@@ -320,12 +314,6 @@ class MainActivity : BaseActivity() {
     }
 
     companion object {
-
-        const val FRAGMENT_TAG_CONTACTS: String = "0"
-
-        const val FRAGMENT_TAG_HISTORY: String = "1"
-
-        const val FRAGMENT_TAG_SHARE: String = "2"
 
         private var addressWarningShown = false
 
