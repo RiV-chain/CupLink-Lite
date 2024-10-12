@@ -42,10 +42,8 @@ internal class ContactListAdapter(
 ) : ArrayAdapter<Contact?>(
     context, resource, contacts as List<Contact?>
 ) {
-    private val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val itemView = convertView ?: inflater.inflate(R.layout.item_contact, null)
+        val itemView = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false)
         val contact = contacts[position]
         val userIcon = itemView.findViewById<ImageView>(R.id.contact_state)
         val statusCircle = itemView.findViewById<ImageView>(R.id.status_circle)
@@ -57,7 +55,6 @@ internal class ContactListAdapter(
         // Create a circular bitmap from the blockies image
         val circularBitmap = getRoundedCroppedBitmap(blockiesBitmap)
         userIcon.setImageBitmap(circularBitmap)
-
 
         val p = Paint()
         p.color = when (contact.state) {

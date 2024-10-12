@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONException
 import org.rivchain.cuplink.adapter.ContactListAdapter
 import org.rivchain.cuplink.model.Contact

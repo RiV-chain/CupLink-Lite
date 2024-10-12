@@ -43,8 +43,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorPrimaryDark"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:background="@color/colorPrimaryDark"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

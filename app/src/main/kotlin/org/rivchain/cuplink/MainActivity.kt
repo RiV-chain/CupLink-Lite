@@ -64,31 +64,20 @@ class MainActivity : BaseActivity() {
 
         this.bottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
-            val selectedFragment: Fragment = when (item.itemId) {
+            when (item.itemId) {
                 R.id.contacts -> {
                     viewPager.currentItem = 0
-                    ContactListFragment()
                 }
                 R.id.history -> {
                     viewPager.currentItem = 1
-                    EventListFragment()
                 }
                 R.id.share_contact -> {
                     viewPager.currentItem = 2
-                    val fragment = ShareContactFragment()
-                    val bundle = Bundle()
-                    bundle.putByteArray("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
-                    fragment.arguments = bundle
-                    fragment
                 }
                 else -> {
                     viewPager.currentItem = 0
-                    ContactListFragment()
                 }
             }
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, selectedFragment)
-                .commit()
             true
         }
         bottomNavigationView.post {
