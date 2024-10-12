@@ -27,7 +27,6 @@ class ContactListFragment() : Fragment() {
 
     private lateinit var activity: BaseActivity
     private lateinit var contactListView: ListView
-    private lateinit var fabGen: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,19 +37,9 @@ class ContactListFragment() : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_contact_list, container, false)
         activity = requireActivity() as BaseActivity
 
-
-        fabGen = view.findViewById(R.id.fabGenerate)
         contactListView = view.findViewById(R.id.contactList)
         contactListView.onItemClickListener = onContactClickListener
         contactListView.onItemLongClickListener = onContactLongClickListener
-
-        val activity = requireActivity()
-
-        fabGen.setOnClickListener {
-            val intent = Intent(activity, QRShowActivity::class.java)
-            intent.putExtra("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
-            startActivity(intent)
-        }
 
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(refreshContactListReceiver, IntentFilter("refresh_contact_list"))

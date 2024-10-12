@@ -20,11 +20,12 @@ class QRShowActivity : BaseActivity() {
         setContentView(R.layout.activity_qrshow)
 
         if(intent == null || intent.extras == null || intent.extras?.get("EXTRA_CONTACT_PUBLICKEY") == null){
+            Toast.makeText(this, R.string.contact_public_key_invalid, Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
-        publicKey = intent.extras!!["EXTRA_CONTACT_PUBLICKEY"] as ByteArray
+        publicKey = intent.extras?.get("EXTRA_CONTACT_PUBLICKEY") as ByteArray
 
         title = getString(R.string.title_show_qr_code)
 
