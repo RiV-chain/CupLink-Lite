@@ -20,7 +20,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -30,9 +29,9 @@ import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.PowerManager
 
-// the main view with tabs
 class MainActivity : BaseActivity() {
 
+    private var currentFragmentTag: String? = null
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var viewPager: ViewPager2
 
@@ -67,26 +66,70 @@ class MainActivity : BaseActivity() {
             when (item.itemId) {
                 R.id.contacts -> {
                     viewPager.currentItem = 0
+                    currentFragmentTag = "0"
                 }
                 R.id.history -> {
                     viewPager.currentItem = 1
+                    currentFragmentTag = "1"
                 }
                 R.id.share_contact -> {
                     viewPager.currentItem = 2
+                    currentFragmentTag = "2"
                 }
                 else -> {
                     viewPager.currentItem = 0
+                    currentFragmentTag = "0"
                 }
             }
             true
         }
-        bottomNavigationView.post {
-            bottomNavigationView.selectedItemId = R.id.contacts
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(BUNDLE_CURRENT_FRAGMENT_TAG)) {
+            // restored session
+            currentFragmentTag =
+                savedInstanceState.getString(BUNDLE_CURRENT_FRAGMENT_TAG, "0")
+
+            when (currentFragmentTag) {
+                FRAGMENT_TAG_CONTACTS -> {
+                    viewPager.currentItem = 0
+                    bottomNavigationView.post {
+                        bottomNavigationView.selectedItemId = R.id.contacts
+                    }
+                }
+
+                FRAGMENT_TAG_HISTORY -> {
+                    viewPager.currentItem = 1
+                    bottomNavigationView.post {
+                        bottomNavigationView.selectedItemId = R.id.history
+                    }
+                }
+
+                FRAGMENT_TAG_SHARE_CONTACT -> {
+                    viewPager.currentItem = 2
+                    bottomNavigationView.post {
+                        bottomNavigationView.selectedItemId = R.id.share_contact
+                    }
+                }
+
+                else -> {
+                    viewPager.currentItem = 0
+                    bottomNavigationView.post {
+                        bottomNavigationView.selectedItemId = R.id.contacts
+                    }
+                }
+            }
+        } else {
+            // new session
+            currentFragmentTag = "0"
+            bottomNavigationView.post {
+                bottomNavigationView.selectedItemId = R.id.contacts
+            }
         }
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 bottomNavigationView.menu.getItem(position).isChecked = true
+                currentFragmentTag = position.toString()
             }
         })
 
@@ -274,7 +317,7 @@ class MainActivity : BaseActivity() {
         return true
     }
 
-    class ViewPagerFragmentAdapter(private val fm: FragmentActivity) : FragmentStateAdapter(fm) {
+    class ViewPagerFragmentAdapter(private val fm: MainActivity) : FragmentStateAdapter(fm) {
         var ready = false
 
         override fun getItemCount(): Int {
@@ -282,10 +325,9 @@ class MainActivity : BaseActivity() {
         }
 
         override fun createFragment(position: Int): Fragment {
+
             val fragment = when (position) {
-                0 -> {
-                    ContactListFragment()
-                }
+                0 -> ContactListFragment()
                 1 -> EventListFragment()
                 2 -> {
                     val fragment = ShareContactFragment()
@@ -313,7 +355,26 @@ class MainActivity : BaseActivity() {
         }
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        try {
+            super.onSaveInstanceState(outState)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        if (currentFragmentTag != null) {
+            outState.putString(BUNDLE_CURRENT_FRAGMENT_TAG, currentFragmentTag)
+        }
+    }
+
     companion object {
+
+        const val FRAGMENT_TAG_CONTACTS: String = "0"
+        const val FRAGMENT_TAG_HISTORY: String = "1"
+        const val FRAGMENT_TAG_SHARE_CONTACT: String = "2"
+
+        const val BUNDLE_CURRENT_FRAGMENT_TAG: String = "currentFragmentTag"
 
         private var addressWarningShown = false
 
