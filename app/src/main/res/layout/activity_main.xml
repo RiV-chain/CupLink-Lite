@@ -54,6 +54,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/colorPrimaryDark"
         android:paddingBottom="50dp"
-        app:menu="@menu/activity_home_bottom_navigation"/>
+        app:menu="@menu/menu_bottom_navigation"
+        app:itemTextAppearanceActive="@style/CustomBottomNavActiveLabel"
+        app:itemTextAppearanceInactive="@style/CustomBottomNavInactiveLabel"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

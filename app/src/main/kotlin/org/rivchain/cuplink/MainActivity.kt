@@ -17,6 +17,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
@@ -28,6 +29,7 @@ import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.PowerManager
+
 
 class MainActivity : BaseActivity() {
 
@@ -311,9 +313,14 @@ class MainActivity : BaseActivity() {
         updateEventTabTitle()
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         Log.d(this, "onCreateOptionsMenu()")
-        menuInflater.inflate(R.menu.menu_main_activity, menu)
+        menuInflater.inflate(R.menu.menu_settings, menu)
+
+        if (menu is MenuBuilder) {
+            menu.setOptionalIconsVisible(true)
+        }
         return true
     }
 

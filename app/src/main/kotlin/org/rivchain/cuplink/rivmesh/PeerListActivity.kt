@@ -196,7 +196,7 @@ class PeerListActivity : SelectPeerActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.save_peers, menu)
+        menuInflater.inflate(R.menu.menu_save_peers, menu)
         val item = menu.findItem(R.id.saveItem) as MenuItem
         item.setActionView(R.layout.menu_save)
         val saveButton = item

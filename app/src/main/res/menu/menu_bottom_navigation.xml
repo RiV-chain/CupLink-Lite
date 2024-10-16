@@ -10,6 +10,6 @@
 		android:title="@string/title_calls"/>
 	<item
 		android:id="@+id/share_contact"
-		android:icon="@drawable/share_contact"
+		android:icon="@drawable/selector_add_contact"
 		android:title="@string/contact_menu_share"/>
 </menu>
