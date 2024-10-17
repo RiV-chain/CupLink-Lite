@@ -68,13 +68,19 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <!-- Custom style for the popup items -->
-
-    <!-- Custom style for the popup background -->
-
     <!-- Style for rounded corners on ImageView -->
     <style name="RoundedCornerImageView" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item> <!-- Adjust this value as needed -->
+    </style>
+
+    <!-- Customize BottomNavigationView active label -->
+    <style name="CustomBottomNavActiveLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- Customize BottomNavigationView inactive label -->
+    <style name="CustomBottomNavInactiveLabel" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>
