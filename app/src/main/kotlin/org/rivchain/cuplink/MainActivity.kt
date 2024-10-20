@@ -337,7 +337,7 @@ class MainActivity : BaseActivity() {
                 0 -> ContactListFragment()
                 1 -> EventListFragment()
                 2 -> {
-                    val fragment = ShareContactFragment()
+                    val fragment = ConnectFragment()
                     val bundle = Bundle()
                     bundle.putByteArray("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
                     fragment.arguments = bundle
