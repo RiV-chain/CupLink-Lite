@@ -151,4 +151,5 @@
     <string name="mark_as_read">Mark as read</string>
     <string name="call">Call</string>
     <string name="camera_on_when_screen_locked">Camera On When Screen Locked</string>
+    <string name="connect">Connect</string>
 </resources>

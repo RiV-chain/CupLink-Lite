@@ -74,7 +74,7 @@ class MainActivity : BaseActivity() {
                     viewPager.currentItem = 1
                     currentFragmentTag = "1"
                 }
-                R.id.share_contact -> {
+                R.id.connect -> {
                     viewPager.currentItem = 2
                     currentFragmentTag = "2"
                 }
@@ -109,7 +109,7 @@ class MainActivity : BaseActivity() {
                 FRAGMENT_TAG_SHARE_CONTACT -> {
                     viewPager.currentItem = 2
                     bottomNavigationView.post {
-                        bottomNavigationView.selectedItemId = R.id.share_contact
+                        bottomNavigationView.selectedItemId = R.id.connect
                     }
                 }
 
