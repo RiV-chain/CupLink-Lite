@@ -15,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.nikhiljain.blockiesgenerator.BlockiesIconGenerator
 import org.json.JSONObject
 import org.libsodium.jni.Sodium
@@ -33,7 +32,6 @@ import java.lang.Integer.max
 import java.lang.Integer.min
 import java.net.ConnectException
 import java.net.Socket
-import java.security.MessageDigest
 
 internal class ContactListAdapter(
     context: Context,
