@@ -24,8 +24,6 @@ class ConnectFragment : Fragment() {
     ): View {
         val view: View = inflater.inflate(R.layout.fragment_connect, container, false)
         activity = requireActivity() as MainActivity
-        // Inflate the layout for this fragment
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         if (arguments == null || arguments?.get("EXTRA_CONTACT_PUBLICKEY") == null) {
             Toast.makeText(requireContext(), R.string.contact_public_key_invalid, Toast.LENGTH_LONG).show()

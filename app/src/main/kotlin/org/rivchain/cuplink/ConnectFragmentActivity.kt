@@ -2,6 +2,7 @@ package org.rivchain.cuplink
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -33,6 +34,9 @@ class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
             finish()
             return
         }
+
+        // Inflate the layout for this Activity
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         publicKey = intent.extras?.get("EXTRA_CONTACT_PUBLICKEY") as ByteArray
 

@@ -183,6 +183,8 @@ class ContactListFragment() : Fragment() {
         Log.d(this, "refreshContactList")
         val activity = requireActivity()
         val contacts = DatabaseCache.database.contacts.contactList.toMutableList()  // Ensure the list is mutable
+        // Sort the contacts by name alphabetically in-place
+        contacts.sortBy { it.name.lowercase() }
 
         activity.runOnUiThread {
             val adapter = ContactListAdapter(activity, R.layout.item_contact, contacts)
