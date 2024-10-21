@@ -38,10 +38,12 @@
     </androidx.cardview.widget.CardView>
 
     <!-- Floating Action Button Share -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fabShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         android:layout_marginLeft="@dimen/padding_40"
         android:layout_marginRight="@dimen/padding_40"
         app:layout_constraintBottom_toTopOf="@+id/qrCodeContainer"
@@ -50,21 +52,25 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintVertical_weight="1"
         app:srcCompat="@drawable/ic_baseline_share_24"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        android:background="@color/zxing_transparent"
+        android:contentDescription="@string/contact_menu_share" />/>
 
     <!-- Floating Action Button Manual Input -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fabManualInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         android:layout_marginLeft="@dimen/padding_40"
         android:layout_marginRight="@dimen/padding_40"
         app:layout_constraintBottom_toBottomOf="@+id/fabShare"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/fabShare"
-        app:srcCompat="@android:drawable/ic_menu_edit"
-        android:background="@color/colorPrimary"
+        app:srcCompat="@android:drawable/stat_notify_more"
         app:tint="@color/white"
+        android:background="@color/zxing_transparent"
         android:contentDescription="@string/add_contact_link_or_json" />
 
     <!-- Scan Me Text (Top) -->

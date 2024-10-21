@@ -8,11 +8,15 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.media.AudioManager
+import android.media.AudioRecordingConfiguration
 import android.os.Build
 import android.os.IBinder
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import org.rivchain.cuplink.CallService.Companion.SERVICE_CONTACT_KEY
 import org.rivchain.cuplink.model.Contact
+
 
 class CallStatusService : Service() {
 
@@ -72,7 +76,22 @@ class CallStatusService : Service() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun checkMultipleMicrophoneUsage(context: Context): Boolean {
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val recordingConfigs: List<AudioRecordingConfiguration> = audioManager.activeRecordingConfigurations
+
+        // Extract unique clientAudioSessionId values
+        val clientSessionIds = recordingConfigs.map { it.clientAudioSessionId }.toSet()
+
+        // Check if there are more than one unique clientAudioSessionId
+        return clientSessionIds.size > 1
+    }
+
     private fun buildNotification(contact: Contact?): Notification {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            checkMultipleMicrophoneUsage(this)
+        }
         // Create an Intent to open CallActivity when the user taps the notification
         val notificationIntent = Intent(this, CallActivity::class.java)
         notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT

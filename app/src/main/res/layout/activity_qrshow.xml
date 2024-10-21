@@ -46,25 +46,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/padding_20"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fabShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_baseline_share_24"
         app:tint="@color/white"
+        android:background="@color/zxing_transparent"
         android:layout_margin="@dimen/padding_50"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fabPresenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/qr_glass"
+        app:srcCompat="@android:drawable/stat_notify_more"
         app:tint="@color/white"
+        android:background="@color/zxing_transparent"
         android:layout_margin="@dimen/padding_50"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
