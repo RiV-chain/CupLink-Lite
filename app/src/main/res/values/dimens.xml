@@ -17,6 +17,8 @@
 
     <!-- Calls -->
     <dimen name="cardview_corner_radius">8dp</dimen>
+    <dimen name="image_corner_radius">20dp</dimen>
+    <dimen name="image_inner_corner_radius">16dp</dimen>
     <dimen name="password_text_size">25sp</dimen>
     <dimen name="name_text_size">20sp</dimen>
 

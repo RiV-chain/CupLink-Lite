@@ -21,8 +21,8 @@ open class AddContactActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         onServiceConnected()
-        if(intent!=null && intent.extras!=null) {
-            addContact(intent.extras!!["EXTRA_CONTACT"] as Contact)
+        if(intent!=null && intent.extras!=null && intent.extras?.get("EXTRA_CONTACT") != null) {
+            addContact(intent.extras?.get("EXTRA_CONTACT") as Contact)
         }
     }
 

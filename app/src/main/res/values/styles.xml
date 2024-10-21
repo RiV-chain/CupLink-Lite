@@ -71,7 +71,7 @@
     <!-- Style for rounded corners on ImageView -->
     <style name="RoundedCornerImageView" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item> <!-- Adjust this value as needed -->
+        <item name="cornerSize">@dimen/image_corner_radius</item> <!-- Adjust this value as needed -->
     </style>
 
     <!-- Customize BottomNavigationView active label -->
