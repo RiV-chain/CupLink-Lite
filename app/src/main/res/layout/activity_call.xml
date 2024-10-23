@@ -37,7 +37,7 @@
         android:gravity="center">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/settings_view"
+            android:id="@+id/call_status_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="50dp"
@@ -169,6 +169,20 @@
             </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
 
             <TextView
+                android:id="@+id/notificationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="invisible"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="15sp"
+                android:text="@string/microphone_usage_message"
+                app:layout_constraintStart_toEndOf="@+id/captureResolutionSliderWrapper"
+                app:layout_constraintTop_toTopOf="@+id/captureResolutionSliderWrapper"
+                app:layout_constraintEnd_toStartOf="@+id/captureFramerateSliderWrapper"/>
+
+            <TextView
                 android:id="@+id/captureFormatText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -254,12 +268,14 @@
 
             <Button
                 android:id="@+id/captureFramerate"
-                android:layout_width="50dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/flag_transparent"
                 android:text="FPS"
+                android:lines="3"
                 android:visibility="invisible"
-                android:textColor="@color/white"
+                android:textColor="@color/light_light_grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/call_layout" />
 

@@ -21,6 +21,7 @@ import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.OnTouchListener
 import android.view.View.VISIBLE
@@ -46,6 +47,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
 import org.rivchain.cuplink.call.CaptureQualityController
+import org.rivchain.cuplink.call.MicrophoneUsageObserver
 import org.rivchain.cuplink.call.RTCAudioManager
 import org.rivchain.cuplink.call.RTCCall
 import org.rivchain.cuplink.call.RTCPeerConnection
@@ -99,6 +101,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private lateinit var callStats: TextView
     private lateinit var callAddress: TextView
     private lateinit var callName: TextView
+    private lateinit var notificationText: TextView
 
     // control buttons
     private lateinit var acceptButton: ImageButton
@@ -132,6 +135,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private var isRemoteVideoAvailable = false // we receive a video feed
 
     private lateinit var contact: Contact
+    private lateinit var microphoneObserver: MicrophoneUsageObserver
 
     private val statsCollector = object : RTCStatsCollectorCallback {
         var statsReportUtil = StatsReportUtil()
@@ -161,6 +165,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         callStats = findViewById(R.id.callStats)
         //callAddress = findViewById(R.id.callAddress)
         callName = findViewById(R.id.callName)
+        notificationText = findViewById(R.id.notificationText)
         pipContainer = findViewById(R.id.pip_video_view_container)
         pipRenderer = findViewById(R.id.pip_video_view)
         fullscreenRenderer = findViewById(R.id.fullscreen_video_view)
@@ -181,17 +186,17 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
         // Background
         backgroundView = findViewById(R.id.background_view);
-        settingsView = findViewById(R.id.settings_view);
+        settingsView = findViewById(R.id.call_status_view);
 
         // make both invisible
         showPipView(false)
         showFullscreenView(false)
 
-        acceptButton.visibility = View.GONE
-        declineButton.visibility = View.GONE
-        toggleMicButton.visibility = View.GONE
-        toggleCameraButton.visibility = View.GONE
-        toggleFrontCameraButton.visibility = View.GONE
+        acceptButton.visibility = GONE
+        declineButton.visibility = GONE
+        toggleMicButton.visibility = GONE
+        toggleCameraButton.visibility = GONE
+        toggleFrontCameraButton.visibility = GONE
 
         if(intent == null || intent.extras == null || intent.extras?.get("EXTRA_CONTACT") == null){
             finish()
@@ -203,6 +208,20 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         eglBase = EglBase.create()
         proximitySensor = RTCProximitySensor(applicationContext)
         rtcAudioManager = RTCAudioManager(applicationContext)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val audioSessionsCounter = rtcAudioManager.getAudioSessionsCounter(this)
+            if (audioSessionsCounter > 0){
+                // notify user about MultipleMicrophoneUsage
+                notificationText.visibility = VISIBLE
+            } else {
+                notificationText.visibility = INVISIBLE
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            microphoneObserver = MicrophoneUsageObserver(this, notificationText)
+            microphoneObserver.startObserving()
+        }
 
         pipRenderer.init(eglBase)
         pipRenderer.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_BALANCED)
@@ -422,10 +441,10 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 }
                 CallState.CONNECTED -> {
                     // call started
-                    acceptButton.visibility = View.GONE
+                    acceptButton.visibility = GONE
                     declineButton.visibility = VISIBLE
                     //callStatus.text = getString(R.string.call_connected)
-                    callStatus.visibility = View.GONE
+                    callStatus.visibility = GONE
                     callDuration.visibility = VISIBLE
                     callDuration.setBase(SystemClock.elapsedRealtime());
                     callDuration.start()
@@ -524,7 +543,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             toggleFrontCameraButton.visibility = VISIBLE
             toggleCameraButton.setImageResource(R.drawable.ic_camera_off)
         } else {
-            toggleFrontCameraButton.visibility = View.GONE
+            toggleFrontCameraButton.visibility = GONE
             toggleCameraButton.setImageResource(R.drawable.ic_camera_on)
         }
     }
@@ -542,7 +561,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 if (callWasStarted) {
                     currentCall.setStatsCollector(null)
                 }
-                callStats.visibility = View.GONE
+                callStats.visibility = GONE
             }
         }
 
@@ -553,11 +572,11 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 controlPanel.visibility = VISIBLE
                 callName.visibility = VISIBLE
                 if (callWasStarted) {
-                    callStatus.visibility = View.GONE
+                    callStatus.visibility = GONE
                     callDuration.visibility = VISIBLE
                 } else {
                     callStatus.visibility = VISIBLE
-                    callDuration.visibility = View.GONE
+                    callDuration.visibility = GONE
                 }
                 setVideoPreferencesButtonsEnabled(isLocalVideoAvailable)
             }
@@ -566,8 +585,8 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 updateDebug(false)
                 controlPanel.visibility = INVISIBLE
                 callName.visibility = INVISIBLE
-                callStatus.visibility = View.GONE
-                callDuration.visibility = View.GONE
+                callStatus.visibility = GONE
+                callDuration.visibility = GONE
                 setVideoPreferencesButtonsEnabled(false)
             }
         }
@@ -611,7 +630,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             pipRenderer.visibility = VISIBLE
             changePipButton.bringToFront()
         } else {
-            pipRenderer.visibility = View.GONE
+            pipRenderer.visibility = GONE
         }
     }
 
@@ -782,7 +801,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             currentCall.initVideo()
             currentCall.initOutgoing()
 
-            acceptButton.visibility = View.GONE
+            acceptButton.visibility = GONE
             declineButton.visibility = VISIBLE
 
             initCall()
@@ -871,7 +890,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             Log.d(this, "currentCall not set")
             return
         }
-        acceptButton.visibility = View.GONE
+        acceptButton.visibility = GONE
         declineButton.visibility = VISIBLE
         currentCall.initVideo()
         currentCall.initIncoming()
@@ -1080,12 +1099,11 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         rtcAudioManager.setSpeakerphoneMode(speakerphoneMode)
         updateSpeakerphoneIcon()
         rtcAudioManager.start()
-
         setProximitySensorEnabled(!settings.disableProximitySensor)
 
         toggleMicButton.visibility = VISIBLE
         toggleCameraButton.visibility = VISIBLE
-        toggleFrontCameraButton.visibility = View.GONE
+        toggleFrontCameraButton.visibility = GONE
     }
 
     private fun setProximitySensorEnabled(enabled: Boolean) {
@@ -1224,6 +1242,12 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
             if (this::currentCall.isInitialized) {
                 currentCall.cleanup()
+            }
+
+            if(this::microphoneObserver.isInitialized){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    microphoneObserver.stopObserving()
+                }
             }
 
             if (callEventType != Event.Type.UNKNOWN) {
