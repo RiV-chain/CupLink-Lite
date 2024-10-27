@@ -8,7 +8,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
+import android.media.AudioRecordingConfiguration
 import android.os.Build
+import androidx.annotation.RequiresApi
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.ServiceUtil
 import org.rivchain.cuplink.util.Utils
@@ -172,6 +174,15 @@ class RTCAudioManager(private val context: Context) {
         audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
 
         updateAudioDeviceState()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun getAudioSessionsCounter(context: Context): Int {
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val recordingConfigs: List<AudioRecordingConfiguration> = audioManager.activeRecordingConfigurations
+
+        // Check if there are more than one unique clientAudioSessionId
+        return recordingConfigs.size
     }
 
     fun stop() {
