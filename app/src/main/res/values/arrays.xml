@@ -106,4 +106,41 @@
         <item>SCTP</item>
         <item>MPATH</item>
     </string-array>
+
+    <string-array name="animals">
+        <item>Ant</item>
+        <item>Bat</item>
+        <item>Bear</item>
+        <item>Bee</item>
+        <item>Bird</item>
+        <item>Cat</item>
+        <item>Crab</item>
+        <item>Deer</item>
+        <item>Dog</item>
+        <item>Dolphin</item>
+        <item>Duck</item>
+        <item>Eagle</item>
+        <item>Elephant</item>
+        <item>Fish</item>
+        <item>Fox</item>
+        <item>Frog</item>
+        <item>Giraffe</item>
+        <item>Hawk</item>
+        <item>Horse</item>
+        <item>Jaguar</item>
+        <item>Koala</item>
+        <item>Leopard</item>
+        <item>Lion</item>
+        <item>Monkey</item>
+        <item>Owl</item>
+        <item>Panda</item>
+        <item>Penguin</item>
+        <item>Rabbit</item>
+        <item>Seal</item>
+        <item>Shark</item>
+        <item>Snake</item>
+        <item>Tiger</item>
+        <item>Tortoise</item>
+    </string-array>
+
 </resources>
