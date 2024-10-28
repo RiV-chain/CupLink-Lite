@@ -83,6 +83,7 @@ class RTCCall : RTCPeerConnection {
     private var cameraWasEnabledBeforeScreenLocked = false
 
     override fun screenLocked() {
+        cameraWasEnabledBeforeScreenLocked = isCameraEnabled
         // Disable video stream
         if(!DatabaseCache.database.settings.cameraOnWhenScreenLocked) {
             setCameraEnabled(false)
@@ -90,7 +91,7 @@ class RTCCall : RTCPeerConnection {
     }
 
     override fun screenUnlocked() {
-        // Disable video stream (if needed)
+        // Enable video stream (if needed)
         if(!DatabaseCache.database.settings.cameraOnWhenScreenLocked) {
             setCameraEnabled(cameraWasEnabledBeforeScreenLocked)
         }
@@ -150,7 +151,6 @@ class RTCCall : RTCPeerConnection {
                         callActivity!!.onLocalVideoEnabled(false)
                         videoCapturer!!.stopCapture()
                     }
-                    this.cameraWasEnabledBeforeScreenLocked = this.isCameraEnabled
                     this.isCameraEnabled = enabled
                 }
             } catch (e: InterruptedException) {

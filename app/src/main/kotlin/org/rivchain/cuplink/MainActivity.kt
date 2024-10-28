@@ -30,7 +30,6 @@ import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.PowerManager
 
-
 class MainActivity : BaseActivity() {
 
     private var currentFragmentTag: String? = null
