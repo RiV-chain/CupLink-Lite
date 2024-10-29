@@ -47,7 +47,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
 import org.rivchain.cuplink.call.CaptureQualityController
-import org.rivchain.cuplink.call.MicrophoneUsageObserver
+import org.rivchain.cuplink.call.MicrophoneUsageMonitor
 import org.rivchain.cuplink.call.RTCAudioManager
 import org.rivchain.cuplink.call.RTCCall
 import org.rivchain.cuplink.call.RTCPeerConnection
@@ -135,7 +135,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private var isRemoteVideoAvailable = false // we receive a video feed
 
     private lateinit var contact: Contact
-    private lateinit var microphoneObserver: MicrophoneUsageObserver
+    private lateinit var microphoneUsageMonitor: MicrophoneUsageMonitor
 
     private val statsCollector = object : RTCStatsCollectorCallback {
         var statsReportUtil = StatsReportUtil()
@@ -216,11 +216,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             } else {
                 notificationText.visibility = INVISIBLE
             }
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            microphoneObserver = MicrophoneUsageObserver(this, notificationText)
-            microphoneObserver.startObserving()
         }
 
         pipRenderer.init(eglBase)
@@ -452,6 +447,18 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                     updateCameraButtons()
                     setContactState(Contact.State.CONTACT_ONLINE)
                     changeUiButton.visibility = VISIBLE
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        microphoneUsageMonitor = MicrophoneUsageMonitor(this, rtcAudioManager)
+                        microphoneUsageMonitor.startMonitoring { isMultipleRecording ->
+                            if (isMultipleRecording) {
+                                // Handle the case where multiple apps are using the microphone
+                                notificationText.visibility = VISIBLE
+                            } else {
+                                // Only your app is using the microphone
+                                notificationText.visibility = INVISIBLE
+                            }
+                        }
+                    }
                 }
                 CallState.DISMISSED -> {
                     // call did not start
@@ -1244,9 +1251,9 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 currentCall.cleanup()
             }
 
-            if(this::microphoneObserver.isInitialized){
+            if(this::microphoneUsageMonitor.isInitialized){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    microphoneObserver.stopObserving()
+                    microphoneUsageMonitor.stopMonitoring()
                 }
             }
 
