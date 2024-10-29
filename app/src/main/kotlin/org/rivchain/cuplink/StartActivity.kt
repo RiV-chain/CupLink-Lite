@@ -476,9 +476,16 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     }
 
     private fun generateRandomUserName(): String {
-        val user = getString(R.string.startup_name_prefix)
-        val id = UUID.randomUUID().toString().substring(0..6)
-        return "$user-$id"
+        // Load the string arrays from resources
+        val adjectives = this.resources.getStringArray(R.array.adjectives)
+        val animals = this.resources.getStringArray(R.array.animals)
+
+        // Pick a random adjective and a random animal
+        val randomAdjective = adjectives.random()
+        val randomAnimal = animals.random()
+
+        // Return the concatenated result
+        return "$randomAdjective$randomAnimal"
     }
 
     private fun showPolicy(language: String) {

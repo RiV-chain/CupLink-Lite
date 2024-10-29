@@ -143,4 +143,40 @@
         <item>Tortoise</item>
     </string-array>
 
+    <string-array name="adjectives">
+        <item>Bold</item>
+        <item>Brave</item>
+        <item>Bright</item>
+        <item>Calm</item>
+        <item>Cool</item>
+        <item>Fair</item>
+        <item>Fine</item>
+        <item>Fresh</item>
+        <item>Glad</item>
+        <item>Good</item>
+        <item>Kind</item>
+        <item>Neat</item>
+        <item>Noble</item>
+        <item>Pure</item>
+        <item>Quick</item>
+        <item>Rare</item>
+        <item>Real</item>
+        <item>Rich</item>
+        <item>Safe</item>
+        <item>Sharp</item>
+        <item>Smart</item>
+        <item>Strong</item>
+        <item>Sweet</item>
+        <item>Tall</item>
+        <item>Tidy</item>
+        <item>Tough</item>
+        <item>True</item>
+        <item>Vast</item>
+        <item>Warm</item>
+        <item>Wise</item>
+        <item>Young</item>
+        <item>Zany</item>
+    </string-array>
+
+
 </resources>
