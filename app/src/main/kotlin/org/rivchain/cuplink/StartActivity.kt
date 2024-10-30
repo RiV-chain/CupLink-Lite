@@ -337,12 +337,12 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
 
         // Apply filters and other properties to EditText if needed
         etUsername.filters = arrayOf(getEditTextFilter())
-
+        val username = generateRandomUserName()
+        etUsername.hint = username
         // Build the dialog
         val builder = AlertDialog.Builder(this, R.style.FullPPTCDialog)
         .setView(dialogView)
         .setNegativeButton(R.string.button_skip) { dialog: DialogInterface?, _: Int ->
-            val username = generateRandomUserName()
             if (Utils.isValidName(username)) {
                 DatabaseCache.database.settings.username = username
                 DatabaseCache.save()
