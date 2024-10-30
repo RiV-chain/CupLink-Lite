@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.rivchain.cuplink.BaseActivity
 import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.R
@@ -25,7 +26,7 @@ import java.net.HttpURLConnection
 import java.net.URI
 import java.net.URL
 
-open class TestPortActivity: AppCompatActivity(), ServiceConnection {
+open class TestPortActivity: BaseActivity(), ServiceConnection {
 
     protected var service: MainService? = null
 

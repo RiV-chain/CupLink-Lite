@@ -1,21 +1,36 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="@drawable/dialog_rounded_corner">
 
+    <TextView
+        android:id="@+id/checkboxDialogTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_margin="10dp"
+        android:textSize="@dimen/name_text_size"
+        android:text="@string/add_peer"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/schema"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="10dp"
         app:boxBackgroundMode="none"
         android:background="@drawable/edit_text_rounded_corner"
-        android:textColorHint="@color/light_grey">
+        android:textColorHint="@color/light_grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkboxDialogTitle">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/schemaInput"
             android:layout_width="match_parent"
@@ -29,14 +44,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ip"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/schema"
-        app:layout_constraintTop_toBottomOf="@+id/schema"
         android:layout_margin="10dp"
         app:boxBackgroundMode="none"
         android:background="@drawable/edit_text_rounded_corner"
-        android:textColorHint="@color/light_grey">
+        android:textColorHint="@color/light_grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/schema">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ipInput"
@@ -53,14 +69,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/port"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/schema"
-        app:layout_constraintTop_toBottomOf="@+id/ip"
         android:layout_margin="10dp"
         app:boxBackgroundMode="none"
         android:background="@drawable/edit_text_rounded_corner"
-        android:textColorHint="@color/light_grey">
+        android:textColorHint="@color/light_grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ip">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/portInput"
@@ -84,26 +101,27 @@
         app:ccp_showFullName="true"
         app:ccp_showPhoneCode="false"
         app:ccp_showNameCode="false"
-        app:ccpDialog_backgroundColor="@color/colorBackgroundDark"
+        app:ccp_textGravity="LEFT"
+        app:ccp_textSize="18sp"
+        app:ccpDialog_backgroundColor="@color/colorBackground"
         app:ccpDialog_textColor="@color/light_grey"
-        app:layout_constraintEnd_toEndOf="@+id/schema"
-        app:layout_constraintTop_toBottomOf="@+id/port"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/port"
         android:background="@drawable/edit_text_rounded_corner"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/add"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/next_button_background"
         android:text="Add"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="@+id/schema"
-        app:layout_constraintTop_toBottomOf="@+id/ccp"
-        android:background="@drawable/next_button_background"
+        android:textColor="@color/white"
         app:backgroundTint="@null"
-        android:textColor="@color/white"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ccp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

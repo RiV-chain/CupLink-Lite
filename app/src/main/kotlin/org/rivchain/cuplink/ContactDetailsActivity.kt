@@ -161,8 +161,7 @@ class ContactDetailsActivity : BaseActivity() {
     private fun showChangePublicKeyDialog() {
         Log.d(this, "showChangePublicKeyDialog()")
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_contact_change_public_key, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        val dialog = b.setView(view).create()
+        val dialog = createBlurredPPTCDialog(view)
         val publicKeyInput = view.findViewById<TextInputEditText>(R.id.PublicKeyEditText)
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
@@ -193,12 +192,11 @@ class ContactDetailsActivity : BaseActivity() {
 
     private fun showChangeNameDialog() {
         Log.d(this, "showChangeNameDialog()")
-        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_contact_change_name, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        val dialog = b.setView(view).create()
-        val nameEditText = view.findViewById<TextInputEditText>(R.id.NameEditText)
-        val cancelButton = view.findViewById<Button>(R.id.CancelButton)
-        val okButton = view.findViewById<Button>(R.id.OkButton)
+        val dialogView: View = LayoutInflater.from(this).inflate(R.layout.dialog_contact_change_name, null)
+        val dialog = createBlurredPPTCDialog(dialogView)
+        val nameEditText = dialogView.findViewById<TextInputEditText>(R.id.NameEditText)
+        val cancelButton = dialogView.findViewById<Button>(R.id.CancelButton)
+        val okButton = dialogView.findViewById<Button>(R.id.OkButton)
 
         nameEditText.setText(contactNameEdit.text, TextView.BufferType.EDITABLE)
 

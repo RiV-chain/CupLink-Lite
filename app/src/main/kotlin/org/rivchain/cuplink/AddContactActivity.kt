@@ -9,7 +9,6 @@ import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import org.json.JSONException
 import org.json.JSONObject
 import org.rivchain.cuplink.model.Contact
@@ -81,18 +80,17 @@ open class AddContactActivity: BaseActivity() {
         }
     }
 
-    protected open fun showPubkeyConflictDialog(newContact: Contact, other_contact: Contact) {
+    protected open fun showPubkeyConflictDialog(newContact: Contact, otherContact: Contact) {
         pause()
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_add_contact_pubkey_conflict, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        val dialog = b.setView(view).create()
+        val dialog = createBlurredPPTCDialog(view)
         val nameTextView =
             view.findViewById<TextView>(R.id.public_key_conflicting_contact_textview)
         val abortButton = view.findViewById<Button>(R.id.public_key_conflict_abort_button)
         val replaceButton = view.findViewById<Button>(R.id.public_key_conflict_replace_button)
-        nameTextView.text = other_contact.name
+        nameTextView.text = otherContact.name
         replaceButton.setOnClickListener {
-            deleteContact(other_contact.publicKey)
+            deleteContact(otherContact.publicKey)
             addContact(newContact)
 
             // done
@@ -110,8 +108,7 @@ open class AddContactActivity: BaseActivity() {
     protected open fun showNameConflictDialog(newContact: Contact, other_contact: Contact) {
         pause()
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_add_contact_name_conflict, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        val dialog = b.setView(view).create()
+        val dialog = createBlurredPPTCDialog(view)
         val nameEditText = view.findViewById<TextInputEditText>(R.id.conflict_contact_edit_textview)
         val abortButton = view.findViewById<Button>(R.id.conflict_contact_abort_button)
         val replaceButton = view.findViewById<Button>(R.id.conflict_contact_replace_button)
@@ -162,18 +159,17 @@ open class AddContactActivity: BaseActivity() {
         val et = dialogView.findViewById<TextInputEditText>(R.id.editTextInput)
         val cancelButton = dialogView.findViewById<Button>(R.id.CancelButton)
         val okButton = dialogView.findViewById<Button>(R.id.OkButton)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-            .setView(dialogView) // Set the custom view to the dialog
-        val dialog = b.create()
+         // Set the custom view to the dialog
         okButton.setOnClickListener{
-                try {
-                    val data = et.text.toString()
-                    addContact(data)
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                    Toast.makeText(this, R.string.invalid_qr_code_data, Toast.LENGTH_SHORT).show()
-                }
+            try {
+                val data = et.text.toString()
+                addContact(data)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                Toast.makeText(this, R.string.invalid_qr_code_data, Toast.LENGTH_SHORT).show()
             }
+        }
+        val dialog = createBlurredPPTCDialog(dialogView)
         cancelButton.setOnClickListener{
             dialog.cancel()
             resume()

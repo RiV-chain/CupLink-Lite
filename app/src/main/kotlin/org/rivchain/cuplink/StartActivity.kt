@@ -42,7 +42,6 @@ import org.rivchain.cuplink.util.PermissionManager.haveCameraPermission
 import org.rivchain.cuplink.util.PermissionManager.haveMicrophonePermission
 import org.rivchain.cuplink.util.PermissionManager.havePostNotificationPermission
 import org.rivchain.cuplink.util.Utils
-import java.util.UUID
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 /*
@@ -337,12 +336,12 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
 
         // Apply filters and other properties to EditText if needed
         etUsername.filters = arrayOf(getEditTextFilter())
-
+        val username = generateRandomUserName()
+        etUsername.hint = username
         // Build the dialog
         val builder = AlertDialog.Builder(this, R.style.FullPPTCDialog)
         .setView(dialogView)
         .setNegativeButton(R.string.button_skip) { dialog: DialogInterface?, _: Int ->
-            val username = generateRandomUserName()
             if (Utils.isValidName(username)) {
                 DatabaseCache.database.settings.username = username
                 DatabaseCache.save()
@@ -436,9 +435,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     private fun showDatabasePasswordDialog() {
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_database_password, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        b.setView(view)
-        val dialog = b.create()
+        val dialog = createBlurredPPTCDialog(view)
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
 
@@ -489,7 +486,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     }
 
     private fun showPolicy(language: String) {
-        val view: View = LayoutInflater.from(this).inflate(R.layout.policy_layout, null)
+        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_policy, null)
         val msg = view.findViewById<View>(R.id.policy) as TextView
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             msg.text = Html.fromHtml(Utils.readResourceFile(this, R.raw.pp_tc), Html.FROM_HTML_OPTION_USE_CSS_COLORS)
