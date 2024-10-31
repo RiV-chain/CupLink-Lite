@@ -32,6 +32,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.rivchain.cuplink.BaseActivity.Companion.isNightmodeEnabled
 import org.rivchain.cuplink.CallService.Companion.ID_ONGOING_CALL_NOTIFICATION
+import org.rivchain.cuplink.CallStatusService.Companion.CHANNEL_ID
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
@@ -452,5 +453,45 @@ internal object NotificationUtils {
             }
             CarNotificationManager.from(service).notify(ID_ONGOING_CALL_NOTIFICATION, builder)
         }.start()
+    }
+
+    private fun createNotificationChannel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "Call Status Service",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val manager = context.getSystemService(NotificationManager::class.java)
+            manager?.createNotificationChannel(channel)
+        }
+    }
+
+    fun buildNotification(context: Context, contact: Contact?): Notification {
+        // Create an Intent to open CallActivity when the user taps the notification
+        val notificationIntent = Intent(context, CallActivity::class.java)
+        notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+
+        // Create a PendingIntent that wraps the intent for launching CallActivity
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        } else {
+            PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+        val text: String = if(contact != null){
+            "Calling "+contact.name
+        } else {
+            ""
+        }
+        createNotificationChannel(context)
+        return NotificationCompat.Builder(context, CHANNEL_ID)
+            .setContentTitle(text)
+            .setSmallIcon(R.drawable.cup_link_small)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent) // Attach the PendingIntent to the notification
+            .setAutoCancel(false) // Make sure notification is not dismissed when tapped
+            .setShowWhen(false)
+            .setUsesChronometer(true)
+            .build()
     }
 }
