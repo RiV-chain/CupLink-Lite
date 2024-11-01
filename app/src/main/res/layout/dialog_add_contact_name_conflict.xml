@@ -77,7 +77,7 @@
         app:layout_constraintStart_toEndOf="@+id/conflict_contact_abort_button"
         app:layout_constraintEnd_toStartOf="@+id/conflict_contact_rename_button"
         android:fontFamily="@font/lato_bold"
-        android:textSize="18sp"
+        android:textSize="@dimen/button_test_size"
         android:text="@string/button_replace"
         android:textColor="@color/white" />
 
@@ -94,7 +94,7 @@
         app:layout_constraintStart_toEndOf="@+id/conflict_contact_replace_button"
         app:layout_constraintEnd_toEndOf="parent"
         android:fontFamily="@font/lato_bold"
-        android:textSize="18sp"
+        android:textSize="@dimen/button_test_size"
         android:text="@string/button_rename"
         android:textColor="@color/white" />
 

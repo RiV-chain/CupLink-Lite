@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/public_key_conflict_replace_button"
         android:fontFamily="@font/lato_bold"
-        android:textSize="18sp"
+        android:textSize="@dimen/button_test_size"
         android:text="@string/button_abort"
         android:textColor="@color/white" />
 
@@ -66,7 +66,7 @@
         app:layout_constraintStart_toEndOf="@+id/public_key_conflict_abort_button"
         app:layout_constraintEnd_toEndOf="parent"
         android:fontFamily="@font/lato_bold"
-        android:textSize="18sp"
+        android:textSize="@dimen/button_test_size"
         android:text="@string/button_replace"
         android:textColor="@color/white" />
 

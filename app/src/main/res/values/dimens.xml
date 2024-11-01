@@ -23,4 +23,5 @@
     <dimen name="name_text_size">20sp</dimen>
 
     <dimen name="radio_button_margin_bottom">10dp</dimen>
+    <dimen name="button_test_size">18sp</dimen>
 </resources>

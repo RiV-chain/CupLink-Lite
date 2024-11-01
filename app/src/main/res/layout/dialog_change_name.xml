@@ -61,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/OkButton"
         android:fontFamily="@font/lato_bold"
-        android:textSize="18sp"
+        android:textSize="@dimen/button_test_size"
         android:text="@string/button_cancel"
         android:textColor="@color/white" />
 
@@ -79,7 +79,7 @@
         app:layout_constraintStart_toEndOf="@+id/CancelButton"
         app:layout_constraintEnd_toEndOf="parent"
         android:fontFamily="@font/lato_bold"
-        android:textSize="18sp"
+        android:textSize="@dimen/button_test_size"
         android:text="@string/button_ok"
         android:textColor="@color/white"
         android:enabled="false"/>

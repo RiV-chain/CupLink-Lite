@@ -120,6 +120,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:backgroundTint="@null"
+        android:textSize="@dimen/button_test_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ccp" />
