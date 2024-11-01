@@ -17,12 +17,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.rivchain.cuplink.BaseActivity
 import org.rivchain.cuplink.DatabaseCache
+import org.rivchain.cuplink.DatabaseCache.Companion.database
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.R
+import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.rivmesh.util.Utils
 import org.rivchain.cuplink.util.Log
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
+import java.net.InetAddress
 import java.net.URI
 import java.net.URL
 
@@ -48,13 +51,15 @@ open class TestPortActivity: BaseActivity(), ServiceConnection {
      * Run te after the onServiceConnected!
      */
     protected fun getPublicPeerPort(): Int {
-        val listenArray = DatabaseCache.database.mesh.getListen()
+        val listenArray = database.mesh.getListen()
         val port: Int
         if(listenArray.length() == 0){
             // Generate a random port and continue
             port = Utils.generateRandomPort()
+            val localPeer = PeerInfo("tcp", InetAddress.getByName("0.0.0.0"), port, null, false)
+            database.mesh.setListen(setOf(localPeer))
         } else {
-            val listen = DatabaseCache.database.mesh.getListen().get(0).toString()
+            val listen = database.mesh.getListen().get(0).toString()
             port = URI(listen).port
         }
         return port

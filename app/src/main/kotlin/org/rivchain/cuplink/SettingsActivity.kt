@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 import org.json.JSONArray
+import org.rivchain.cuplink.DatabaseCache.Companion.database
 import org.rivchain.cuplink.rivmesh.PeerListActivity
 import org.rivchain.cuplink.rivmesh.ConfigurePublicPeerActivity
 import org.rivchain.cuplink.rivmesh.SelectPeerActivity.Companion.PEER_LIST
@@ -64,8 +65,6 @@ class SettingsActivity : BaseActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        initViews()
-
         requestPeersLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == RESULT_OK) {
@@ -73,17 +72,20 @@ class SettingsActivity : BaseActivity() {
                 }
             }
         requestListenLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                findViewById<SwitchMaterial>(R.id.publicPeerLayoutSwitch).isChecked = result.resultCode == RESULT_OK
+                val publicPeerUrl = findViewById<TextView>(R.id.publicPeerUrl)
+                publicPeerUrl.text = jsonArrayToString(database.mesh.getListen())
                 // refresh settings
                 DatabaseCache.save()
-                initViews()
+                restartService()
             }
         initViews()
     }
 
     private fun initViews() {
 
-        val settings = DatabaseCache.database.settings
+        val settings = database.settings
 
         findViewById<TextView>(R.id.nameTv)
             .text = settings.username.ifEmpty { getString(R.string.no_value) }
@@ -115,13 +117,8 @@ class SettingsActivity : BaseActivity() {
         findViewById<View>(R.id.publicKeyLayout)
             .setOnClickListener { Toast.makeText(this@SettingsActivity, R.string.setting_read_only, Toast.LENGTH_SHORT).show() }
 
-        findViewById<TextView>(R.id.publicPeerUrl)
-            .text = jsonArrayToString(DatabaseCache.database.mesh.getListen())
-        findViewById<View>(R.id.publicPeerLayout)
-            .setOnClickListener {
-                val intent = Intent(this, ConfigurePublicPeerActivity::class.java)
-                requestListenLauncher!!.launch(intent)
-            }
+        val publicPeerUrl = findViewById<TextView>(R.id.publicPeerUrl)
+        publicPeerUrl.text = jsonArrayToString(database.mesh.getListen())
 
         findViewById<SwitchMaterial>(R.id.blockUnknownSwitch).apply {
             isChecked = settings.blockUnknown
@@ -203,18 +200,18 @@ class SettingsActivity : BaseActivity() {
         }
 
         findViewById<SwitchMaterial>(R.id.searchMulticastPeersSwitch).apply {
-            isChecked = DatabaseCache.database.mesh.multicastListen
+            isChecked = database.mesh.multicastListen
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                DatabaseCache.database.mesh.multicastListen = isChecked
+                database.mesh.multicastListen = isChecked
                 DatabaseCache.save()
                 restartService()
             }
         }
 
         findViewById<SwitchMaterial>(R.id.discoverableOverMulticastSwitch).apply {
-            isChecked = DatabaseCache.database.mesh.multicastBeacon
+            isChecked = database.mesh.multicastBeacon
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                DatabaseCache.database.mesh.multicastBeacon = isChecked
+                database.mesh.multicastBeacon = isChecked
                 DatabaseCache.save()
                 restartService()
             }
@@ -319,6 +316,21 @@ class SettingsActivity : BaseActivity() {
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.showUsernameAsLogo = isChecked
                 DatabaseCache.save()
+            }
+        }
+
+        findViewById<SwitchMaterial>(R.id.publicPeerLayoutSwitch).apply {
+            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                if (isChecked) {
+                    val intent =
+                        Intent(this@SettingsActivity, ConfigurePublicPeerActivity::class.java)
+                    requestListenLauncher!!.launch(intent)
+                } else {
+                    database.mesh.setListen(setOf())
+                    publicPeerUrl.text = ""
+                    DatabaseCache.save()
+                    restartService()
+                }
             }
         }
 
