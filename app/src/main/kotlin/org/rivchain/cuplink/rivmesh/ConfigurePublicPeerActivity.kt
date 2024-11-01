@@ -57,10 +57,8 @@ class ConfigurePublicPeerActivity: TestPortActivity() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_configure_public_peer_activity, null)
 
         // Create the AlertDialog
-        publicPeerAgreementDialog = AlertDialog.Builder(this, R.style.PPTCDialog)
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
+        publicPeerAgreementDialog = createBlurredPPTCDialog(dialogView)
+        publicPeerAgreementDialog.setCancelable(false)
         portInfoText = dialogView.findViewById(R.id.portInfoText)
         portStatus = dialogView.findViewById(R.id.portStatus)
         portStatusText = dialogView.findViewById(R.id.portStatusText)

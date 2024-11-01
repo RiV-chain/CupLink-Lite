@@ -428,8 +428,7 @@ class SettingsActivity : BaseActivity() {
         Log.d(this, "showChangeUsernameDialog()")
         val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        val dialog = b.setView(view).create()
+        val dialog = createBlurredPPTCDialog(view)
         val nameEditText = view.findViewById<TextInputEditText>(R.id.NameEditText)
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
@@ -459,8 +458,7 @@ class SettingsActivity : BaseActivity() {
     private fun showChangeConnectRetriesDialog() {
         val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_retries, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        val dialog = b.setView(view).create()
+        val dialog = createBlurredPPTCDialog(view)
         val connectRetriesEditText = view.findViewById<TextView>(R.id.ConnectRetriesEditText)
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
@@ -495,9 +493,7 @@ class SettingsActivity : BaseActivity() {
     private fun showChangeConnectTimeoutDialog() {
         val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_timeout, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        b.setView(view)
-        val dialog = b.create()
+        val dialog = createBlurredPPTCDialog(view)
         val connectTimeoutEditText = view.findViewById<TextView>(R.id.ConnectTimeoutEditText)
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
@@ -531,8 +527,7 @@ class SettingsActivity : BaseActivity() {
 
     private fun showDatabasePasswordDialog() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_database_password, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        val dialog = b.setView(view).create()
+        val dialog = createBlurredPPTCDialog(view)
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.DatabasePasswordEditText)
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
@@ -553,12 +548,10 @@ class SettingsActivity : BaseActivity() {
     private fun showMenuPasswordDialog() {
         val menuPassword = DatabaseCache.database.settings.menuPassword
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_menu_password, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        b.setView(view)
+        val dialog = createBlurredPPTCDialog(view)
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.MenuPasswordEditText)
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
-        val dialog = b.create()
         passwordEditText.setText(menuPassword)
         okButton.setOnClickListener {
             val newPassword = passwordEditText.text.toString()
@@ -686,8 +679,7 @@ class SettingsActivity : BaseActivity() {
             radioGroup.addView(radioButton)
         }
 
-        val builder = AlertDialog.Builder(this, R.style.PPTCDialog).setView(dialogView)
-        val dialog = builder.create()
+        val dialog = createBlurredPPTCDialog(dialogView)
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId >= 0 && checkedId < arrayValues.size) {

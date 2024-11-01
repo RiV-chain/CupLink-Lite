@@ -39,10 +39,8 @@ open class AutoTestPublicPeerActivity: TestPortActivity() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_autotest_public_peer_activity, null)
 
         // Create the AlertDialog
-        publicPeerAgreementDialog = AlertDialog.Builder(this, R.style.PPTCDialog)
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
+        publicPeerAgreementDialog = createBlurredPPTCDialog(dialogView)
+        publicPeerAgreementDialog.setCancelable(false)
         val msg = dialogView.findViewById<TextView>(R.id.guideInfoText)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             msg.text = Html.fromHtml(readResourceFile(this, R.raw.public_peer), Html.FROM_HTML_MODE_COMPACT)

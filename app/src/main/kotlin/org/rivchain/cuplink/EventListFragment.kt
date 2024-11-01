@@ -123,10 +123,8 @@ class EventListFragment() : Fragment() {
         listViewEventOptions.adapter = adapter
 
         // Create and show the dialog
-        val dialog = AlertDialog.Builder(activity, R.style.PPTCDialog)
-            .setView(dialogView)
-            .setCancelable(true)
-            .create()
+        val dialog = activity.createBlurredPPTCDialog(dialogView)
+        dialog.setCancelable(true)
 
         listViewEventOptions.setOnItemClickListener { _, _, position, _ ->
             val selectedOption = options[position]
@@ -251,8 +249,7 @@ class EventListFragment() : Fragment() {
         // prefer latest event that has an address
         val latestEvent = eventGroup.lastOrNull { it.address != null } ?: eventGroup.last()
         val view: View = LayoutInflater.from(activity).inflate(R.layout.dialog_add_contact, null)
-        val b = AlertDialog.Builder(activity, R.style.PPTCDialog)
-        val dialog = b.setView(view).create()
+        val dialog = activity.createBlurredPPTCDialog(view)
         val nameEditText = view.findViewById<TextInputEditText>(R.id.NameEditText)
         val exitButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)

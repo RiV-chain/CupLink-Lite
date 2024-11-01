@@ -156,11 +156,10 @@ class BackupActivity : BaseActivity() {
         callsCheckbox.setTextColor(colorStateList)
         settingsCheckbox.setTextColor(colorStateList)
 
-        val builder = AlertDialog.Builder(this, R.style.PPTCDialog).setView(dialogView)
-        val alertDialog = builder.create()
+        val dialog = createBlurredPPTCDialog(dialogView)
 
         cancelButton.setOnClickListener {
-            alertDialog.dismiss()
+            dialog.dismiss()
         }
 
         okButton.setOnClickListener {
@@ -187,10 +186,10 @@ class BackupActivity : BaseActivity() {
 
             // Restart service
             restartService()
-            alertDialog.dismiss()
+            dialog.dismiss()
         }
 
-        alertDialog.setCancelable(false) // prevent key shortcut to cancel dialog
-        alertDialog.show()
+        dialog.setCancelable(false) // prevent key shortcut to cancel dialog
+        dialog.show()
     }
 }

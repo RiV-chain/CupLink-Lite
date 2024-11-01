@@ -13,7 +13,6 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.hbb20.CountryCodePicker
@@ -61,9 +60,8 @@ class PeerListActivity : SelectPeerActivity() {
 
     private fun editPeerListUrl() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_edit_peer_list_url, null)
-        val ab: AlertDialog.Builder = AlertDialog.Builder(this, R.style.PPTCDialog)
-        ab.setCancelable(true).setView(view)
-        val ad = ab.show()
+        val dialog = createBlurredPPTCDialog(view)
+        dialog.setCancelable(true)
         val saveButton = view.findViewById<Button>(R.id.save)
         val urlInput = view.findViewById<TextView>(R.id.urlInput)
         urlInput.text = peerListUrl
@@ -78,13 +76,16 @@ class PeerListActivity : SelectPeerActivity() {
             val preferences =
                 PreferenceManager.getDefaultSharedPreferences(this.baseContext)
             preferences.edit().putString(PEER_LIST, peerListUrl).apply()
-            ad.dismiss()
+            dialog.dismiss()
         }
+        dialog.show()
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun addNewPeer() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_add_peer, null)
+        val dialog = createBlurredPPTCDialog(view)
+
         val countryCode: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             this.resources.configuration.locales[0].country
         } else {
@@ -106,12 +107,11 @@ class PeerListActivity : SelectPeerActivity() {
             R.layout.spinner_item,
             resources.getStringArray(R.array.schemas),
             schemaInput
-        );
+        )
         view.findViewById<CountryCodePicker>(R.id.ccp).setCountryForNameCode(countryCode)
-        val ab: AlertDialog.Builder = AlertDialog.Builder(this, R.style.PPTCDialog)
-        ab.setCancelable(true).setView(view)
-        val ad = ab.show()
         val addButton = view.findViewById<Button>(R.id.add)
+
+        dialog.setCancelable(true)
         addButton.setOnClickListener{
             val portInput = view.findViewById<TextView>(R.id.portInput)
             val ccpInput = view.findViewById<CountryCodePicker>(R.id.ccp)
@@ -154,10 +154,16 @@ class PeerListActivity : SelectPeerActivity() {
                     val selectAdapter = (findViewById<ListView>(R.id.peerList).adapter as SelectPeerInfoListAdapter)
                     selectAdapter.addItem(0, pi)
                     selectAdapter.notifyDataSetChanged()
-                    ad.dismiss()
+                    dialog.dismiss()
                 }
             }
         }
+        dialog.show()
+        // Set the width of the dialog to match the screen width
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window!!.attributes)
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        dialog.window!!.attributes = layoutParams
     }
 
     private fun onClickSchemaList(v: View) {
@@ -172,7 +178,7 @@ class PeerListActivity : SelectPeerActivity() {
     private fun getPopupWindow(
         textViewResourceId: Int,
         objects: Array<String>,
-        editText: TextView
+        editText: TextView,
     ): PopupWindow {
         // initialize a pop up window type
         val popupWindow = PopupWindow(this)

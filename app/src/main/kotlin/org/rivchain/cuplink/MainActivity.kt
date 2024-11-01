@@ -257,10 +257,8 @@ class MainActivity : BaseActivity() {
     // request password for setting activity
     private fun showMenuPasswordDialog(itemId: Int, menuPassword: String) {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_database_password, null)
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-        b.setView(view)
-        b.setCancelable(false)
-        val dialog = b.create()
+        val dialog = createBlurredPPTCDialog(view)
+        dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
 
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.change_password_edit_textview)

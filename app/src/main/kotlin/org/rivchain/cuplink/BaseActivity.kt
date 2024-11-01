@@ -3,26 +3,127 @@ package org.rivchain.cuplink
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnAttachStateChangeListener
+import android.view.Window
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
 import java.util.Date
+import java.util.function.Consumer
+
 
 /*
  * Base class for every Activity
 */
 open class BaseActivity : AppCompatActivity() {
 
+
+    private val mBackgroundBlurRadius = 80
+    private val mBlurBehindRadius = 20
+
+    // We set a different dim amount depending on whether window blur is enabled or disabled
+    private val mDimAmountWithBlur = 0.1f
+    private val mDimAmountNoBlur = 0.4f
+
+    // We set a different alpha depending on whether window blur is enabled or disabled
+    private val mWindowBackgroundAlphaWithBlur = 170
+    private val mWindowBackgroundAlphaNoBlur = 255
+
+    // Use a rectangular shape drawable for the window background. The outline of this drawable
+    // dictates the shape and rounded corners for the window background blur area.
+    private var mWindowBackgroundDrawable: Drawable? = null
+
+    private fun buildIsAtLeastS(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    }
+
+    /**
+     * Set up a window blur listener.
+     *
+     * Window blurs might be disabled at runtime in response to user preferences or system states
+     * (e.g. battery saving mode). WindowManager#addCrossWindowBlurEnabledListener allows to
+     * listen for when that happens. In that callback we adjust the UI to account for the
+     * added/missing window blurs.
+     *
+     * For the window background blur we adjust the window background drawable alpha:
+     * - lower when window blurs are enabled to make the blur visible through the window
+     * background drawable
+     * - higher when window blurs are disabled to ensure that the window contents are readable
+     *
+     * For window blur behind we adjust the dim amount:
+     * - higher when window blurs are disabled - the dim creates a depth of field effect,
+     * bringing the user's attention to the dialog window
+     * - lower when window blurs are enabled - no need for a high alpha, the blur behind is
+     * enough to create a depth of field effect
+     */
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    private fun setupWindowBlurListener(window: Window) {
+        val windowBlurEnabledListener: Consumer<Boolean> =
+            Consumer<Boolean> { blursEnabled: Boolean -> this.updateWindowForBlurs(window, blursEnabled) }
+        window.decorView.addOnAttachStateChangeListener(
+            object : OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: View) {
+                    windowManager.addCrossWindowBlurEnabledListener(
+                        windowBlurEnabledListener
+                    )
+                }
+
+                override fun onViewDetachedFromWindow(v: View) {
+                    windowManager.removeCrossWindowBlurEnabledListener(
+                        windowBlurEnabledListener
+                    )
+                }
+            })
+    }
+
+    private fun updateWindowForBlurs(window: Window, blursEnabled: Boolean) {
+        mWindowBackgroundDrawable!!.alpha =
+            if (blursEnabled) mWindowBackgroundAlphaWithBlur else mWindowBackgroundAlphaNoBlur
+        window.setDimAmount(if (blursEnabled) mDimAmountWithBlur else mDimAmountNoBlur)
+
+        if (buildIsAtLeastS()) {
+            // Set the window background blur and blur behind radii
+            window.setBackgroundBlurRadius(mBackgroundBlurRadius)
+            window.attributes.blurBehindRadius = mBlurBehindRadius
+            window.attributes = window.attributes
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+    }
+
+    fun createBlurredPPTCDialog(view: View): AlertDialog {
+        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
+            .setView(view) // Set the custom view to the dialog
+        val dialog = b.create()
+        val window = dialog.window
+        mWindowBackgroundDrawable = AppCompatResources.getDrawable(this, R.drawable.dialog_rounded_corner);
+        window?.setBackgroundDrawable(mWindowBackgroundDrawable);
+        if (buildIsAtLeastS()) {
+            // Enable blur behind. This can also be done in xml with R.attr#windowBlurBehindEnabled
+            window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+            // Register a listener to adjust window UI whenever window blurs are enabled/disabled
+            setupWindowBlurListener(window!!);
+        } else {
+            // Window blurs are not available prior to Android S
+            updateWindowForBlurs(window!!,false);
+        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        return dialog
     }
 
     protected open fun onServiceRestart(){
@@ -33,12 +134,10 @@ open class BaseActivity : AppCompatActivity() {
         // Inflate the layout for the dialog
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_restart_service, null)
         // Create the AlertDialog
-        val serviceRestartDialog = AlertDialog.Builder(this, R.style.PPTCDialog)
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
+        val dialog = createBlurredPPTCDialog(dialogView)
+        dialog.setCancelable(false)
         // Show the dialog
-        serviceRestartDialog.show()
+        dialog.show()
 
         // Restart service
         val intentStop = Intent(this, MainService::class.java)
@@ -51,7 +150,7 @@ open class BaseActivity : AppCompatActivity() {
             startService(intentStart)
             Thread.sleep(2000)
             runOnUiThread {
-                serviceRestartDialog.dismiss()
+                dialog.dismiss()
                 onServiceRestart()
             }
         }.start()

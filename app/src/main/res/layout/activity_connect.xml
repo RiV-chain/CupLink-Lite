@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorBackground">
 
     <!-- Barcode Scanner Container -->
     <androidx.cardview.widget.CardView
@@ -83,7 +83,7 @@
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
         android:translationZ="110dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorBackground"
         android:text="SCAN ME"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
@@ -113,7 +113,7 @@
             android:id="@+id/qrCodeContainerInner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
+            app:cardBackgroundColor="@color/colorBackground"
             app:cardCornerRadius="@dimen/image_inner_corner_radius"
             app:layout_constraintDimensionRatio="1:1">
             <com.google.android.material.imageview.ShapeableImageView
@@ -136,7 +136,7 @@
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
         android:translationZ="110dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorBackground"
         android:text="SCAN ME"
         android:rotation="90"
         android:textColor="@color/colorPrimary"
@@ -156,7 +156,7 @@
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
         android:translationZ="110dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorBackground"
         android:text="SCAN ME"
         android:rotation="-90"
         android:textColor="@color/colorPrimary"
@@ -176,7 +176,7 @@
         android:layout_marginTop="-13dp"
         android:layout_marginBottom="20dp"
         android:translationZ="110dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorBackground"
         android:text="SCAN ME"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"

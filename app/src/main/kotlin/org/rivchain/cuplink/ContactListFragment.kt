@@ -82,10 +82,8 @@ class ContactListFragment() : Fragment() {
             val adapter = ArrayAdapter(this.requireContext(), R.layout.spinner_item, options)
             listViewContactOptions.adapter = adapter
 
-            val dialog = AlertDialog.Builder(this.requireContext(), R.style.PPTCDialog)
-                .setView(dialogView)
-                .setCancelable(true)
-                .create()
+            val dialog = activity.createBlurredPPTCDialog(dialogView)
+            dialog.setCancelable(true)
 
             listViewContactOptions.setOnItemClickListener { _, _, position, _ ->
                 val selectedOption = options[position]
@@ -172,7 +170,8 @@ class ContactListFragment() : Fragment() {
             }
 
         builder.setNegativeButton(R.string.button_no) { dialog: DialogInterface, _: Int ->
-            dialog.cancel() }
+            dialog.cancel()
+        }
 
         // create dialog box
         val alert = builder.create()
