@@ -281,6 +281,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/publicPeerLayout"/>
 
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/publicPeerLayoutSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/SwitchTheme"
+                    app:layout_constraintEnd_toEndOf="@id/publicPeerLayout"
+                    app:layout_constraintTop_toTopOf="@id/publicPeerLayout"
+                    app:layout_constraintBottom_toBottomOf="@id/publicPeerLayout"/>
+
                 <TextView
                     android:id="@+id/enableMicrophoneByDefault"
                     android:layout_width="match_parent"
@@ -290,7 +299,7 @@
                     android:textSize="@dimen/title_text_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/publicPeerUrl"
-                    android:layout_marginTop="@dimen/padding_25"/>
+                    android:layout_marginTop="@dimen/padding_10"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/enableMicrophoneByDefaultSwitch"
