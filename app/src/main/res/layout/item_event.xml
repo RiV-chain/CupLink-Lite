@@ -22,7 +22,8 @@
                 android:id="@+id/call_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="24sp" />
+                android:textSize="22sp"
+                android:fontFamily="@font/poppins_regular"/>
 
             <LinearLayout
                 android:id="@+id/call_icons"
