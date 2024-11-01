@@ -84,7 +84,7 @@ class MainActivity : BaseActivity() {
             }
             true
         }
-
+        bottomNavigationView.itemIconTintList = null
         if (savedInstanceState != null && savedInstanceState.containsKey(BUNDLE_CURRENT_FRAGMENT_TAG)) {
             // restored session
             currentFragmentTag =

@@ -82,11 +82,11 @@
 
     <!-- Customize BottomNavigationView active label -->
     <style name="CustomBottomNavActiveLabel" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">16sp</item>
+
     </style>
 
     <!-- Customize BottomNavigationView inactive label -->
     <style name="CustomBottomNavInactiveLabel" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">14sp</item>
+
     </style>
 </resources>

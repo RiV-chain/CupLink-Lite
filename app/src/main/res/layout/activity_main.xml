@@ -56,6 +56,7 @@
         android:paddingBottom="50dp"
         app:menu="@menu/menu_bottom_navigation"
         app:itemTextAppearanceActive="@style/CustomBottomNavActiveLabel"
-        app:itemTextAppearanceInactive="@style/CustomBottomNavInactiveLabel"/>
+        app:itemTextAppearanceInactive="@style/CustomBottomNavInactiveLabel"
+        app:itemTextColor="@color/colorPrimary"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
