@@ -1,18 +1,18 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:width="30dp"
+    android:height="30dp"
+    android:viewportWidth="30"
+    android:viewportHeight="30">
 
-    <!-- Path for the outer circular shape -->
+    <!-- Path for the outer circular shape, centered in 30x30 viewport -->
     <path
         android:fillColor="#FF757575"
-        android:pathData="M15,3.849h0a1.02,1.02,0,0,0,.629.926A9,9,0,0,1,21,13.292,9,9,0,0,1,3,13,9,9,0,0,1,8.371,4.776,1.023,1.023,0,0,0,9,3.848H9a1,1,0,0,0-1.374-.929,11,11,0,1,0,8.751,0A1,1,0,0,0,15,3.849Z" />
+        android:pathData="M18,6.849h0a1.02,1.02,0,0,0,.629.926A9,9,0,0,1,24,16.292,9,9,0,0,1,6,16,9,9,0,0,1,11.371,7.776,1.023,1.023,0,0,0,12,6.848H12a1,1,0,0,0-1.374-.929,11,11,0,1,0,8.751,0A1,1,0,0,0,18,6.849Z" />
 
-    <!-- Rectangular path for the inner vertical bar -->
+    <!-- Rectangular path for the inner vertical bar, centered in 30x30 viewport -->
     <path
         android:fillColor="#FF757575"
-        android:pathData="M12,0c0.552,0,1,0.448,1,1v10c0,0.552-0.448,1-1,1s-1-0.448-1-1V1C11,0.448,11.448,0,12,0z"
+        android:pathData="M15,3c0.552,0,1,0.448,1,1v10c0,0.552-0.448,1-1,1s-1-0.448-1-1V4C14,3.448,14.448,3,15,3z"
         android:fillAlpha="1.0"
         android:strokeLineCap="round"/>
 </vector>

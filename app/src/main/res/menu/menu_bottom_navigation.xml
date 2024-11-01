@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
 	<item
 		android:id="@+id/contacts"
 		android:icon="@drawable/selector_contact"
-		android:title="@string/title_contacts"/>
+		android:title="@string/title_contacts"
+		app:iconTint="@color/colorPrimary"
+		app:showAsAction="never"/>
 	<item
 		android:id="@+id/history"
 		android:icon="@drawable/selector_history"
-		android:title="@string/title_calls"/>
+		android:title="@string/title_calls"
+		app:iconTint="@color/colorPrimary"
+		app:showAsAction="never"/>
 	<item
 		android:id="@+id/connect"
 		android:icon="@drawable/selector_add_contact"
-		android:title="@string/connect"/>
+		android:title="@string/connect"
+		app:iconTint="@color/colorPrimary"
+		app:showAsAction="never"/>
 </menu>
