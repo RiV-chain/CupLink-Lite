@@ -833,7 +833,7 @@ abstract class RTCPeerConnection(
                             val intent = Intent(service, CallService::class.java)
                                 .putExtra(CallService.SERVICE_CONTACT_KEY,
                                     contact)
-                            ContextCompat.startForegroundService(service, intent)
+                            service.startService(intent)
                         }
                     } catch (e: Exception) {
                         incomingRTCCall?.cleanup()
