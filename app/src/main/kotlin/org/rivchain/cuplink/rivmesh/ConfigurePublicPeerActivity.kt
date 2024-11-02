@@ -5,8 +5,10 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.IBinder
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
@@ -28,7 +30,7 @@ import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.ServiceUtil
 import java.io.IOException
 
-class ConfigurePublicPeerActivity: TestPortActivity() {
+open class ConfigurePublicPeerActivity: TestPortActivity() {
 
     private lateinit var lock: WifiManager.MulticastLock
     private lateinit var controlPoint: ControlPoint
@@ -78,9 +80,9 @@ class ConfigurePublicPeerActivity: TestPortActivity() {
         okButton = dialogView.findViewById(R.id.OkButton)
         cancelButton = dialogView.findViewById(R.id.CancelButton)
         portStatus.setOnClickListener {
-            portStatus.setImageResource(R.drawable.ic_status_unknown)
+            portStatus.setImageResource(R.drawable.ic_status_testing)
             // test port manually
-            showCountdownDialog()
+            showCountdownDialog(dialogView)
             if(upnpCheckbox.isChecked){
                 val ips = NetworkUtils.getLocalInterfaceIPs()
                 val wifi = ServiceUtil.getWifiManager(this)
@@ -126,6 +128,24 @@ class ConfigurePublicPeerActivity: TestPortActivity() {
         portInfoText.text = "TCP $port"
         // Show the dialog
         publicPeerAgreementDialog.show()
+    }
+
+    private fun showCountdownDialog(view: View) {
+        val countDownContainer: View = view.findViewById(R.id.countdownContainer)
+        val countdownTextView: TextView = view.findViewById(R.id.countdownTextView)
+        countDownContainer.visibility = View.VISIBLE
+        // Start the countdown timer
+        object : CountDownTimer(6000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsLeft = millisUntilFinished / 1000
+                countdownTextView.text = "$secondsLeft"
+            }
+
+            override fun onFinish() {
+                // Hide counter when the countdown finishes
+                countDownContainer.visibility = View.INVISIBLE
+            }
+        }.start()
     }
 
     override fun portOpen(port: Int) {

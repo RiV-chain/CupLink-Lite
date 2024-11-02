@@ -10,13 +10,11 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.rivchain.cuplink.BaseActivity
-import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.DatabaseCache.Companion.database
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.R
@@ -176,7 +174,7 @@ open class TestPortActivity: BaseActivity(), ServiceConnection {
 
     }
 
-    protected fun showCountdownDialog() {
+    private fun showCountdownDialog() {
         // Inflate the dialog layout
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_countdown, null)
 
@@ -206,7 +204,7 @@ open class TestPortActivity: BaseActivity(), ServiceConnection {
         alertDialog.show()
     }
 
-    protected fun showToast(message: String) {
+    private fun showToast(message: String) {
         runOnUiThread {
             Toast.makeText(this@TestPortActivity, message, Toast.LENGTH_LONG).show()
         }

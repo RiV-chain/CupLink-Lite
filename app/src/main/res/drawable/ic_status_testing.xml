@@ -1,0 +1,11 @@
+<!-- res/drawable/transparent_circle.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <path
+        android:strokeColor="#808080"
+        android:strokeWidth="2"
+        android:pathData="M60,5a55,55 0 1,1 0,110a55,55 0 0,1 0,-110z"/>
+</vector>
