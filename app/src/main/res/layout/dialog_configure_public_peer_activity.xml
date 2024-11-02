@@ -52,6 +52,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideInfoText" />
 
+    <FrameLayout
+        android:id="@+id/countdownContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="@+id/portStatus"
+        app:layout_constraintEnd_toEndOf="@+id/portStatus"
+        app:layout_constraintStart_toStartOf="@+id/portStatus"
+        app:layout_constraintTop_toBottomOf="@+id/portInfoText"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/countdownTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"/>
+        </LinearLayout>
+    </FrameLayout>
+
+
     <ImageButton
         android:id="@+id/portStatus"
         android:layout_width="120dp"
