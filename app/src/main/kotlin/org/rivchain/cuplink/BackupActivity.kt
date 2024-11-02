@@ -25,7 +25,7 @@ class BackupActivity : BaseActivity() {
     private lateinit var passwordEditText: TextView
 
     private fun showMessage(title: String, message: String) {
-        val builder = AlertDialog.Builder(this, R.style.FullPPTCDialog)
+        val builder = AlertDialog.Builder(this, R.style.PPTCDialog)
         builder.setTitle(title)
         builder.setMessage(message)
         builder.setPositiveButton(android.R.string.ok, null)
@@ -116,6 +116,7 @@ class BackupActivity : BaseActivity() {
             val db = readExternalFile(this, uri)
             newDatabase = Database.fromData(db, password)
         } catch (e: Database.WrongPasswordException) {
+            passwordEditText.error = getString(R.string.wrong_password)
             Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
             return
         } catch (e: Exception) {

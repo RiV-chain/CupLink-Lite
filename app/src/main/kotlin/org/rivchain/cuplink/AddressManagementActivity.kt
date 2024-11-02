@@ -89,6 +89,7 @@ class AddressManagementActivity : BaseActivity() {
             } else if (NetworkUtils.isMACAddress(address)) {
                 address.uppercase(Locale.ROOT)
             } else {
+                customAddressTextEdit.error = getString(R.string.error_address_invalid)
                 Toast.makeText(this, R.string.error_address_invalid, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }

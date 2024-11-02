@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import org.rivchain.cuplink.R
 
 object PermissionManager {
     @JvmStatic
@@ -45,24 +43,5 @@ object PermissionManager {
         } else {
             true
         }
-    }
-
-    @JvmStatic
-    fun buildPostPermissionDialog(
-        context: Context,
-        onAccept: (() -> Unit),
-        onDecline: (() -> Unit)
-    ): AlertDialog {
-        val builder = AlertDialog.Builder(context, R.style.FullPPTCDialog)
-        builder.setMessage(R.string.permission_notification_text)
-            .setPositiveButton(R.string.button_yes) { dialog, _ ->
-                dialog.dismiss()
-                onAccept()
-            }
-            .setNegativeButton(R.string.button_no) { dialog, _ ->
-                dialog.dismiss()
-                onDecline()
-            }
-        return builder.create()
     }
 }

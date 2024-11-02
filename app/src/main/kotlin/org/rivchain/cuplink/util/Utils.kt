@@ -85,7 +85,7 @@ internal object Utils {
     // Check for a name that has no funny unicode characters
     // and to not let them look to much like other names.
     fun isValidName(name: String?): Boolean {
-        if (name == null || name.isEmpty()) {
+        if (name.isNullOrEmpty()) {
             return false
         }
         return NAME_PATTERN.matcher(name).matches()

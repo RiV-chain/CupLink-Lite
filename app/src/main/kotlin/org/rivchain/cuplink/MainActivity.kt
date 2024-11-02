@@ -260,7 +260,6 @@ class MainActivity : BaseActivity() {
         val dialog = createBlurredPPTCDialog(view)
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
-
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.change_password_edit_textview)
         val exitButton = view.findViewById<Button>(R.id.change_password_cancel_button)
         val okButton = view.findViewById<Button>(R.id.change_password_ok_button)
@@ -270,9 +269,9 @@ class MainActivity : BaseActivity() {
                 // start menu action
                 menuAction(itemId)
             } else {
+                passwordEditText.error = getString(R.string.wrong_password)
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
             }
-
             // close dialog
             dialog.dismiss()
         }
