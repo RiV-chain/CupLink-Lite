@@ -111,7 +111,6 @@ open class AddContactActivity: BaseActivity() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_add_contact_name_conflict, null)
         val dialog = createBlurredPPTCDialog(view)
         val nameEditText = view.findViewById<TextInputEditText>(R.id.conflict_contact_edit_textview)
-        val abortButton = view.findViewById<Button>(R.id.conflict_contact_abort_button)
         val replaceButton = view.findViewById<Button>(R.id.conflict_contact_replace_button)
         val renameButton = view.findViewById<Button>(R.id.conflict_contact_rename_button)
         nameEditText.setText(other_contact.name)
@@ -144,10 +143,6 @@ open class AddContactActivity: BaseActivity() {
             Toast.makeText(this@AddContactActivity, R.string.done, Toast.LENGTH_SHORT).show()
             dialog.cancel()
             finish()
-        }
-        abortButton.setOnClickListener {
-            dialog.cancel()
-            resume()
         }
         dialog.show()
     }

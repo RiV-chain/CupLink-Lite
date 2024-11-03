@@ -129,7 +129,7 @@
             android:textSize="@dimen/title_text_size"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/contactPublicKeyTv"
-            android:layout_marginTop="@dimen/padding_30" />
+            android:layout_marginTop="@dimen/padding_10" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ListView

@@ -93,7 +93,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/ImportButton"
-            android:layout_width="125dp"
+            android:layout_width="110dp"
             android:layout_height="@dimen/padding_50"
             android:layout_marginTop="@dimen/padding_20"
             android:background="@drawable/next_button_background"
@@ -108,7 +108,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/ExportButton"
-            android:layout_width="125dp"
+            android:layout_width="110dp"
             android:layout_height="@dimen/padding_50"
             android:layout_marginTop="@dimen/padding_20"
             android:background="@drawable/next_button_background"

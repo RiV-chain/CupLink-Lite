@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
-        android:paddingBottom="16dp"
+        android:paddingBottom="5dp"
         android:textSize="@dimen/name_text_size"
         android:text="@string/connect_as_public_peer"
         android:textAllCaps="false"
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:minHeight="45dp"
+        android:minHeight="35dp"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:text="..."
@@ -54,12 +54,12 @@
 
     <FrameLayout
         android:id="@+id/countdownContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintTop_toTopOf="@+id/portStatus"
         app:layout_constraintBottom_toBottomOf="@+id/portStatus"
-        app:layout_constraintEnd_toEndOf="@+id/portStatus"
         app:layout_constraintStart_toStartOf="@+id/portStatus"
-        app:layout_constraintTop_toBottomOf="@+id/portInfoText"
+        app:layout_constraintEnd_toEndOf="@+id/portStatus"
         android:visibility="invisible">
 
         <LinearLayout
@@ -67,7 +67,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_gravity="center">  <!-- Center contents -->
 
             <TextView
                 android:id="@+id/countdownTextView"
@@ -78,7 +79,6 @@
                 android:textSize="24sp"/>
         </LinearLayout>
     </FrameLayout>
-
 
     <ImageButton
         android:id="@+id/portStatus"
@@ -98,7 +98,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:minHeight="45dp"
+        android:minHeight="35dp"
         android:text="@string/port_status"
         android:fontFamily="@font/lato_bold"
         android:textColor="@color/white"
@@ -123,7 +123,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:minHeight="45dp"
+        android:minHeight="35dp"
         android:text="@string/note_device_as_public_peer"
         android:textColor="@color/light_grey"
         android:textSize="14sp"
@@ -136,7 +136,7 @@
         android:id="@+id/CancelButton"
         android:layout_width="125dp"
         android:layout_height="@dimen/padding_50"
-        android:layout_marginTop="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_10"
         android:background="@drawable/next_button_background"
         android:fontFamily="@font/lato_bold"
         android:text="@string/button_cancel"
