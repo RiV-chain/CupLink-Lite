@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.text.Editable
-import android.text.Html
 import android.text.InputFilter
 import android.text.SpannableString
 import android.text.Spanned
@@ -80,7 +79,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         // set by BootUpReceiver
         isStartOnBootup = intent.getBooleanExtra(BootUpReceiver.IS_START_ON_BOOTUP, false)
         setContentView(R.layout.activity_empty)
-        preferences = PreferenceManager.getDefaultSharedPreferences(this.baseContext);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this.baseContext)
 
         requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -299,26 +298,35 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     private fun showMissingAddressDialog() {
         val defaultAddress = getDefaultAddress()
         if (defaultAddress == null) {
-            val builder = AlertDialog.Builder(this, R.style.FullPPTCDialog)
-            builder.setTitle(getString(R.string.setup_address))
-            builder.setMessage(getString(R.string.setup_no_address_found))
-            builder.setPositiveButton(R.string.button_ok) { dialog: DialogInterface, _: Int ->
+
+            val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_yes_no, null)
+            val dialog = this.createBlurredPPTCDialog(view)
+            dialog.setCancelable(false)
+            dialog.setCanceledOnTouchOutside(false)
+            val titleText = view.findViewById<TextView>(R.id.title)
+            titleText.text = getString(R.string.setup_address)
+            val messageText = view.findViewById<TextView>(R.id.message)
+            messageText.text = getString(R.string.setup_no_address_found)
+            val noButton = view.findViewById<Button>(R.id.no)
+            val yesButton = view.findViewById<Button>(R.id.yes)
+            noButton.text = getString(R.string.button_skip)
+            yesButton.text = getString(R.string.button_ok)
+            yesButton.setOnClickListener {
                 showMissingAddressDialog()
                 dialog.cancel()
             }
-            builder.setNegativeButton(R.string.button_skip) { dialog: DialogInterface, _: Int ->
+            noButton.setOnClickListener {
                 dialog.cancel()
                 // continue with out address configuration
                 continueInit()
             }
-            val adialog = builder.create()
-            adialog.setCancelable(false)
-            adialog.setCanceledOnTouchOutside(false)
 
             this.dialog?.dismiss()
-            this.dialog = adialog
+            this.dialog = dialog
 
-            adialog.show()
+            dialog.show()
+
+
         } else {
             DatabaseCache.database.settings.addresses = mutableListOf(defaultAddress.address)
             DatabaseCache.save()
@@ -329,7 +337,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     // initial dialog to set the username
     private fun showMissingUsernameDialog() {
         // Inflate the custom layout
-        val dialogView = layoutInflater.inflate(R.layout.dialog_custom_username, null)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_username, null)
 
         // Get references to the UI components
         val etUsername: EditText = dialogView.findViewById(R.id.et_username)
@@ -339,37 +347,36 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         val username = generateRandomUserName()
         etUsername.hint = username
         // Build the dialog
-        val builder = AlertDialog.Builder(this, R.style.FullPPTCDialog)
-        .setView(dialogView)
-        .setNegativeButton(R.string.button_skip) { dialog: DialogInterface?, _: Int ->
+        val dialog = createBlurredPPTCDialog(dialogView)
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        val noButton = dialogView.findViewById<Button>(R.id.CancelButton)
+        val yesButton = dialogView.findViewById<Button>(R.id.OkButton)
+        yesButton.setOnClickListener {
             if (Utils.isValidName(username)) {
-                DatabaseCache.database.settings.username = username
+                DatabaseCache.database.settings.username = etUsername.text.toString()
                 DatabaseCache.save()
                 // close dialog
-                dialog?.dismiss()
+                dialog.dismiss()
                 continueInit()
             } else {
                 Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
             }
         }
-        .setPositiveButton(R.string.button_next) { dialog: DialogInterface?, _: Int ->
-            val username = etUsername.text.toString()
+        noButton.setOnClickListener {
             if (Utils.isValidName(username)) {
                 DatabaseCache.database.settings.username = username
                 DatabaseCache.save()
                 // close dialog
-                dialog?.dismiss()
+                dialog.dismiss()
                 continueInit()
             } else {
                 Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
             }
         }
 
-        val adialog = builder.create()
-        adialog.setCancelable(false)
-        adialog.setCanceledOnTouchOutside(false)
-        adialog.setOnShowListener { dialog: DialogInterface ->
-            val okButton = (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
+        dialog.setOnShowListener { dialog: DialogInterface ->
+
             etUsername.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                     // nothing to do
@@ -381,18 +388,18 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
 
                 override fun afterTextChanged(editable: Editable) {
                     val ok = Utils.isValidName(editable.toString())
-                    okButton.isClickable = ok
-                    okButton.alpha = if (ok) 1.0f else 0.5f
+                    yesButton.isClickable = ok
+                    yesButton.alpha = if (ok) 1.0f else 0.5f
                 }
             })
-            okButton.isClickable = false
-            okButton.alpha = 0.5f
+            yesButton.isClickable = false
+            yesButton.alpha = 0.5f
         }
 
         this.dialog?.dismiss()
-        this.dialog = adialog
+        this.dialog = dialog
 
-        adialog.show()
+        dialog.show()
     }
 
     private fun getEditTextFilter(): InputFilter {
@@ -485,33 +492,24 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         return "$randomAdjective$randomAnimal"
     }
 
-    private fun showPolicy(language: String) {
-        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_policy, null)
-        val msg = view.findViewById<View>(R.id.policy) as TextView
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            msg.text = Html.fromHtml(Utils.readResourceFile(this, R.raw.pp_tc), Html.FROM_HTML_OPTION_USE_CSS_COLORS)
+    private var requestTcActivityLauncher =
+    registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if(preferences?.getString(POLICY, null) == null){
+            finish()
         } else {
-            msg.text = Html.fromHtml(Utils.readResourceFile(this, R.raw.pp_tc))
-        }
-        val ab = AlertDialog.Builder(this, R.style.FullPPTCDialog)
-        ab.setTitle("CupLink")
-            .setIcon(R.mipmap.ic_launcher)
-            .setView(view)
-            .setCancelable(false)
-            .setPositiveButton(
-                "Accept"
-            ) { _: DialogInterface?, _: Int ->
-                preferences!!.edit().putString(POLICY, "accepted").apply()
-                Log.d(this, "Start VPN")
-                val vpnIntent = VpnService.prepare(this)
-                if (vpnIntent != null) {
-                    startVpnActivity.launch(vpnIntent)
-                } else {
-                    bindService(Intent(this, MainService::class.java), this, 0)
-                    // start MainService and call back via onServiceConnected()
-                    MainService.startPacketsStream(this)
-                }
+            val vpnIntent = VpnService.prepare(this)
+            if (vpnIntent != null) {
+                startVpnActivity.launch(vpnIntent)
+            } else {
+                bindService(Intent(this, MainService::class.java), this, 0)
+                // start MainService and call back via onServiceConnected()
+                MainService.startPacketsStream(this)
             }
-        ab.show()
+        }
+    }
+
+    private fun showPolicy(language: String) {
+        val intent = Intent(this, TcActivity::class.java)
+        requestTcActivityLauncher.launch(intent)
     }
 }

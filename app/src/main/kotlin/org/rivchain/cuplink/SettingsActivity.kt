@@ -440,30 +440,26 @@ class SettingsActivity : BaseActivity() {
         Log.d(this, "showChangeUsernameDialog()")
         val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null)
-        val dialog = createBlurredPPTCDialog(view)
         val nameEditText = view.findViewById<TextInputEditText>(R.id.NameEditText)
+        nameEditText.setText(settings.username, TextView.BufferType.EDITABLE)
         val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
-
-        nameEditText.setText(settings.username, TextView.BufferType.EDITABLE)
-
+        val dialog: AlertDialog = createBlurredPPTCDialog(view)
         okButton.setOnClickListener {
             val newUsername = nameEditText.text.toString().trim { it <= ' ' }
             if (Utils.isValidName(newUsername)) {
                 settings.username = newUsername
                 DatabaseCache.save()
                 initViews()
+                dialog.cancel()
             } else {
+                nameEditText.error = getString(R.string.invalid_name)
                 Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
             }
-
-            dialog.cancel()
         }
-
         cancelButton.setOnClickListener {
             dialog.dismiss()
         }
-
         dialog.show()
     }
 

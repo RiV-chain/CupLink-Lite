@@ -9,6 +9,7 @@ import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import org.json.JSONException
 import org.json.JSONObject
 import org.rivchain.cuplink.model.Contact
@@ -159,7 +160,8 @@ open class AddContactActivity: BaseActivity() {
         val et = dialogView.findViewById<TextInputEditText>(R.id.editTextInput)
         val cancelButton = dialogView.findViewById<Button>(R.id.CancelButton)
         val okButton = dialogView.findViewById<Button>(R.id.OkButton)
-         // Set the custom view to the dialog
+        // Set the custom view to the dialog
+        val dialog: AlertDialog = createBlurredPPTCDialog(dialogView)
         okButton.setOnClickListener{
             try {
                 val data = et.text.toString()
@@ -168,8 +170,9 @@ open class AddContactActivity: BaseActivity() {
                 e.printStackTrace()
                 Toast.makeText(this, R.string.invalid_qr_code_data, Toast.LENGTH_SHORT).show()
             }
+            dialog.cancel()
         }
-        val dialog = createBlurredPPTCDialog(dialogView)
+
         cancelButton.setOnClickListener{
             dialog.cancel()
             resume()

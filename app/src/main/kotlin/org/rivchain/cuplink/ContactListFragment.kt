@@ -11,9 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.json.JSONException
@@ -160,22 +161,24 @@ class ContactListFragment() : Fragment() {
     }
 
     private fun showDeleteDialog(publicKey: ByteArray, name: String) {
-        val builder = AlertDialog.Builder(activity, R.style.FullPPTCDialog)
-        builder.setTitle(R.string.dialog_title_delete_contact)
-        builder.setMessage(name)
-        builder.setCancelable(false) // prevent key shortcut to cancel dialog
-        builder.setPositiveButton(R.string.button_yes) { dialog: DialogInterface, _: Int ->
-            activity.deleteContact(publicKey)
-                dialog.cancel()
-            }
 
-        builder.setNegativeButton(R.string.button_no) { dialog: DialogInterface, _: Int ->
+        val view: View = LayoutInflater.from(activity).inflate(R.layout.dialog_yes_no, null)
+        val dialog = activity.createBlurredPPTCDialog(view)
+        dialog.setCancelable(false)
+        val titleText = view.findViewById<TextView>(R.id.title)
+        titleText.text = getString(R.string.dialog_title_delete_contact)
+        val messageText = view.findViewById<TextView>(R.id.message)
+        messageText.text = name
+        val noButton = view.findViewById<Button>(R.id.no)
+        val yesButton = view.findViewById<Button>(R.id.yes)
+        yesButton.setOnClickListener {
+            activity.deleteContact(publicKey)
             dialog.cancel()
         }
-
-        // create dialog box
-        val alert = builder.create()
-        alert.show()
+        noButton.setOnClickListener {
+            dialog.cancel()
+        }
+        dialog.show()
     }
 
     private fun refreshContactList() {

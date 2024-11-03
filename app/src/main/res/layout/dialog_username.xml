@@ -8,17 +8,16 @@
     android:background="@drawable/dialog_rounded_corner">
 
     <TextView
-        android:id="@+id/ChangeNameTextView"
+        android:id="@+id/add_contact_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/NameEditLayout"
-        android:layout_marginStart="10dp"
         android:textSize="23sp"
         android:fontFamily="@font/poppins_regular"
-        android:text="@string/enter_contact_name"/>
+        android:text="@string/startup_prompt_name"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/NameEditLayout"
@@ -31,16 +30,15 @@
         app:layout_constraintBottom_toTopOf="@+id/CancelButton"
         app:layout_constraintEnd_toEndOf="@+id/OkButton"
         app:layout_constraintStart_toStartOf="@+id/CancelButton"
-        app:layout_constraintTop_toBottomOf="@+id/ChangeNameTextView">
+        app:layout_constraintTop_toBottomOf="@+id/add_contact_textview">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/NameEditText"
+            android:id="@+id/et_username"
             style="@style/EditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:hint="@string/contact_name"
             android:textSize="@dimen/name_text_size"
             android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
@@ -62,7 +60,7 @@
         app:layout_constraintEnd_toStartOf="@+id/OkButton"
         android:fontFamily="@font/lato_bold"
         android:textSize="@dimen/button_test_size"
-        android:text="@string/button_cancel"
+        android:text="@string/button_skip"
         android:textColor="@color/white" />
 
     <com.google.android.material.button.MaterialButton
@@ -80,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:fontFamily="@font/lato_bold"
         android:textSize="@dimen/button_test_size"
-        android:text="@string/button_ok"
-        android:textColor="@color/white"/>
+        android:text="@string/button_next"
+        android:textColor="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

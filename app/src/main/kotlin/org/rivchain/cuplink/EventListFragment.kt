@@ -14,8 +14,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -220,26 +220,26 @@ class EventListFragment() : Fragment() {
         Log.d(this, "showClearEventsDialog()")
 
         val activity = requireActivity() as MainActivity
-        val builder = AlertDialog.Builder(activity, R.style.FullPPTCDialog)
-        builder.setTitle(R.string.clear_events)
-        builder.setMessage(R.string.remove_all_events)
-        builder.setCancelable(false) // prevent key shortcut to cancel dialog
-        builder.setPositiveButton(R.string.button_yes) { dialog: DialogInterface, _: Int ->
+        val view: View = LayoutInflater.from(activity).inflate(R.layout.dialog_yes_no, null)
+        val dialog = activity.createBlurredPPTCDialog(view)
+        dialog.setCancelable(false)
+        val titleText = view.findViewById<TextView>(R.id.title)
+        titleText.text = getString(R.string.clear_events)
+        val messageText = view.findViewById<TextView>(R.id.message)
+        messageText.text = getString(R.string.remove_all_events)
+        val noButton = view.findViewById<Button>(R.id.no)
+        val yesButton = view.findViewById<Button>(R.id.yes)
+        yesButton.setOnClickListener {
             activity.clearEvents()
             DatabaseCache.save()
-
             refreshEventList()
             Toast.makeText(activity, R.string.done, Toast.LENGTH_SHORT).show()
             dialog.cancel()
         }
-
-        builder.setNegativeButton(R.string.button_no) { dialog: DialogInterface, _: Int ->
+        noButton.setOnClickListener {
             dialog.cancel()
         }
-
-        // create dialog box
-        val alert = builder.create()
-        alert.show()
+        dialog.show()
     }
 
     // only available for unknown contacts
