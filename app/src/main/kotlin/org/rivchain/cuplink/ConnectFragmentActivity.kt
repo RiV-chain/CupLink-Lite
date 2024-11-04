@@ -1,6 +1,7 @@
 package org.rivchain.cuplink
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -8,6 +9,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.ResultPoint
@@ -21,7 +24,7 @@ import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 import org.rivchain.cuplink.util.Utils
 
-class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
+open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
     private lateinit var publicKey: ByteArray
     private lateinit var barcodeView: DecoratedBarcodeView
 
@@ -86,13 +89,37 @@ class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
         }
     }
 
-    private val enabledCameraForResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            isGranted -> if (isGranted) {
-        initCamera()
-    } else {
-        Toast.makeText(this, R.string.missing_camera_permission, Toast.LENGTH_LONG).show()
-        // no finish() in case no camera access wanted but contact data pasted
+    override fun startManualInput() {
+        pause()
+        val et = findViewById<TextInputLayout>(R.id.EditLayout)
+        if (et.visibility == View.VISIBLE) {
+            et.visibility = View.INVISIBLE
+            // do add a contact
+            val contact = findViewById<TextInputEditText>(R.id.editTextInput)
+            try {
+                val data = contact.text.toString()
+                addContact(data)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+                contact.error = getString(R.string.invalid_qr_code_data)
+                Toast.makeText(this, R.string.invalid_qr_code_data, Toast.LENGTH_SHORT).show()
+                et.visibility = View.VISIBLE
+            }
+        } else {
+            et.visibility = View.VISIBLE
+            // Change the fabManualInput icon
+            // Wait for an input data
+        }
     }
+
+    private val enabledCameraForResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            isGranted ->
+        if (isGranted) {
+            initCamera()
+        } else {
+            Toast.makeText(this, R.string.missing_camera_permission, Toast.LENGTH_LONG).show()
+            // no finish() in case no camera access wanted but contact data pasted
+        }
     }
 
     override fun barcodeResult(result: BarcodeResult) {
@@ -145,6 +172,19 @@ class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
         val bitmap = barcodeEncoder.createBitmap(bitMatrix)
         runOnUiThread {
             findViewById<ImageView>(R.id.QRView).setImageBitmap(bitmap)
+        }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        val et = findViewById<TextInputLayout>(R.id.EditLayout)
+        if (et.visibility == View.INVISIBLE) {
+            // If already on the first page, exit the activity
+            super.onBackPressedDispatcher.onBackPressed()
+            finish()
+        } else {
+            et.visibility = View.INVISIBLE
+            resume()
         }
     }
 }
