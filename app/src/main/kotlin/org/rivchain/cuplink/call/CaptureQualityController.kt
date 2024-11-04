@@ -3,8 +3,8 @@ package org.rivchain.cuplink.call
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button

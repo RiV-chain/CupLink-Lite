@@ -2,7 +2,6 @@ package org.rivchain.cuplink
 
 import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
@@ -12,13 +11,13 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import com.google.android.material.textfield.TextInputEditText
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.adapter.EventListAdapter
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log

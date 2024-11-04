@@ -22,27 +22,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import com.google.android.material.textfield.TextInputEditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
+import com.google.android.material.textfield.TextInputEditText
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.model.AddressEntry
 import org.rivchain.cuplink.rivmesh.AutoSelectPeerActivity
 import org.rivchain.cuplink.rivmesh.AutoTestPublicPeerActivity
 import org.rivchain.cuplink.rivmesh.SelectPeerActivity
-import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.PermissionManager.haveCameraPermission
 import org.rivchain.cuplink.util.PermissionManager.haveMicrophonePermission
 import org.rivchain.cuplink.util.PermissionManager.havePostNotificationPermission
 import org.rivchain.cuplink.util.Utils
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+
 /*
  * Show splash screen, name setup dialog, database password dialog and
  * start background service before starting the MainActivity.

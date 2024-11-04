@@ -144,9 +144,7 @@
     <string name="settings_show_username_as_logo">Показывать имя пользователя как логотип</string>
     <string name="ping_contact">Пинг %s</string>
     <string name="audio_device_earpiece">Наушник</string>
-    <string name="settings_disable_call_history">Отключить историю звонков</string>
     <string name="call_connection_failed">Ошибка Соединения</string>
-    <string name="import_dialog">Импортировать новые настройки и добавить %d контактов и %d события?</string>
     <string name="startup_name_prefix">Пользователь</string>
     <string name="audio_device_bluetooth">Блютуз</string>
     <string name="state_contact_offline">Контакт не в сети</string>

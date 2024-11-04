@@ -3,6 +3,7 @@ package org.rivchain.cuplink.util
 import android.net.InetAddresses
 import android.os.Build
 import android.util.Patterns
+import net.mm2d.upnp.Device
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.model.AddressEntry
 import org.rivchain.cuplink.model.Contact
@@ -17,7 +18,6 @@ import java.util.Collections
 import java.util.regex.Pattern
 import kotlin.experimental.and
 import kotlin.experimental.xor
-import net.mm2d.upnp.Device
 
 
 internal object NetworkUtils {

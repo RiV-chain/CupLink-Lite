@@ -4,7 +4,6 @@ import org.rivchain.cuplink.model.Contact
 import org.tdf.rlp.RLPCodec
 import org.tdf.rlp.RLPElement
 import org.tdf.rlp.RLPList
-import java.lang.RuntimeException
 import java.net.Inet4Address
 import java.net.Inet6Address
 

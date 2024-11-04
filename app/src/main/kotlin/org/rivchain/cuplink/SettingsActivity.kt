@@ -13,7 +13,6 @@ import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import com.google.android.material.textfield.TextInputEditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -23,11 +22,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import org.json.JSONArray
 import org.rivchain.cuplink.DatabaseCache.Companion.database
-import org.rivchain.cuplink.rivmesh.PeerListActivity
 import org.rivchain.cuplink.rivmesh.ConfigurePublicPeerActivity
+import org.rivchain.cuplink.rivmesh.PeerListActivity
 import org.rivchain.cuplink.rivmesh.SelectPeerActivity.Companion.PEER_LIST
 import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.rivmesh.util.Utils.serializePeerInfoSet2StringList

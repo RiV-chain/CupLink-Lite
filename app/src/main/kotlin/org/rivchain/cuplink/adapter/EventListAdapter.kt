@@ -13,8 +13,8 @@ import androidx.core.view.size
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
-import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.NetworkUtils
 import java.text.DateFormat
 import kotlin.math.abs
 

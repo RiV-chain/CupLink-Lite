@@ -1,6 +1,5 @@
 package org.rivchain.cuplink.automotive
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.annotation.RequiresApi

@@ -7,21 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
-import com.google.android.material.textfield.TextInputEditText
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.textfield.TextInputEditText
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.model.AddressEntry
 import org.rivchain.cuplink.model.Contact
+import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.NetworkUtils.AddressType
-import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils
 import java.util.Locale
 

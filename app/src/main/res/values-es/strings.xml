@@ -32,7 +32,6 @@
     <string name="call_error_unresolved_hostname">Error: no se puede resolver la dirección</string>
     <string name="call_no_network">No hay red: ¿activar Wi-Fi\\?</string>
     <string name="call_ringing">Llamando…</string>
-    <string name="call_start_or_abort">Iniciar o cancelar</string>
     <string name="call_waiting">Esperando…</string>
     <string name="camera_back">Atrás</string>
     <string name="camera_front">Delantera</string>
@@ -61,7 +60,6 @@
     <string name="invalid_name">Nombre no válido</string>
     <string name="invalid_qr">Código QR no válido</string>
     <string name="invalid_qr_code_data">Dato no válido</string>
-    <string name="listen_for_incoming_calls">Escuchar las llamadas entrantes.</string>
     <string name="menu_about">Acerca de…</string>
     <string name="menu_backup">Copia de seguridad</string>
     <string name="menu_exit">Salir</string>
@@ -75,7 +73,6 @@
     <string name="settings_database_password">Contraseña</string>
     <string name="settings_name">Nombre</string>
     <string name="settings_nightmode">Modo Nocturno</string>
-    <string name="startup_hello">¡Hola!</string>
     <string name="startup_prompt_name">¿Cual debería de ser tu nombre?</string>
     <string name="title_contacts">Contactos</string>
     <string name="title_scan_qr_code">Escaneando código QR</string>
@@ -102,7 +99,6 @@
     <string name="title_activity_peer_list">Select peers</string>
     <string name="node_info_copied">copied</string>
     <string name="peers">Peers</string>
-    <string name="contact_menu_edit">Edit</string>
     <string name="is_calling">is calling</string>
     <string name="contact_is_invalid">Contact is invalid</string>
     <string name="add_contact_link_or_json">Enter contact link or contact JSON manually</string>

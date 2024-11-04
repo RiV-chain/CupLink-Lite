@@ -133,15 +133,7 @@
     <string name="settings_video_hardware_acceleration">Video Hardware Acceleration</string>
     <string name="setup_address">Setup Address</string>
     <string name="setup_no_address_found">Could not find the MAC address of your Wi-Fi card. Enable Wi-Fi now (no Internet needed) or skip to configure later.</string>
-    <string name="startup_name_prefix">User</string>
     <string name="startup_prompt_name">What should be your name?</string>
-    <string name="state_app_not_running">App Not Running</string>
-    <string name="state_authentication_failed">Authentication Failed</string>
-    <string name="state_communication_failed">Communication Failed</string>
-    <string name="state_contact_network_unreachable">Network Unreachable</string>
-    <string name="state_contact_offline">Contact is Offline</string>
-    <string name="state_contact_online">Contact is Online</string>
-    <string name="state_contact_pending">Pending</string>
     <string name="title_calls">Calls</string>
     <string name="title_contact_details">Contact Details</string>
     <string name="title_contacts">Contacts</string>

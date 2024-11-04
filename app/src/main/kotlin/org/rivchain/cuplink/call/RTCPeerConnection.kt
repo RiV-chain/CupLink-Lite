@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.media.MediaPlayer
 import android.os.Build
-import androidx.core.content.ContextCompat
 import org.json.JSONObject
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.CallActivity
@@ -17,8 +16,8 @@ import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.model.Contact
-import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Utils
 import java.io.IOException
 import java.lang.Integer.max

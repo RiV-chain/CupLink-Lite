@@ -2,8 +2,8 @@ package org.rivchain.cuplink.model
 
 import org.json.JSONObject
 import org.rivchain.cuplink.MainService
-import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Utils
 import java.net.InetSocketAddress
 import java.util.Date

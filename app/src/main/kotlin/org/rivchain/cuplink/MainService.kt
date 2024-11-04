@@ -27,8 +27,8 @@ import org.rivchain.cuplink.rivmesh.STATE_CONNECTED
 import org.rivchain.cuplink.rivmesh.STATE_DISABLED
 import org.rivchain.cuplink.rivmesh.STATE_ENABLED
 import org.rivchain.cuplink.rivmesh.State
-import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.ServiceUtil
 import java.io.FileInputStream
 import java.io.FileOutputStream
