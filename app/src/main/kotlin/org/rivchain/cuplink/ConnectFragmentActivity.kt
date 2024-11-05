@@ -2,6 +2,7 @@ package org.rivchain.cuplink
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -20,6 +21,7 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import org.json.JSONException
+import org.rivchain.cuplink.listener.OnSwipeTouchListener
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 import org.rivchain.cuplink.util.Utils
@@ -174,8 +176,29 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
         val bitMatrix = multiFormatWriter.encode(data, BarcodeFormat.QR_CODE, 1080, 1080)
         val barcodeEncoder = BarcodeEncoder()
         val bitmap = barcodeEncoder.createBitmap(bitMatrix)
+        val qrCode = findViewById<ImageView>(R.id.QRView)
         runOnUiThread {
-            findViewById<ImageView>(R.id.QRView).setImageBitmap(bitmap)
+            qrCode.setImageBitmap(bitmap)
+            val listener = ConnectOnSwipeTouchListener(this@ConnectFragmentActivity)
+            qrCode.setOnTouchListener(listener)
+        }
+    }
+
+    class ConnectOnSwipeTouchListener(private val activity: ConnectFragmentActivity) : OnSwipeTouchListener(activity){
+        override fun onSwipeTop() {
+
+        }
+
+        override fun onSwipeRight() {
+            activity.finish()
+        }
+
+        override fun onSwipeLeft() {
+
+        }
+
+        override fun onSwipeBottom() {
+
         }
     }
 
