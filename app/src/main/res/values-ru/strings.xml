@@ -181,4 +181,5 @@
     <string name="microphone_usage_message">Your call is being recorded by some other app(s)</string>
     <string name="add_peer">Add your peer</string>
     <string name="accept">Accept</string>
+    <string name="duplicated_contact_data">Duplicated contact data</string>
 </resources>

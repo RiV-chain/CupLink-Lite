@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -15,6 +16,8 @@ import org.json.JSONObject
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 import org.rivchain.cuplink.util.Utils
+import org.rivchain.cuplink.util.ViewUtil.generateBlockies
+import org.rivchain.cuplink.util.ViewUtil.getRoundedCroppedBitmap
 
 open class AddContactActivity: BaseActivity() {
 
@@ -85,6 +88,18 @@ open class AddContactActivity: BaseActivity() {
         pause()
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_add_contact_pubkey_conflict, null)
         val dialog = createBlurredPPTCDialog(view)
+        dialog.setCanceledOnTouchOutside(false)
+        val contactIcon =
+            view.findViewById<ImageView>(R.id.contactIcon)
+        val contactKey =
+            view.findViewById<TextView>(R.id.contactKey)
+        // Generate the blockies icon from the user's public key
+        val blockiesBitmap = generateBlockies(otherContact.publicKey)
+
+        // Create a circular bitmap from the blockies image
+        val circularBitmap = getRoundedCroppedBitmap(blockiesBitmap)
+        contactIcon.setImageBitmap(circularBitmap)
+        contactKey.text = Utils.byteArrayToHexString(otherContact.publicKey)
         val nameTextView =
             view.findViewById<TextView>(R.id.public_key_conflicting_contact_textview)
         val abortButton = view.findViewById<Button>(R.id.public_key_conflict_abort_button)

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="@drawable/dialog_rounded_corner">
 
@@ -13,11 +13,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/public_key_conflicting_contact_textview"
+        app:layout_constraintBottom_toTopOf="@+id/contactIcon"
         android:layout_marginStart="10dp"
         android:textSize="20sp"
         android:fontFamily="@font/poppins_regular"
-        android:text="@string/contact_key_conflict"/>
+        android:text="@string/duplicated_contact_data"/>
+
+    <ImageView
+        android:id="@+id/contactIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_contacts"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/public_key_conflict_textview"
+        app:layout_constraintBottom_toTopOf="@id/contactKey" />
+
+    <TextView
+        android:id="@+id/contactKey"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contactIcon"
+        app:layout_constraintBottom_toTopOf="@id/public_key_conflicting_contact_textview"
+        android:textSize="@dimen/title_text_size"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:text="..."
+        android:gravity="center"
+        android:textColor="@color/light_light_grey" />
 
     <TextView
         android:id="@+id/public_key_conflicting_contact_textview"
@@ -25,7 +52,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/public_key_conflict_textview"
+        app:layout_constraintTop_toBottomOf="@+id/contactKey"
         app:layout_constraintBottom_toTopOf="@+id/public_key_conflict_abort_button"
         android:layout_marginTop="10dp"
         android:layout_marginStart="@dimen/padding_20"
