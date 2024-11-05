@@ -98,6 +98,10 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
             val contact = findViewById<TextInputEditText>(R.id.editTextInput)
             try {
                 val data = contact.text.toString()
+                if(data.isEmpty()){
+                    et.visibility = View.INVISIBLE
+                    return
+                }
                 addContact(data)
             } catch (e: JSONException) {
                 e.printStackTrace()
