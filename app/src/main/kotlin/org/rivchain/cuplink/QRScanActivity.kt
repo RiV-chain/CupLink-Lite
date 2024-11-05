@@ -33,9 +33,6 @@ class QRScanActivity : AddContactActivity(), BarcodeCallback {
             finish()
         }
 
-        // manual input button
-        findViewById<View>(R.id.fabManualInput).setOnClickListener { startManualInput() }
-
         if (!Utils.hasPermission(this, Manifest.permission.CAMERA)) {
             enabledCameraForResult.launch(Manifest.permission.CAMERA)
         }
