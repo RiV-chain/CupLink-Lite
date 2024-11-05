@@ -7,6 +7,13 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
 import android.os.Build
 import android.util.Rational
 import android.util.TypedValue
@@ -32,6 +39,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.lifecycle.Lifecycle
 import com.google.android.material.textfield.TextInputEditText
+import com.nikhiljain.blockiesgenerator.BlockiesIconGenerator
+import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.util.view.Stub
 
 
@@ -437,5 +446,42 @@ object ViewUtil {
             }
         }
         return null
+    }
+
+    fun generateBlockies(publicKey: ByteArray): Bitmap {
+        // Prepare a buffer to hold the sha256 hash output
+        val sha256 = ByteArray(Sodium.crypto_hash_sha256_bytes())
+        // Compute sha256 hash
+        Sodium.crypto_hash_sha256(sha256, publicKey, publicKey.size)
+
+        val hash = Utils.byteArrayToHexString(sha256)
+
+        val iconGenerator = BlockiesIconGenerator(
+            seed = hash,
+            size = 10,
+            scale = 10,
+        )
+
+        return iconGenerator.generateIconBitmap()
+    }
+
+    fun getRoundedCroppedBitmap(bitmap: Bitmap): Bitmap {
+        val output = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(output)
+
+        val color = 0xff424242.toInt()
+        val paint = Paint()
+        val rect = Rect(0, 0, bitmap.width, bitmap.height)
+        val rectF = RectF(rect)
+
+        paint.isAntiAlias = true
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.color = color
+        canvas.drawOval(rectF, paint)
+
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(bitmap, rect, rect, paint)
+
+        return output
     }
 }

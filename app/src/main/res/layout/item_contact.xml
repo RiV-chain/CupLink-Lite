@@ -7,7 +7,7 @@
 
     <!-- Main User Icon -->
     <ImageView
-        android:id="@+id/contact_state"
+        android:id="@+id/contactIcon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
@@ -21,12 +21,12 @@
 
     <!-- Small Status Circle (half overlapping main icon) -->
     <ImageView
-        android:id="@+id/status_circle"
+        android:id="@+id/contactStatus"
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:src="@drawable/ic_circle"
-        app:layout_constraintEnd_toEndOf="@id/contact_state"
-        app:layout_constraintBottom_toBottomOf="@id/contact_state"
+        app:layout_constraintEnd_toEndOf="@id/contactIcon"
+        app:layout_constraintBottom_toBottomOf="@id/contactIcon"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp" />
 
@@ -39,7 +39,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/contact_state"
+        app:layout_constraintStart_toEndOf="@+id/contactIcon"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"

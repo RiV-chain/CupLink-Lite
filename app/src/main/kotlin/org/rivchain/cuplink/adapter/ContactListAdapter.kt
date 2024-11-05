@@ -28,6 +28,8 @@ import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.Utils
+import org.rivchain.cuplink.util.ViewUtil.generateBlockies
+import org.rivchain.cuplink.util.ViewUtil.getRoundedCroppedBitmap
 import java.lang.Integer.max
 import java.lang.Integer.min
 import java.net.ConnectException
@@ -43,8 +45,8 @@ internal class ContactListAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false)
         val contact = contacts[position]
-        val userIcon = itemView.findViewById<ImageView>(R.id.contact_state)
-        val statusCircle = itemView.findViewById<ImageView>(R.id.status_circle)
+        val userIcon = itemView.findViewById<ImageView>(R.id.contactIcon)
+        val statusCircle = itemView.findViewById<ImageView>(R.id.contactStatus)
         itemView.findViewById<TextView>(R.id.contact_name).text = contact.name
 
         // Generate the blockies icon from the user's public key
@@ -69,44 +71,6 @@ internal class ContactListAdapter(
 
         return itemView
     }
-
-    private fun generateBlockies(publicKey: ByteArray): Bitmap {
-        // Prepare a buffer to hold the sha256 hash output
-        val sha256 = ByteArray(Sodium.crypto_hash_sha256_bytes())
-        // Compute sha256 hash
-        Sodium.crypto_hash_sha256(sha256, publicKey, publicKey.size)
-
-        val hash = Utils.byteArrayToHexString(sha256)
-
-        val iconGenerator = BlockiesIconGenerator(
-            seed = hash,
-            size = 10,
-            scale = 10,
-        )
-
-        return iconGenerator.generateIconBitmap()
-    }
-
-    private fun getRoundedCroppedBitmap(bitmap: Bitmap): Bitmap {
-        val output = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(output)
-
-        val color = 0xff424242.toInt()
-        val paint = Paint()
-        val rect = Rect(0, 0, bitmap.width, bitmap.height)
-        val rectF = RectF(rect)
-
-        paint.isAntiAlias = true
-        canvas.drawARGB(0, 0, 0, 0)
-        paint.color = color
-        canvas.drawOval(rectF, paint)
-
-        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-        canvas.drawBitmap(bitmap, rect, rect, paint)
-
-        return output
-    }
-
 
     fun updateContact(contact: Contact) {
         val index = contacts.indexOfFirst { it.publicKey.contentEquals(contact.publicKey) }
