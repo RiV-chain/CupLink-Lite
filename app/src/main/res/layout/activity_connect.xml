@@ -69,7 +69,7 @@
         android:background="@drawable/edit_text_rounded_corner"
         android:textColorHint="@color/light_grey"
         app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toStartOf="@+id/fabManualInput"
+        app:layout_constraintEnd_toStartOf="@+id/manualInput"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barcodeScannerContainer"
         app:layout_constraintBottom_toTopOf="@+id/scan_label_top"
@@ -92,7 +92,7 @@
 
     <!-- Floating Action Button Manual Input -->
     <ImageButton
-        android:id="@+id/fabManualInput"
+        android:id="@+id/manualInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleX="1.5"
