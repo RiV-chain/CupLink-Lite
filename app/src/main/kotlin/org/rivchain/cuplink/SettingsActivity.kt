@@ -99,12 +99,13 @@ class SettingsActivity : BaseActivity() {
                 startActivity(Intent(this@SettingsActivity, AddressManagementActivity::class.java))
             }
 
-        findViewById<View>(R.id.editPeers)
-            .setOnClickListener {
-                val intent = Intent(this@SettingsActivity, PeerListActivity::class.java)
-                intent.putStringArrayListExtra(PEER_LIST, serializePeerInfoSet2StringList(currentPeers))
-                requestPeersLauncher!!.launch(intent)
-            }
+        val peersNumber = findViewById<TextView>(R.id.configuredPeers)
+        peersNumber.text = DatabaseCache.database.mesh.getPeers().length().toString()
+        peersNumber.setOnClickListener {
+            val intent = Intent(this@SettingsActivity, PeerListActivity::class.java)
+            intent.putStringArrayListExtra(PEER_LIST, serializePeerInfoSet2StringList(currentPeers))
+            requestPeersLauncher!!.launch(intent)
+        }
 
         val databasePassword = DatabaseCache.databasePassword
         findViewById<TextView>(R.id.databasePasswordTv)

@@ -142,6 +142,19 @@
                     android:layout_marginTop="@dimen/padding_40"/>
 
                 <TextView
+                    android:id="@+id/configuredPeers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="@dimen/options_text_size"
+                    app:layout_constraintEnd_toEndOf="@id/editPeers"
+                    app:layout_constraintTop_toTopOf="@id/editPeers"
+                    app:layout_constraintBottom_toBottomOf="@id/editPeers"/>
+
+                <TextView
                     android:id="@+id/startOnBootup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
