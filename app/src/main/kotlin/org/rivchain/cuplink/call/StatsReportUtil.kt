@@ -1,5 +1,6 @@
 package org.rivchain.cuplink.call
 
+import org.rivchain.cuplink.model.CallStats
 import org.webrtc.RTCStatsReport
 import java.math.BigInteger
 
@@ -13,8 +14,9 @@ class StatsReportUtil {
     private var lastBytesSentVideo = BigInteger.ZERO
     private var lastBytesReceivedAudio = BigInteger.ZERO
     private var lastBytesSentAudio = BigInteger.ZERO
-    fun getStatsReport(report: RTCStatsReport?): String {
-        if (report == null) return ""
+
+    fun getStatsReport(report: RTCStatsReport?): CallStats? {
+        if (report == null) return null
         var codecIdVideo: String? = null
         var codecIdAudio: String? = null
         var codecVideo: String? = ""
@@ -71,6 +73,23 @@ class StatsReportUtil {
         if (codecIdAudio != null) {
             codecAudio = report.statsMap[codecIdAudio]!!.members["mimeType"] as String?
         }
+
+        val callStats = CallStats().apply {
+            videoCodec = codecVideo
+            audioCodec = codecAudio
+            inputWidth = widthIn.toInt()
+            inputHeight = heightIn.toInt()
+            inputFrameRate = frameRateIn.toInt()
+            outputWidth = widthOut.toInt()
+            outputHeight = heightOut.toInt()
+            outputFrameRate = frameRateOut.toInt()
+            receivedVideoBitrateKbps = receivedBytesSRVideo * 8.0 / STATS_INTERVAL_MS
+            sentVideoBitrateKbps = sentBytesSRVideo * 8.0 / STATS_INTERVAL_MS
+            receivedAudioBitrateKbps = receivedBytesSRAudio * 8.0 / STATS_INTERVAL_MS
+            sentAudioBitrateKbps = sentBytesSRAudio * 8.0 / STATS_INTERVAL_MS
+        }
+
+        /*
         return " Codecs\n" +
                "  $codecVideo\n" +
                "  $codecAudio\n" +
@@ -80,6 +99,8 @@ class StatsReportUtil {
                " Bitrate ⎚ ↑ ${sentBytesSRVideo * 8 / STATS_INTERVAL_MS}kbps\n" +
                " Bitrate 🔊 ↓ ${receivedBytesSRAudio * 8 / STATS_INTERVAL_MS}kbps\n" +
                " Bitrate 🔊 ↑ ${sentBytesSRAudio * 8 / STATS_INTERVAL_MS}kbps"
+         */
+        return callStats
     }
 
     companion object {
