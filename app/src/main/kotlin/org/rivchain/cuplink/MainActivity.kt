@@ -14,9 +14,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
@@ -235,24 +235,6 @@ class MainActivity : BaseActivity() {
         }, 700)
     }
 
-    private fun menuAction(itemId: Int) {
-        when (itemId) {
-            R.id.action_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-            }
-            R.id.action_backup -> {
-                startActivity(Intent(this, BackupActivity::class.java))
-            }
-            R.id.action_about -> {
-                startActivity(Intent(this, AboutActivity::class.java))
-            }
-            R.id.action_exit -> {
-                MainService.stopPacketsStream(this)
-                finish()
-            }
-        }
-    }
-
     // request password for setting activity
     private fun showMenuPasswordDialog(itemId: Int, menuPassword: String) {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_database_password, null)
@@ -266,7 +248,7 @@ class MainActivity : BaseActivity() {
             val password = passwordEditText.text.toString()
             if (menuPassword == password) {
                 // start menu action
-                menuAction(itemId)
+                startActivity(Intent(this, SettingsActivity::class.java))
             } else {
                 passwordEditText.error = getString(R.string.wrong_password)
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
@@ -287,7 +269,7 @@ class MainActivity : BaseActivity() {
 
         val settings = DatabaseCache.database.settings
         if (settings.menuPassword.isEmpty()) {
-            menuAction(item.itemId)
+            startActivity(Intent(this, SettingsActivity::class.java))
         } else {
             showMenuPasswordDialog(item.itemId, settings.menuPassword)
         }
@@ -308,14 +290,30 @@ class MainActivity : BaseActivity() {
         updateEventTabTitle()
     }
 
-    @SuppressLint("RestrictedApi")
+    //@SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         Log.d(this, "onCreateOptionsMenu()")
         menuInflater.inflate(R.menu.menu_settings, menu)
-
+        val item = menu.findItem(R.id.action_settings) as MenuItem
+        item.setActionView(R.layout.menu_settings_layout)
+        val settingsButton = item
+            .actionView?.findViewById<ImageButton>(R.id.settingsButton)
+        settingsButton?.setOnClickListener {
+            val settings = DatabaseCache.database.settings
+            if (settings.menuPassword.isEmpty()) {
+                startActivity(Intent(this, SettingsActivity::class.java))
+            } else {
+                showMenuPasswordDialog(item.itemId, settings.menuPassword)
+            }
+        }
+        /*
+        Not needed anymore since RCL-183 was implemented
+         */
+        /*
         if (menu is MenuBuilder) {
             menu.setOptionalIconsVisible(true)
         }
+         */
         return true
     }
 
