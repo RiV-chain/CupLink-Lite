@@ -62,38 +62,51 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/about"
+                <LinearLayout
+                    android:id="@+id/menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/menu_about"
-                    android:textSize="@dimen/title_text_size"
+                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/padding_20"/>
+                    android:layout_marginTop="@dimen/padding_20">
 
-                <TextView
-                    android:id="@+id/backup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/menu_backup"
-                    android:textSize="@dimen/title_text_size"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/about"
-                    android:layout_marginTop="@dimen/padding_40"/>
+                    <TextView
+                        android:id="@+id/about"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/menu_about"
+                        android:textSize="@dimen/title_text_size"
+                        app:drawableTint="@color/colorPrimary"
+                        app:drawableStartCompat="@drawable/ic_about_outline"/>
 
-                <TextView
-                    android:id="@+id/exit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/menu_exit"
-                    android:textSize="@dimen/title_text_size"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/backup"
-                    android:layout_marginTop="@dimen/padding_40"/>
+                    <TextView
+                        android:id="@+id/backup"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/menu_backup"
+                        android:textSize="@dimen/title_text_size"
+                        android:gravity="center_vertical"
+                        app:drawableTint="@color/colorPrimary"
+                        app:drawableStartCompat="@drawable/ic_settings_backup_restore_outline"/>
+
+                    <TextView
+                        android:id="@+id/exit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/menu_exit"
+                        android:textSize="@dimen/title_text_size"
+                        android:gravity="end"
+                        app:drawableTint="@color/colorPrimary"
+                        app:drawableStartCompat="@drawable/ic_power"/>
+                </LinearLayout>
 
                 <View
                     android:id="@+id/headerBasic"
@@ -101,7 +114,7 @@
                     android:layout_height="1dp"
                     android:background="@color/selectedColor"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/exit"
+                    app:layout_constraintTop_toBottomOf="@+id/menu"
                     android:layout_marginTop="@dimen/padding_20"
                     android:layout_marginBottom="@dimen/padding_20"/>
 

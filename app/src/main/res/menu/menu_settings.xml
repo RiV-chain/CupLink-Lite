@@ -4,8 +4,6 @@
     tools:context=".MainActivity">
 
     <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_outline_24dp"
-        app:iconTint="@color/colorPrimary"
         android:title=""
         app:actionLayout="@layout/menu_settings_layout"
         app:showAsAction="always"

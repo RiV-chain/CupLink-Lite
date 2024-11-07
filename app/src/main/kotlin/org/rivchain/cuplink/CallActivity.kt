@@ -142,9 +142,12 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
         override fun onStatsDelivered(rtcStatsReport: RTCStatsReport) {
             val stats = statsReportUtil.getStatsReport(rtcStatsReport)
-            runOnUiThread {
-                callStats.text = stats
-            }
+            /*
+            Fix stats here
+             */
+            //runOnUiThread {
+            //    callStats.text = stats
+            //}
         }
     }
 
