@@ -3,36 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <item
-        android:id="@+id/action_settings"
+    <item android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings_outline_24dp"
-        android:title="@string/menu_settings"
         app:iconTint="@color/colorPrimary"
-        app:showAsAction="never"
-        android:fontFamily="@font/poppins_regular"/>
-
-    <item
-        android:id="@+id/action_backup"
-        android:icon="@drawable/ic_settings_backup_restore_outline"
-        android:title="@string/menu_backup"
-        app:iconTint="@color/colorPrimary"
-        app:showAsAction="never"
-        android:fontFamily="@font/poppins_regular"/>
-
-    <item
-        android:id="@+id/action_about"
-        android:icon="@drawable/ic_about_outline"
-        android:title="@string/menu_about"
-        app:iconTint="@color/colorPrimary"
-        app:showAsAction="never"
-        android:fontFamily="@font/poppins_regular"/>
-
-    <item
-        android:id="@+id/action_exit"
-        android:icon="@drawable/ic_power"
-        android:title="@string/menu_exit"
-        app:iconTint="@color/colorPrimary"
-        app:showAsAction="never"
+        android:title=""
+        app:actionLayout="@layout/menu_settings_layout"
+        app:showAsAction="always"
         android:fontFamily="@font/poppins_regular"/>
 
 </menu>

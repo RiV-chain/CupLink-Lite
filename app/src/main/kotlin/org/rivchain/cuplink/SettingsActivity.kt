@@ -87,6 +87,22 @@ class SettingsActivity : BaseActivity() {
 
         val settings = database.settings
 
+        findViewById<View>(R.id.exit)
+            .setOnClickListener {
+                MainService.stopPacketsStream(this)
+                finishAffinity()
+            }
+
+        findViewById<View>(R.id.about)
+            .setOnClickListener {
+                startActivity(Intent(this, AboutActivity::class.java))
+            }
+
+        findViewById<View>(R.id.backup)
+            .setOnClickListener {
+                startActivity(Intent(this, BackupActivity::class.java))
+            }
+
         findViewById<TextView>(R.id.nameTv)
             .text = settings.username.ifEmpty { getString(R.string.no_value) }
         findViewById<View>(R.id.settingsName)
