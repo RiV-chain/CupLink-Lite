@@ -188,6 +188,7 @@ private fun createNotificationChannels(context: Context) {
         val importance = NotificationManager.IMPORTANCE_MIN
         val channel = NotificationChannel(MAIN_CHANNEL_ID, name, importance).apply {
             description = descriptionText
+            setShowBadge(false)
         }
         // Register the channel with the system
         val notificationManager: NotificationManager =
