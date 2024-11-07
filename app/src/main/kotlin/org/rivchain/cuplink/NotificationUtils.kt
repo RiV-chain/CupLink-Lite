@@ -127,10 +127,12 @@ internal object NotificationUtils {
             val chan = NotificationChannel(
                 channelId,
                 "CupLink Call Listener",
-                NotificationManager.IMPORTANCE_LOW // display notification as collapsed by default
-            )
-            chan.lightColor = Color.RED
-            chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+                NotificationManager.IMPORTANCE_LOW, // display notification as collapsed by default
+            ).apply {
+                setShowBadge(true)
+                lightColor = Color.RED
+                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            }
             val service = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             service.createNotificationChannel(chan)
         }
@@ -284,18 +286,21 @@ internal object NotificationUtils {
                         R.string.call_ringing
                     ),
                     NotificationManager.IMPORTANCE_HIGH
-                )
+                ).apply {
+                    description = service.getString(
+                        R.string.call_ringing
+                    )
+                    enableVibration(false)
+                    enableLights(false)
+                    setBypassDnd(true)
+                    setShowBadge(false)
+                }
                 try {
                     chan.setSound(null, attrs)
                 } catch (e: java.lang.Exception) {
                     Log.e(this, e.toString())
                 }
-                chan.description = service.getString(
-                    R.string.call_ringing
-                )
-                chan.enableVibration(false)
-                chan.enableLights(false)
-                chan.setBypassDnd(true)
+
                 try {
                     nm.createNotificationChannel(chan)
                 } catch (e: java.lang.Exception) {
