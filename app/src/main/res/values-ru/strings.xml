@@ -76,7 +76,7 @@
     <string name="contact_public_key_already_exists">Публичный ключ контакта уже присутствует.</string>
     <string name="ping_all_contacts">Пинг всех контактов</string>
     <string name="warning_no_addresses_found">Настроенные адреса не найдены. Изменилась ли сеть?</string>
-    <string name="clear_events">Очистить События</string>
+    <string name="clear_history">Очистить События</string>
     <string name="capture_format_change_text">Проведите чтобы изменить захват</string>
     <string name="overlay_permission_missing">Разрешение поверх окон недоступно. Вы не сможете принимать звонки в фоновом режиме!</string>
     <string name="contact_menu_details">Детали</string>

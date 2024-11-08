@@ -46,7 +46,7 @@
     <string name="camera_back">Back</string>
     <string name="camera_front">Front</string>
     <string name="capture_format_change_text">Slide to change capture format</string>
-    <string name="clear_events">Clear Events</string>
+    <string name="clear_history">Clear History</string>
     <string name="connected_to_address">(to %s)</string>
     <string name="connecting_to_address">Connecting to %s</string>
     <string name="contact_address_input">Address</string>

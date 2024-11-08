@@ -36,7 +36,7 @@
     <string name="camera_back">Atrás</string>
     <string name="camera_front">Delantera</string>
     <string name="capture_format_change_text">Deslice para cambiar el formato de captura</string>
-    <string name="clear_events">Borrar eventos</string>
+    <string name="clear_history">Borrar eventos</string>
     <string name="connected_to_address">(a la %s)</string>
     <string name="connecting_to_address">Conectado a  %s</string>
     <string name="contact_address_input">DIRECCIÓN</string>

@@ -83,15 +83,33 @@ class SettingsActivity : BaseActivity() {
         initViews()
     }
 
+    private fun showClearEventsDialog() {
+        Log.d(this, "showClearEventsDialog()")
+
+        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_yes_no, null)
+        val dialog = this.createBlurredPPTCDialog(view)
+        dialog.setCancelable(false)
+        val titleText = view.findViewById<TextView>(R.id.title)
+        titleText.text = getString(R.string.clear_history)
+        val messageText = view.findViewById<TextView>(R.id.message)
+        messageText.text = getString(R.string.remove_all_events)
+        val noButton = view.findViewById<Button>(R.id.no)
+        val yesButton = view.findViewById<Button>(R.id.yes)
+        yesButton.setOnClickListener {
+            this.clearEvents()
+            DatabaseCache.save()
+            Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
+            dialog.cancel()
+        }
+        noButton.setOnClickListener {
+            dialog.cancel()
+        }
+        dialog.show()
+    }
+
     private fun initViews() {
 
         val settings = database.settings
-
-        findViewById<View>(R.id.exit)
-            .setOnClickListener {
-                MainService.stopPacketsStream(this)
-                finishAffinity()
-            }
 
         findViewById<View>(R.id.about)
             .setOnClickListener {
@@ -101,6 +119,16 @@ class SettingsActivity : BaseActivity() {
         findViewById<View>(R.id.backup)
             .setOnClickListener {
                 startActivity(Intent(this, BackupActivity::class.java))
+            }
+        findViewById<View>(R.id.clearHistory)
+            .setOnClickListener {
+                showClearEventsDialog()
+        }
+
+        findViewById<View>(R.id.exit)
+            .setOnClickListener {
+                MainService.stopPacketsStream(this)
+                finishAffinity()
             }
 
         findViewById<TextView>(R.id.nameTv)
