@@ -44,7 +44,7 @@
     <string name="camera_back">Dos</string>
     <string name="camera_front">Devant</string>
     <string name="capture_format_change_text">Faites glisser pour changer le format de capture</string>
-    <string name="clear_events">Effacer les événements</string>
+    <string name="clear_history">Effacer les événements</string>
     <string name="connected_to_address">(à l\' %s)</string>
     <string name="connecting_to_address">Connexion à %s</string>
     <string name="contact_address_input">Adresse</string>

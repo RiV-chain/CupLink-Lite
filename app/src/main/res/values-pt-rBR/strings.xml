@@ -44,7 +44,7 @@
     <string name="camera_back">Voltar</string>
     <string name="camera_front">Frente</string>
     <string name="capture_format_change_text">Deslize para alterar o formato de captura</string>
-    <string name="clear_events">Limpar eventos</string>
+    <string name="clear_history">Limpar eventos</string>
     <string name="connected_to_address">(para o %s)</string>
     <string name="connecting_to_address">Conectando à %s</string>
     <string name="contact_address_input">Endereço</string>

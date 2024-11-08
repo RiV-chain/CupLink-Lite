@@ -12,11 +12,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.adapter.EventListAdapter
 import org.rivchain.cuplink.model.Event
@@ -28,7 +26,6 @@ class EventListFragment() : Fragment() {
     private lateinit var activity: BaseActivity
     private lateinit var eventListAdapter: EventListAdapter
     private lateinit var eventListView: ListView
-    private lateinit var fabClear: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,14 +34,7 @@ class EventListFragment() : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_event_list, container, false)
         eventListView = view.findViewById(R.id.eventList)
-        fabClear = view.findViewById(R.id.fabClear)
-
         activity = requireActivity() as BaseActivity
-
-        fabClear.setOnClickListener {
-            Log.d(this, "fabClear")
-            showClearEventsDialog()
-        }
 
         eventListAdapter = EventListAdapter(activity, R.layout.item_event, emptyList(), emptyList())
         eventListView.adapter = eventListAdapter
@@ -213,32 +203,6 @@ class EventListFragment() : Fragment() {
     private fun deleteEventGroup(eventGroup: List<Event>) {
         Log.d(this, "removeEventGroup()")
         activity.deleteEvents(eventGroup.map { it.date })
-    }
-
-    private fun showClearEventsDialog() {
-        Log.d(this, "showClearEventsDialog()")
-
-        val activity = requireActivity() as MainActivity
-        val view: View = LayoutInflater.from(activity).inflate(R.layout.dialog_yes_no, null)
-        val dialog = activity.createBlurredPPTCDialog(view)
-        dialog.setCancelable(false)
-        val titleText = view.findViewById<TextView>(R.id.title)
-        titleText.text = getString(R.string.clear_events)
-        val messageText = view.findViewById<TextView>(R.id.message)
-        messageText.text = getString(R.string.remove_all_events)
-        val noButton = view.findViewById<Button>(R.id.no)
-        val yesButton = view.findViewById<Button>(R.id.yes)
-        yesButton.setOnClickListener {
-            activity.clearEvents()
-            DatabaseCache.save()
-            refreshEventList()
-            Toast.makeText(activity, R.string.done, Toast.LENGTH_SHORT).show()
-            dialog.cancel()
-        }
-        noButton.setOnClickListener {
-            dialog.cancel()
-        }
-        dialog.show()
     }
 
     // only available for unknown contacts
