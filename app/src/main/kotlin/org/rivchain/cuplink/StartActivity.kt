@@ -236,7 +236,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
 
         if (startState == 1) {
             setContentView(R.layout.activity_splash)
-            findViewById<TextView>(R.id.splashText).text = "CupLink ${BuildConfig.VERSION_NAME}. Copyright 2024 RiV Chain LTD.\nAll rights reserved."
+            findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
             if (DatabaseCache.firstStart) {
                 // show delayed splash page
                 continueInit()

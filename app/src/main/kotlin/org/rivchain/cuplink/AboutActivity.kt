@@ -23,10 +23,10 @@ class AboutActivity : BaseActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        findViewById<TextView>(R.id.versionTv).text = BuildConfig.VERSION_NAME
         findViewById<TextView>(R.id.licenseTV).setOnClickListener {
             val intent = Intent(this, LicenseActivity::class.java)
             startActivity(intent)
         }
+        findViewById<TextView>(R.id.splashText).text = "CupLink ${BuildConfig.VERSION_NAME}. Copyright 2024 RiV Chain LTD.\nAll rights reserved."
     }
 }
