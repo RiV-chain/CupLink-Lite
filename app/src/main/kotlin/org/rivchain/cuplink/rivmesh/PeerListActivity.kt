@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.rivchain.cuplink.BuildConfig
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.SettingsActivity
 import org.rivchain.cuplink.rivmesh.models.PeerInfo
@@ -56,6 +57,8 @@ class PeerListActivity : SelectPeerActivity() {
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { _ ->
             addNewPeer()
         }
+
+        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
     }
 
     private fun editPeerListUrl() {

@@ -25,7 +25,7 @@ open class AutoTestPublicPeerActivity: TestPortActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        findViewById<TextView>(R.id.splashText).text = "CupLink ${BuildConfig.VERSION_NAME}. Copyright 2024 RiV Chain LTD.\nAll rights reserved."
+        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2023 RiV Chain Ltd"
     }
 
     override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
