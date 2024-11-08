@@ -79,7 +79,7 @@
                         android:drawablePadding="5dp"
                         android:fontFamily="@font/poppins_regular"
                         android:text="@string/menu_about"
-                        android:textSize="@dimen/title_text_size"
+                        android:textSize="@dimen/settings_menu_text_size"
                         android:gravity="center"
                         app:drawableTint="@color/colorPrimary"
                         app:drawableTopCompat="@drawable/ic_about_outline"/>
@@ -92,7 +92,7 @@
                         android:drawablePadding="5dp"
                         android:fontFamily="@font/poppins_regular"
                         android:text="@string/menu_backup"
-                        android:textSize="@dimen/title_text_size"
+                        android:textSize="@dimen/settings_menu_text_size"
                         android:gravity="center"
                         app:drawableTint="@color/colorPrimary"
                         app:drawableTopCompat="@drawable/ic_settings_backup_restore_outline"/>
@@ -105,7 +105,7 @@
                         android:drawablePadding="5dp"
                         android:fontFamily="@font/poppins_regular"
                         android:text="@string/clear_history"
-                        android:textSize="@dimen/title_text_size"
+                        android:textSize="@dimen/settings_menu_text_size"
                         android:gravity="center"
                         app:drawableTint="@color/colorPrimary"
                         app:drawableTopCompat="@drawable/trash_bin"/>
@@ -116,8 +116,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_regular"
+                        android:drawablePadding="5dp"
                         android:text="@string/menu_exit"
-                        android:textSize="@dimen/title_text_size"
+                        android:textSize="@dimen/settings_menu_text_size"
                         android:gravity="center"
                         app:drawableTint="@color/colorPrimary"
                         app:drawableTopCompat="@drawable/ic_power"/>

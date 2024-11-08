@@ -1,8 +1,8 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="30dp"
-    android:height="30dp"
-    android:viewportWidth="35"
-    android:viewportHeight="35">
+    android:width="26dp"
+    android:height="26dp"
+    android:viewportWidth="30"
+    android:viewportHeight="30">
 
     <!-- Path for the outer circular shape, centered in 30x30 viewport -->
     <path
