@@ -132,9 +132,9 @@ class SettingsActivity : BaseActivity() {
                 finishAffinity()
             }
 
-        findViewById<TextView>(R.id.nameTv)
-            .text = settings.username.ifEmpty { getString(R.string.no_value) }
-        findViewById<View>(R.id.settingsName)
+        findViewById<DescriptiveTextView>(R.id.settingsNickname)
+            .subtitleTextView.text = settings.username.ifEmpty { getString(R.string.no_value) }
+        findViewById<View>(R.id.settingsNickname)
             .setOnClickListener { showChangeUsernameDialog() }
 
         findViewById<DescriptiveTextView>(R.id.addressLayout)

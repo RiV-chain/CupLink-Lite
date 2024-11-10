@@ -62,7 +62,7 @@
     <string name="contact_menu_qrcode">QR code</string>
     <string name="contact_menu_share">Share</string>
     <string name="contact_menu_unblock">Unblock</string>
-    <string name="contact_name">Name</string>
+    <string name="contact_nickname">Nickname</string>
     <string name="contact_name_conflict">A contact with the same name exists.</string>
     <string name="contact_name_exists">A contact with that name exists already.</string>
     <string name="contact_name_invalid">Contact name is invalid.</string>
@@ -74,7 +74,7 @@
     <string name="dialog_title_import_backup">Import Backup</string>
     <string name="done">Done</string>
     <string name="empty_list_item">Empty</string>
-    <string name="enter_contact_name">Change Name</string>
+    <string name="enter_contact_name">Change Nickname</string>
     <string name="enter_contact_public_key">Change Public Key</string>
     <string name="enter_password">Enter password</string>
     <string name="error">Error</string>

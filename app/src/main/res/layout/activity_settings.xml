@@ -135,31 +135,17 @@
                     android:layout_marginBottom="@dimen/padding_20"/>
 
                 <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/settingsName"
-                    android:layout_width="0dp"
+                    android:id="@+id/settingsNickname"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/padding_20"
-                    app:titleText="Name"
-                    android:layout_marginEnd="@dimen/padding_20"
-                    app:subtitleText=""
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_regular"
-                    app:titleTextSize="7sp"
-                    app:subtitleTextSize="5sp"
-                    app:layout_constraintEnd_toStartOf="@id/nameTv"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/headerBasic"/>
-
-                <TextView
-                    android:id="@+id/nameTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/settingsName"
-                    app:layout_constraintBottom_toBottomOf="@id/settingsName"/>
+                    app:layout_constraintTop_toBottomOf="@+id/headerBasic"
+                    app:subtitleFontFamily="@font/poppins_regular"
+                    app:subtitleTextSize="5sp"
+                    app:titleFontFamily="@font/poppins_regular"
+                    app:titleText="Nickname"
+                    app:titleTextSize="7sp" />
 
                 <TextView
                     android:id="@+id/settingsNightModes"
@@ -169,7 +155,7 @@
                     android:text="@string/settings_nightmode"
                     android:textSize="@dimen/title_text_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/settingsName"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsNickname"
                     android:layout_marginTop="@dimen/padding_40"
                     android:visibility="gone"/>
 
