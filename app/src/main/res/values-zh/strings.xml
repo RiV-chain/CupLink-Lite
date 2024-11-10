@@ -147,7 +147,7 @@
     <string name="button_add">添加</string>
     <string name="contact_address_input">地址</string>
     <string name="error_address_multicast_not_supported">不支持多播地址</string>
-    <string name="contact_name">名称</string>
+    <string name="contact_nickname">名称</string>
     <string name="contact_public_key">公钥</string>
     <string name="contact_address_list">地址</string>
     <string name="enter_contact_public_key">更改公钥</string>

@@ -108,7 +108,7 @@
     <string name="settings_enable_microphone_by_default">Включить микрофон по умолчанию</string>
     <string name="settings_camera_framerate">Частота кадров по умолчанию</string>
     <string name="settings_disable_cpu_overuse_detection">Отключить обнаружение перегрузки процессора</string>
-    <string name="contact_name">Имя</string>
+    <string name="contact_nickname">Имя</string>
     <string name="audio_device_auto">%s (автоматически)</string>
     <string name="setup_no_address_found">Не удалось найти MAC-адрес вашей карты Wi-Fi. Включите Wi-Fi (Интернет не требуется) или пропустите шаг, что бы выполнить настройку позже.</string>
     <string name="error_address_exists">Адрес существует</string>
