@@ -35,7 +35,7 @@ class Settings {
     var disableCpuOveruseDetection = false
     var autoAcceptCalls = false
     var menuPassword = ""
-    var videoDegradationMode = "balanced"
+    var videoDegradationMode = "Balanced"
     var cameraResolution = "auto"
     var cameraFramerate = "auto"
     var automaticStatusUpdates = true

@@ -640,19 +640,19 @@ class SettingsActivity : BaseActivity() {
         val disabledColor = Color.parseColor("#d3d3d3")
 
         when (degradation) {
-            "balanced" -> {
+            "Balanced" -> {
                 cameraResolutionText.titleTextView.setTextColor(disabledColor)
                 cameraFramerateText.titleTextView.setTextColor(disabledColor)
             }
-            "maintain_resolution" -> {
+            "Maintain resolution" -> {
                 cameraResolutionText.titleTextView.setTextColor(enabledColor)
                 cameraFramerateText.titleTextView.setTextColor(disabledColor)
             }
-            "maintain_framerate" -> {
+            "Maintain framerate" -> {
                 cameraResolutionText.titleTextView.setTextColor(disabledColor)
                 cameraFramerateText.titleTextView.setTextColor(enabledColor)
             }
-            "disabled" -> {
+            "Disabled" -> {
                 cameraResolutionText.titleTextView.setTextColor(enabledColor)
                 cameraFramerateText.titleTextView.setTextColor(enabledColor)
             }
@@ -668,17 +668,17 @@ class SettingsActivity : BaseActivity() {
         val expertSettingsLayout = findViewById<View>(R.id.expertSettingsLayout)
 
         when (settingsMode) {
-            "basic" -> {
+            "Basic" -> {
                 basicSettingsLayout.visibility = View.VISIBLE
                 advancedSettingsLayout.visibility = View.GONE
                 expertSettingsLayout.visibility = View.GONE
             }
-            "advanced" -> {
+            "Advanced" -> {
                 basicSettingsLayout.visibility = View.VISIBLE
                 advancedSettingsLayout.visibility = View.VISIBLE
                 expertSettingsLayout.visibility = View.GONE
             }
-            "expert" -> {
+            "Expert" -> {
                 basicSettingsLayout.visibility = View.VISIBLE
                 advancedSettingsLayout.visibility = View.VISIBLE
                 expertSettingsLayout.visibility = View.VISIBLE

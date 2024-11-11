@@ -273,7 +273,7 @@ class Database {
             }
 
             if (newFrom == "4.1.6") {
-                settings.put("video_degradation_mode", "balanced")
+                settings.put("video_degradation_mode", "Balanced")
                 settings.put("camera_resolution", "auto")
                 settings.put("camera_framerate", "auto")
                 settings.put("disable_cpu_overuse_detection", false)

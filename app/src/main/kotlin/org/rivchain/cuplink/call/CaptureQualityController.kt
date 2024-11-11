@@ -244,26 +244,26 @@ class CaptureQualityController(private val callActivity: CallActivity) {
         degradationSpinner.setSelection(degradationValues.indexOf(degradation))
 
         when (degradation) {
-            "maintain_resolution" -> {
+            "Maintain\nresolution" -> {
                 captureResolution.tag = "on"
                 captureFramerate.tag = "off"
                 resolutionSlider.visibility = VISIBLE
                 framerateSlider.visibility = INVISIBLE
 
             }
-            "maintain_framerate" -> {
+            "Maintain\nframerate" -> {
                 captureResolution.tag = "off"
                 captureFramerate.tag = "on"
                 resolutionSlider.visibility = INVISIBLE
                 framerateSlider.visibility = VISIBLE
             }
-            "balanced" -> {
+            "Balanced" -> {
                 captureResolution.tag = "off"
                 captureFramerate.tag = "off"
                 resolutionSlider.visibility = INVISIBLE
                 framerateSlider.visibility = INVISIBLE
             }
-            "disabled" -> {
+            "Disabled" -> {
                 captureResolution.tag = "on"
                 captureFramerate.tag = "on"
                 resolutionSlider.visibility = VISIBLE
