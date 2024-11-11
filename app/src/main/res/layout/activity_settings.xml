@@ -543,25 +543,29 @@
                     app:layout_constraintTop_toTopOf="@id/cameraFramerateText"
                     app:layout_constraintBottom_toBottomOf="@id/cameraFramerateText"/>
 
-                <TextView
-                    android:id="@+id/promptOutgoingCalls"
+                <org.rivchain.cuplink.renderer.DescriptiveTextView
+                    android:id="@+id/exclusiveCallMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/settings_prompt_outgoing_calls"
-                    android:textSize="@dimen/title_text_size"
+                    android:layout_marginEnd="@dimen/padding_80"
+                    app:titleText="@string/settings_exclusive_call_mode"
+                    app:subtitleText="Block any other incoming calls from other apps except GSM network"
+                    app:titleFontFamily="@font/poppins_regular"
+                    app:subtitleFontFamily="@font/poppins_light"
+                    app:titleTextSize="7sp"
+                    app:subtitleTextSize="5sp"
+                    android:layout_marginTop="@dimen/padding_20"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cameraFramerateText"
-                    android:layout_marginTop="@dimen/padding_20"/>
+                    app:layout_constraintTop_toBottomOf="@+id/cameraFramerateText"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/promptOutgoingCallsSwitch"
+                    android:id="@+id/exclusiveCallModeSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="@id/promptOutgoingCalls"
-                    app:layout_constraintTop_toTopOf="@id/promptOutgoingCalls"
-                    app:layout_constraintBottom_toBottomOf="@id/promptOutgoingCalls"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/exclusiveCallMode"
+                    app:layout_constraintBottom_toBottomOf="@id/exclusiveCallMode"/>
 
                 <org.rivchain.cuplink.renderer.DescriptiveTextView
                     android:id="@+id/showUsernameAsLogo"
@@ -576,7 +580,7 @@
                     app:subtitleTextSize="5sp"
                     android:layout_marginTop="@dimen/padding_20"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/promptOutgoingCallsSwitch"/>
+                    app:layout_constraintTop_toBottomOf="@+id/exclusiveCallMode"/>
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/showUsernameAsLogoSwitch"

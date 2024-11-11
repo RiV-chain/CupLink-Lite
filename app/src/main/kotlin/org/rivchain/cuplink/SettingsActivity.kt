@@ -219,7 +219,7 @@ class SettingsActivity : BaseActivity() {
         findViewById<View>(R.id.connectTimeoutLayout)
             .setOnClickListener { showChangeConnectTimeoutDialog() }
 
-        findViewById<SwitchMaterial>(R.id.promptOutgoingCallsSwitch).apply {
+        findViewById<SwitchMaterial>(R.id.exclusiveCallModeSwitch).apply {
             isChecked = settings.promptOutgoingCalls
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 settings.promptOutgoingCalls = isChecked

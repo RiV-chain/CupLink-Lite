@@ -101,7 +101,7 @@
     <string name="settings_enable_microphone_by_default">Skru på mikrofon som forvalg</string>
     <string name="settings_name">Navn</string>
     <string name="settings_nightmode">Nattmodus</string>
-    <string name="settings_prompt_outgoing_calls">Spør for utgående anrop</string>
+    <string name="settings_exclusive_call_mode">Exclusive Call Mode</string>
     <string name="settings_public_key">Offentlig nøkkel</string>
     <string name="settings_push_to_talk">Trykk-for-å-snakke</string>
     <string name="settings_select_front_camera_by_default">Bruk frontkamera som forvalg</string>
