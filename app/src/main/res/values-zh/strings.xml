@@ -109,7 +109,7 @@
     <string name="settings_menu_password">菜单密码</string>
     <string name="settings_name">昵称</string>
     <string name="settings_nightmode">夜间模式</string>
-    <string name="settings_prompt_outgoing_calls">提示外呼电话</string>
+    <string name="settings_exclusive_call_mode">提示外呼电话</string>
     <string name="settings_public_key">公钥</string>
     <string name="settings_push_to_talk">按住说话</string>
     <string name="settings_select_front_camera_by_default">默认使用前置摄像头</string>

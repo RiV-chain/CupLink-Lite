@@ -81,7 +81,7 @@
     <string name="settings_enable_microphone_by_default">Mikrofon Standardmäßig Aktivieren</string>
     <string name="settings_name">Name</string>
     <string name="settings_nightmode">Dunkler Modus</string>
-    <string name="settings_prompt_outgoing_calls">Anrufe Abwarten</string>
+    <string name="settings_exclusive_call_mode">Exclusive Call Mode</string>
     <string name="settings_public_key">Öffentlicher Schlüssel</string>
     <string name="settings_push_to_talk">Sprechtaste aktivieren</string>
     <string name="settings_settings_mode">Einstellungsdetails</string>

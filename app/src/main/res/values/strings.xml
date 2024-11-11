@@ -120,7 +120,7 @@
     <string name="settings_menu_password">Menu Password</string>
     <string name="settings_name">Name</string>
     <string name="settings_nightmode">Night Mode</string>
-    <string name="settings_prompt_outgoing_calls">Prompt Outgoing Calls</string>
+    <string name="settings_exclusive_call_mode">Exclusive Call Mode</string>
     <string name="settings_public_key">Public Key</string>
     <string name="settings_push_to_talk">Push To Talk</string>
     <string name="settings_select_front_camera_by_default">Use Front Camera By Default</string>
