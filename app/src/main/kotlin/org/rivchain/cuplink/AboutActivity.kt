@@ -27,6 +27,6 @@ class AboutActivity : BaseActivity() {
             val intent = Intent(this, LicenseActivity::class.java)
             startActivity(intent)
         }
-        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
+        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
     }
 }

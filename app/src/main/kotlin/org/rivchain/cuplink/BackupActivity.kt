@@ -73,7 +73,7 @@ class BackupActivity : BaseActivity() {
             intent.type = "application/json"
             exportFileLauncher.launch(intent)
         }
-        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
+        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
     }
 
     private var importFileLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
