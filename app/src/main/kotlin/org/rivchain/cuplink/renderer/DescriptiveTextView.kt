@@ -23,6 +23,9 @@ class DescriptiveTextView @JvmOverloads constructor(
 
 
     init {
+        // Retrieve custom attributes
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.DescriptiveTextView)
+
         orientation = VERTICAL
 
         titleTextView = TextView(context).apply {
@@ -55,11 +58,16 @@ class DescriptiveTextView @JvmOverloads constructor(
                 subtitleTextView.typeface = typeface
             }
 
-            // Set textSize in SP, ensuring it respects user-defined size in XML
-            val titleTextSize = getDimension(R.styleable.DescriptiveTextView_titleTextSize, 9f) // default to 16sp
-            val subtitleText = getDimension(R.styleable.DescriptiveTextView_subtitleTextSize, 5f) // default to 16sp
-            titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, titleTextSize)
-            subtitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, subtitleText)
+            val titleTextSize = typedArray.getDimensionPixelSize(R.styleable.DescriptiveTextView_titleTextSize, 16)
+            val subtitleTextSize = typedArray.getDimensionPixelSize(R.styleable.DescriptiveTextView_subtitleTextSize, 12)
+
+            // Apply text size in PX, respecting SP scaling
+            titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize.toFloat())
+            subtitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, subtitleTextSize.toFloat())
+
+
+            // Recycle TypedArray to free up resources
+            typedArray.recycle()
         }
     }
 
