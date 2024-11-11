@@ -925,10 +925,10 @@ class RTCCall : RTCPeerConnection {
 
         private fun convertDegradationPreference(degradationPreferenceString: String): RtpParameters.DegradationPreference? {
             return when (degradationPreferenceString) {
-                "maintain_resolution" -> RtpParameters.DegradationPreference.MAINTAIN_RESOLUTION
-                "maintain_framerate" -> RtpParameters.DegradationPreference.MAINTAIN_FRAMERATE
-                "balanced" -> RtpParameters.DegradationPreference.BALANCED
-                "disabled" -> RtpParameters.DegradationPreference.DISABLED
+                "Maintain\nresolution" -> RtpParameters.DegradationPreference.MAINTAIN_RESOLUTION
+                "Maintain\nframerate" -> RtpParameters.DegradationPreference.MAINTAIN_FRAMERATE
+                "Balanced" -> RtpParameters.DegradationPreference.BALANCED
+                "Disabled" -> RtpParameters.DegradationPreference.DISABLED
                 else -> {
                     Log.e(this, "convertDegradationPreference() Unknown degradationPreferenceString: $degradationPreferenceString")
                     null
