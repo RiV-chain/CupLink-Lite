@@ -100,7 +100,7 @@
             android:fontFamily="@font/poppins_regular"
             android:text="@string/address_management_help_text"
             android:textAlignment="center"
-            android:textSize="14sp" />
+            android:textSize="@dimen/subtitle_text_size" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -19,7 +19,7 @@
             android:id="@+id/sub"
             android:padding="10dp"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="@dimen/subtitle_text_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Schema"

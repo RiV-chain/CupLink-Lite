@@ -40,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:textSize="14sp" />
+                android:textSize="@dimen/subtitle_text_size" />
 
         </LinearLayout>
 
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_light"
-                android:textSize="14sp" />
+                android:textSize="@dimen/subtitle_text_size" />
 
             <TextView
                 android:id="@+id/call_address"

@@ -105,7 +105,7 @@
         app:ccp_showPhoneCode="false"
         app:ccp_showNameCode="false"
         app:ccp_textGravity="LEFT"
-        app:ccp_textSize="18sp"
+        app:ccp_textSize="@dimen/title_text_size"
         app:ccpDialog_backgroundColor="@color/colorBackground"
         app:ccpDialog_textColor="@color/light_grey"
         app:layout_constraintStart_toStartOf="parent"

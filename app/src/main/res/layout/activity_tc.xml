@@ -29,7 +29,7 @@
             android:fontFamily="@font/poppins_regular"
             android:gravity="center_vertical"
             android:text="Terms &amp; Conditions"
-            android:textSize="18sp" />
+            android:textSize="@dimen/title_text_size" />
 
         <TextView
             android:id="@+id/pp"
@@ -38,7 +38,7 @@
             android:fontFamily="@font/poppins_regular"
             android:gravity="center_vertical"
             android:text="Privacy Policy"
-            android:textSize="18sp" />
+            android:textSize="@dimen/title_text_size" />
 
 
     </LinearLayout>
@@ -67,7 +67,7 @@
                 android:layout_margin="@dimen/padding_20"
                 android:fontFamily="@font/poppins_regular"
                 android:text=""
-                android:textSize="14sp" />
+                android:textSize="@dimen/subtitle_text_size" />
         </LinearLayout>
     </ScrollView>
 

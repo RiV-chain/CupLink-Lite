@@ -120,7 +120,7 @@
         android:text="SCAN ME"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        android:textSize="14sp"
+        android:textSize="@dimen/subtitle_text_size"
         app:layout_constraintBottom_toTopOf="@id/qrCodeContainer"
         app:layout_constraintStart_toStartOf="@id/qrCodeContainer"
         app:layout_constraintEnd_toEndOf="@id/qrCodeContainer"/>
@@ -176,7 +176,7 @@
         android:rotation="90"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        android:textSize="14sp"
+        android:textSize="@dimen/subtitle_text_size"
         app:layout_constraintStart_toEndOf="@id/qrCodeContainer"
         app:layout_constraintTop_toTopOf="@id/qrCodeContainer"
         app:layout_constraintBottom_toBottomOf="@id/qrCodeContainer"/>
@@ -196,7 +196,7 @@
         android:rotation="-90"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        android:textSize="14sp"
+        android:textSize="@dimen/subtitle_text_size"
         app:layout_constraintEnd_toStartOf="@id/qrCodeContainer"
         app:layout_constraintTop_toTopOf="@id/qrCodeContainer"
         app:layout_constraintBottom_toBottomOf="@id/qrCodeContainer"/>
@@ -215,7 +215,7 @@
         android:text="SCAN ME"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
-        android:textSize="14sp"
+        android:textSize="@dimen/subtitle_text_size"
         app:layout_constraintTop_toBottomOf="@id/qrCodeContainer"
         app:layout_constraintStart_toStartOf="@id/qrCodeContainer"
         app:layout_constraintEnd_toEndOf="@id/qrCodeContainer"/>

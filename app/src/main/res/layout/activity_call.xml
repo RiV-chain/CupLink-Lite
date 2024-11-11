@@ -216,7 +216,7 @@
                 android:alpha="0.6"
                 android:layout_margin="10dp"
                 android:lines="10"
-                android:textSize="14sp"
+                android:textSize="@dimen/subtitle_text_size"
                 android:textColor="@android:color/holo_green_light"
                 android:background="@drawable/dialog_rounded_corner"
                 android:visibility="gone"
