@@ -58,7 +58,7 @@ class PeerListActivity : SelectPeerActivity() {
             addNewPeer()
         }
 
-        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
+        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
     }
 
     private fun editPeerListUrl() {
