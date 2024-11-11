@@ -16,7 +16,7 @@ class Settings {
     var secretKey = byteArrayOf()
     var publicKey = byteArrayOf()
     var nightMode = "auto" // on, off, auto
-    var speakerphoneMode = "auto" // on, off, auto
+    var speakerphoneMode = "off" // on, off, auto
     var blockUnknown = false
     var useNeighborTable = false
     var promptOutgoingCalls = false
