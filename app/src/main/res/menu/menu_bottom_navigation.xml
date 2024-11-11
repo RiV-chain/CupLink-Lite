@@ -7,19 +7,19 @@
 		android:title="@string/title_contacts"
 		app:iconTint="@color/colorPrimary"
 		app:showAsAction="never"
-		android:fontFamily="@font/poppins_regular"/>
+		android:fontFamily="@font/poppins_light"/>
 	<item
 		android:id="@+id/history"
 		android:icon="@drawable/selector_history"
 		android:title="@string/title_calls"
 		app:iconTint="@color/colorPrimary"
 		app:showAsAction="never"
-		android:fontFamily="@font/poppins_regular"/>
+		android:fontFamily="@font/poppins_light"/>
 	<item
 		android:id="@+id/connect"
 		android:icon="@drawable/selector_add_contact"
 		android:title="@string/connect"
 		app:iconTint="@color/colorPrimary"
 		app:showAsAction="never"
-		android:fontFamily="@font/poppins_regular"/>
+		android:fontFamily="@font/poppins_light"/>
 </menu>

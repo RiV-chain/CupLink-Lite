@@ -12,4 +12,5 @@
     android:gravity="start"
     android:textColor="@color/white"
     android:textIsSelectable="false"
+    android:fontFamily="@font/poppins_regular"
     android:background="@color/colorPrimaryDark"/>

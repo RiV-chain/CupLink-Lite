@@ -20,7 +20,15 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"/>
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/title_activity_peer_list"
+                android:textSize="@dimen/name_text_size" />
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -37,6 +45,6 @@
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="@color/white"
-        android:layout_marginBottom="50dp"/>
+        android:layout_marginBottom="75dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

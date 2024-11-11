@@ -457,7 +457,7 @@ class SettingsActivity : BaseActivity() {
         applySettingsMode(settingsMode)
         applyVideoDegradationMode(settings.videoDegradationMode)
 
-        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
+        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
 
     }
 

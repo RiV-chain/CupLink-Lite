@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@id/icon"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_light"
         android:textSize="@dimen/options_text_size"
         android:textAllCaps="false"
         android:paddingTop="10dp"

@@ -50,7 +50,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:textColor="#FFF"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/poppins_regular"
             android:gravity="end"
             tools:text="Wow Such Doge" />
 
@@ -63,6 +63,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:gravity="end"
+            android:fontFamily="@font/poppins_light"
             tools:text="CupLink Call" />
 
         <TextView
@@ -74,6 +75,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:gravity="end"
+            android:fontFamily="@font/poppins_light"
             tools:text="to Account Name" />
 
     </LinearLayout>
@@ -103,7 +105,7 @@
                 android:gravity="center"
                 android:textSize="14sp"
                 android:textColor="#5ee067"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/poppins_regular"
                 android:drawablePadding="12dip"
                 app:drawableRightCompat="@drawable/ic_call_accept"
                 tools:text="@string/button_yes"/>
@@ -126,7 +128,7 @@
                 android:gravity="center"
                 android:textSize="14sp"
                 android:textColor="#ef5050"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/poppins_regular"
                 android:drawablePadding="12dip"
                 app:drawableRightCompat="@drawable/ic_call_decline"
                 tools:text="@string/button_abort"/>
