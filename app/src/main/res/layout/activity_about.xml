@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_bold"
+                android:fontFamily="@font/poppins_regular"
                 android:textSize="@dimen/name_text_size"
                 android:text="@string/menu_about"/>
 
@@ -39,14 +39,15 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_margin="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:scrollbarThumbVertical="@color/selectedColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/about_appbar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/footerLayout">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
@@ -54,7 +55,6 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:elevation="30dp"
                 app:strokeColor="@null"
                 android:src="@drawable/cup_link"
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:fontFamily="@font/lato_bold"
+                android:fontFamily="@font/poppins_regular"
                 android:text="@string/app_name"
                 android:textSize="18sp" />
 
@@ -77,55 +77,49 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="13sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <org.rivchain.cuplink.renderer.DescriptiveTextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/about_app_description"
-                android:textSize="15sp" />
+                app:titleText="@string/about_app_description"
+                app:subtitleText="@string/app_description"
+                app:titleFontFamily="@font/poppins_regular"
+                app:subtitleFontFamily="@font/poppins_light"
+                app:titleTextSize="6sp"
+                app:subtitleTextSize="5sp"
+                android:layout_marginTop="@dimen/padding_20"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/app_description"
-                android:textColor="@color/colorPrimary"
-                android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/lato_bold"
                 android:text="@string/about_app_website"
-                android:textSize="15sp" />
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="@dimen/padding_20"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:autoLink="web"
+                android:fontFamily="@font/poppins_light"
                 android:text="@string/app_website"
                 android:textSize="13sp"
                 android:textColor="@color/colorPrimary"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/lato_bold"
                 android:text="@string/about_app_license"
-                android:textSize="15sp" />
+                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="@dimen/padding_20"/>
 
             <TextView
                 android:id="@+id/licenseTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:autoLink="web"
+                android:fontFamily="@font/poppins_light"
                 android:text="@string/app_license"
-                android:textColor="@color/colorPrimary"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:textColor="@color/colorPrimary"/>
 
         </LinearLayout>
 

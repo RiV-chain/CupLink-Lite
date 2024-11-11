@@ -10,7 +10,7 @@
         android:id="@+id/scan_invite_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_bold"
+        android:fontFamily="@font/poppins_regular"
         android:gravity="center"
         android:text="@string/title_show_qr_code"
         android:textColor="@color/selectedColor"

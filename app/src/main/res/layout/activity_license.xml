@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_bold"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="@dimen/name_text_size"
                 android:text="@string/menu_license"/>

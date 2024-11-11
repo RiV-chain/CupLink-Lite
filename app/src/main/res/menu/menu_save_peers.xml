@@ -5,10 +5,10 @@
         android:title=""
         app:actionLayout="@layout/menu_edit_url"
         app:showAsAction="ifRoom"
-        android:fontFamily="@font/poppins_regular"/>
+        android:fontFamily="@font/poppins_light"/>
     <item android:id="@+id/saveItem"
         android:title=""
         app:actionLayout="@layout/menu_save"
         app:showAsAction="always"
-        android:fontFamily="@font/poppins_regular"/>
+        android:fontFamily="@font/poppins_light"/>
 </menu>

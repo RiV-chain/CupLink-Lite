@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:hint="Schema"
             android:textColor="@color/light_grey"
+            android:fontFamily="@font/poppins_regular"
             android:inputType="textNoSuggestions"
             android:textCursorDrawable="@null"
             style="@style/EditText.OutlinedBox"/>
@@ -64,6 +65,7 @@
             android:textColor="@color/light_grey"
             android:textCursorDrawable="@null"
             android:focusedByDefault="true"
+            android:fontFamily="@font/poppins_regular"
             style="@style/EditText.OutlinedBox"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,6 +90,7 @@
             android:textColor="@color/light_grey"
             android:inputType="number"
             android:textCursorDrawable="@null"
+            android:fontFamily="@font/poppins_regular"
             style="@style/EditText.OutlinedBox"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,7 +111,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/port"
-        android:background="@drawable/edit_text_rounded_corner"/>
+        android:background="@drawable/edit_text_rounded_corner"
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/add"
@@ -123,6 +127,7 @@
         android:textSize="@dimen/button_test_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ccp" />
+        app:layout_constraintTop_toBottomOf="@id/ccp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

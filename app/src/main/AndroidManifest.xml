@@ -168,7 +168,6 @@
 
         <activity
             android:name=".rivmesh.PeerListActivity"
-            android:label="@string/title_activity_peer_list"
             android:parentActivityName=".MainActivity"/>
 
         <activity
