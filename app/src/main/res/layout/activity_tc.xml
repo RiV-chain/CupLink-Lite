@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/padding_10"
-    android:background="@drawable/dialog_rounded_corner">
+    android:background="@drawable/tc_background">
 
     <LinearLayout
         android:id="@+id/titleContainer"

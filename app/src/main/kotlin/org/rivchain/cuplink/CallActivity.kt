@@ -31,6 +31,7 @@ import android.widget.Button
 import android.widget.Chronometer
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -256,7 +257,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 finish()
             }
         }
-        adjustPipLayout(getResources().configuration)
+        adjustLayout(getResources().configuration)
 
         val intent = Intent(AppStateReceiver.APP_STATE_INTENT)
         val state = STATE_CALLING
@@ -318,22 +319,27 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     {
         Log.d("tag", "config changed")
         super.onConfigurationChanged(newConfig);
-        adjustPipLayout(newConfig)
+        adjustLayout(newConfig)
     }
 
     @UiThread
-    private fun adjustPipLayout(newConfig: Configuration) {
+    private fun adjustLayout(newConfig: Configuration) {
 
+        val callStatusLayout = findViewById<LinearLayout>(R.id.callStatusLayout)
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             Log.d("tag", "Portrait");
             // portrait
             (pipContainer.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "H,3:4"
             (pipContainer.layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentWidth = 0.35f
+
+            callStatusLayout.orientation = LinearLayout.VERTICAL
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Log.d("tag", "Landscape");
             // landscape
             (pipContainer.layoutParams as ConstraintLayout.LayoutParams).dimensionRatio = "W,3:4"
             (pipContainer.layoutParams as ConstraintLayout.LayoutParams).matchConstraintPercentHeight = 0.6f
+
+            callStatusLayout.orientation = LinearLayout.HORIZONTAL
         } else {
             Log.w("tag", "other: " + newConfig.orientation)
         }
@@ -361,7 +367,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     private fun hideSystemBar() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        WindowInsetsControllerCompat(window, findViewById(R.id.call_layout)).let {
+        WindowInsetsControllerCompat(window, findViewById(R.id.callLayout)).let {
                 controller ->
             controller.hide(WindowInsetsCompat.Type.systemBars())
             controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
