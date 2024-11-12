@@ -40,6 +40,7 @@ class Settings {
     var cameraFramerate = "auto"
     var automaticStatusUpdates = true
     var cameraOnWhenScreenLocked = false
+    var ignoreBatteryOptimizations = false
     var addresses = mutableListOf<String>()
 
     fun getOwnContact(): Contact {
@@ -82,6 +83,7 @@ class Settings {
             s.cameraFramerate = obj.getString("camera_framerate")
             s.cameraOnWhenScreenLocked = obj.getBoolean("camera_on_when_screen_locked")
             s.automaticStatusUpdates = obj.getBoolean("automatic_status_updates")
+            s.ignoreBatteryOptimizations = obj.getBoolean("ignore_battery_optimizations")
 
             val array = obj.getJSONArray("addresses")
             val addresses = mutableListOf<String>()
@@ -134,6 +136,7 @@ class Settings {
             obj.put("camera_framerate", s.cameraFramerate)
             obj.put("camera_on_when_screen_locked", s.cameraOnWhenScreenLocked)
             obj.put("automatic_status_updates", s.automaticStatusUpdates)
+            obj.put("ignore_battery_optimizations", s.ignoreBatteryOptimizations)
 
             val addresses = JSONArray()
             for (i in s.addresses.indices) {
