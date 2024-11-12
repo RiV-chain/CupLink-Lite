@@ -68,8 +68,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/padding_20">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/about"
@@ -131,8 +130,7 @@
                     android:background="@color/selectedColor"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/menu"
-                    android:layout_marginTop="@dimen/padding_20"
-                    android:layout_marginBottom="@dimen/padding_20"/>
+                    android:layout_marginTop="@dimen/padding_20"/>
 
                 <org.rivchain.cuplink.renderer.DescriptiveTextView
                     android:id="@+id/settingsNickname"
@@ -301,6 +299,31 @@
                     app:layout_constraintTop_toTopOf="@id/discoverableOverMulticast"
                     app:layout_constraintBottom_toBottomOf="@id/discoverableOverMulticast"/>
 
+                <org.rivchain.cuplink.renderer.DescriptiveTextView
+                    android:id="@+id/ignoreBatteryOptimizations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/padding_70"
+                    app:titleText="@string/ignore_battery_optimizations"
+                    app:subtitleText="Allows the app to run in the background without battery restrictions"
+                    app:titleFontFamily="@font/poppins_regular"
+                    app:subtitleFontFamily="@font/poppins_light"
+                    app:titleTextSize="@dimen/title_text_size"
+                    app:subtitleTextSize="@dimen/subtitle_text_size"
+                    android:layout_marginTop="@dimen/padding_40"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/discoverableOverMulticastSwitch"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/ignoreBatteryOptimizationsSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:theme="@style/SwitchTheme"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/ignoreBatteryOptimizations"
+                    app:layout_constraintBottom_toBottomOf="@id/ignoreBatteryOptimizations"/>
+
                 <TextView
                     android:id="@+id/settingsModes"
                     android:layout_width="match_parent"
@@ -308,9 +331,10 @@
                     android:fontFamily="@font/poppins_regular"
                     android:text="@string/settings_settings_mode"
                     android:textSize="@dimen/title_text_size"
+                    android:layout_marginEnd="@dimen/padding_70"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/discoverableOverMulticastSwitch"
-                    android:layout_marginTop="@dimen/padding_40"/>
+                    app:layout_constraintTop_toBottomOf="@+id/ignoreBatteryOptimizations"
+                    android:layout_marginTop="@dimen/padding_20"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/spinnerSettingsModes"
@@ -319,7 +343,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="@dimen/options_text_size"
                     android:textAlignment="viewEnd"
-                    app:layout_constraintEnd_toEndOf="@id/settingsModes"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/settingsModes"
                     app:layout_constraintBottom_toBottomOf="@id/settingsModes"/>
 

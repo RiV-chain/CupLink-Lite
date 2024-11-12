@@ -133,8 +133,11 @@ class MainActivity : BaseActivity() {
             }
         })
 
+        val settings = DatabaseCache.database.settings
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (PowerManager.needsFixing(this)) {
+
+            if (settings.ignoreBatteryOptimizations && PowerManager.needsFixing(this)) {
                 PowerManager.callPowerManager(this)
                 PowerManager.callAutostartManager(this)
                 Log.d(this, "Power management fix enabled")
@@ -149,8 +152,6 @@ class MainActivity : BaseActivity() {
         preferences.edit(commit = true) { putBoolean(PREF_KEY_ENABLED, true) }
 
         Log.d(this, "onServiceConnected()")
-
-        val settings = DatabaseCache.database.settings
 
         // data source for the views was not ready before
         (viewPager.adapter as ViewPagerFragmentAdapter).let {

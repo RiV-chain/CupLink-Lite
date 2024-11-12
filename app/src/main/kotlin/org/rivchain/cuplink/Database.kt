@@ -355,6 +355,11 @@ class Database {
                 newFrom = "0.6.10.19"
             }
 
+            if (newFrom == "0.6.10.19") {
+                settings.put("ignore_battery_optimizations", false)
+                newFrom = "0.6.12.50"
+            }
+
             alignSettings(settings)
 
             db.put("version", newFrom)

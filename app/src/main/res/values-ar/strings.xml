@@ -80,4 +80,5 @@
     <string name="add_peer">Add your peer</string>
     <string name="accept">Accept</string>
     <string name="duplicated_contact_data">Duplicated contact data</string>
+    <string name="ignore_battery_optimizations">Ignore Battery Optimizations</string>
 </resources>
