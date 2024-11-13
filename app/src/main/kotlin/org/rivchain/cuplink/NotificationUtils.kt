@@ -37,6 +37,7 @@ import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.RlpUtils
+import java.util.Date
 
 internal object NotificationUtils {
 
@@ -99,7 +100,6 @@ internal object NotificationUtils {
                 val e = lastMissedEvents.find { event ->
                     org.rivchain.cuplink.util.Utils.byteArrayToCRC32Int(event.last().publicKey) == callerChannelId
                 }?.last()!!
-
                 var contact = e.publicKey.let { DatabaseCache.database.contacts.getContactByPublicKey(it) }
                 if (contact == null) {
                     // unknown caller
@@ -108,7 +108,7 @@ internal object NotificationUtils {
                 val name = contact.name
                 val message = String.format(context.getString(R.string.missed_call_from), name, missedCount)
 
-                val notification = createNotification(context, contact, message, true)
+                val notification = createNotification(context, contact, message, e.date)
                 manager.notify(callerChannelId, notification)
             }
 
@@ -120,8 +120,8 @@ internal object NotificationUtils {
         }
     }
 
-    private fun createNotification(context: Context, contact: Contact, text: String, showSinceWhen: Boolean): Notification {
-        Log.d(this, "createNotification() text=$text setShowWhen=$showSinceWhen")
+    private fun createNotification(context: Context, contact: Contact, text: String, sinceWhen: Date): Notification {
+        Log.d(this, "createNotification() text=$text setShowWhen=$sinceWhen")
         val channelId = "cuplink_service"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val chan = NotificationChannel(
@@ -171,7 +171,8 @@ internal object NotificationUtils {
             .setSilent(true)
             .setAutoCancel(true)
             .setOngoing(true)
-            .setShowWhen(showSinceWhen)
+            .setShowWhen(true)
+            .setWhen(sinceWhen.time)
             .setUsesChronometer(false)
             .setSmallIcon(R.drawable.cup_link_small)
             .setPriority(NotificationCompat.PRIORITY_MIN)
