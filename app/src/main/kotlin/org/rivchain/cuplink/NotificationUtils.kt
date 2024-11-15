@@ -11,9 +11,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.Icon
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.net.Uri
@@ -506,7 +504,7 @@ internal object NotificationUtils {
             PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
         val text: String = if(contact != null){
-            "Calling "+contact.name
+            "In call with "+contact.name
         } else {
             ""
         }
