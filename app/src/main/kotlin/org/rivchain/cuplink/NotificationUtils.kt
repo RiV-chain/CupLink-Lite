@@ -13,6 +13,7 @@ import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.Icon
 import android.media.AudioAttributes
 import android.media.AudioManager
 import android.net.Uri
@@ -28,6 +29,7 @@ import androidx.car.app.notification.CarNotificationManager
 import androidx.car.app.notification.CarPendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
+import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.rivchain.cuplink.BaseActivity.Companion.isNightmodeEnabled
@@ -37,6 +39,8 @@ import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.RlpUtils
+import org.rivchain.cuplink.util.ViewUtil.generateBlockies
+import org.rivchain.cuplink.util.ViewUtil.getRoundedCroppedBitmap
 import java.util.Date
 
 internal object NotificationUtils {
@@ -170,18 +174,20 @@ internal object NotificationUtils {
         val builder = NotificationCompat.Builder(context.applicationContext, channelId)
             .setSilent(true)
             .setAutoCancel(true)
-            .setOngoing(true)
+            .setOngoing(false)
             .setShowWhen(true)
             .setWhen(sinceWhen.time)
             .setUsesChronometer(false)
             .setSmallIcon(R.drawable.cup_link_small)
             .setPriority(NotificationCompat.PRIORITY_MIN)
-            .setCategory(Notification.CATEGORY_SERVICE)
             .setContentText(text)
             .setContentIntent(pendingNotificationIntent)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-
-        builder.setContentText(text)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            builder.setCategory(Notification.CATEGORY_MISSED_CALL)
+        } else {
+            builder.setCategory(Notification.CATEGORY_MESSAGE)
+        }
 
         val customView = RemoteViews(
             context.packageName,
@@ -193,7 +199,12 @@ internal object NotificationUtils {
             text
         )
 
-        val avatar: Bitmap? = AppCompatResources.getDrawable(context, R.drawable.ic_contacts)?.toBitmap()
+        // Generate the blockies icon from the user's public key
+        val blockiesBitmap = generateBlockies(contact.publicKey)
+
+        // Create a circular bitmap from the blockies image
+        val avatar = getRoundedCroppedBitmap(blockiesBitmap)
+
         customView.setTextViewText(
             R.id.answer_text,
             context.getString(R.string.call)
@@ -204,6 +215,7 @@ internal object NotificationUtils {
         )
 
         val defaultColor = Color.parseColor(if (isNightmodeEnabled(context)) "#ffffff" else "#000000")
+        //val defaultColor = Color.parseColor("#888888")
         customView.setTextColor(
             R.id.title,
             defaultColor
@@ -216,12 +228,14 @@ internal object NotificationUtils {
             R.id.decline_text,
             defaultColor
         )
-        //customView.setImageViewBitmap(R.id.photo, avatar)
+        customView.setImageViewBitmap(R.id.photo, avatar)
         customView.setOnClickPendingIntent(R.id.answer_btn, callPendingIntent)
-        //builder.setLargeIcon(avatar)
+        builder.setLargeIcon(avatar)
+        builder.setCustomBigContentView(customView)
+        builder.setCustomHeadsUpContentView(customView)
         val n: Notification = builder.build()
         n.bigContentView = customView
-        n.headsUpContentView = n.bigContentView
+        n.headsUpContentView = customView
 
         n.flags = n.flags or (Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT)
         if(contact.name.isEmpty()){
@@ -366,8 +380,14 @@ internal object NotificationUtils {
             )
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
         val incomingNotification: Notification
+
+        // Generate the blockies icon from the user's public key
+        val blockiesBitmap = generateBlockies(contact.publicKey)
+        // Create a circular bitmap from the blockies image
+        val avatar = getRoundedCroppedBitmap(blockiesBitmap)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val avatar: Bitmap? = AppCompatResources.getDrawable(service, R.drawable.ic_contacts)?.toBitmap()
+
             var personName: String = contact.name
             if (TextUtils.isEmpty(personName)) {
                 //java.lang.IllegalArgumentException: person must have a non-empty a name
@@ -376,7 +396,7 @@ internal object NotificationUtils {
             val person: Person.Builder = Person.Builder()
                 .setImportant(true)
                 .setName(personName)
-            //.setIcon(Icon.createWithAdaptiveBitmap(avatar)).build()
+                .setIcon(IconCompat.createWithAdaptiveBitmap(avatar))
             val notificationStyle =
                 NotificationCompat.CallStyle.forIncomingCall(person.build(), endPendingIntent, answerPendingIntent)
 
@@ -397,8 +417,6 @@ internal object NotificationUtils {
                 R.id.title,
                 contact.name,
             )
-
-            val avatar: Bitmap? = AppCompatResources.getDrawable(service, R.drawable.ic_contacts)?.toBitmap()
             customView.setTextViewText(
                 R.id.answer_text,
                 service.getString(R.string.call_connected)
@@ -407,13 +425,16 @@ internal object NotificationUtils {
                 R.id.decline_text,
                 service.getString(R.string.button_abort)
             )
-            //customView.setImageViewBitmap(R.id.photo, avatar)
+            customView.setImageViewBitmap(R.id.photo, avatar)
+
             customView.setOnClickPendingIntent(R.id.answer_btn, answerPendingIntent)
             customView.setOnClickPendingIntent(R.id.decline_btn, endPendingIntent)
-            //builder.setLargeIcon(avatar)
+            builder.setLargeIcon(avatar)
+            builder.setCustomBigContentView(customView)
+            builder.setCustomHeadsUpContentView(customView)
             incomingNotification = builder.build()
             incomingNotification.bigContentView = customView
-            incomingNotification.headsUpContentView = incomingNotification.bigContentView
+            incomingNotification.headsUpContentView = customView
         }
         incomingNotification.flags = incomingNotification.flags or (Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT)
         if(contact.name.isEmpty()){
