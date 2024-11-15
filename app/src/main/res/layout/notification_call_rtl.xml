@@ -16,7 +16,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layerType="hardware"
-        tools:src="#0f0" />
+        android:src="@drawable/ic_contacts"
+        android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/icon"
