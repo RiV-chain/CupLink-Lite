@@ -81,10 +81,11 @@ class RTCCall : RTCPeerConnection {
     private var isCameraEnabled = false
     private var isMicrophoneEnabled = false
     private var useFrontFacingCamera = true
-    private var cameraWasEnabledBeforeScreenLocked = false
+    private var cameraWasEnabledBefore = false
+    private var microphoneWasEnabledBefore = true
 
     override fun screenLocked() {
-        cameraWasEnabledBeforeScreenLocked = isCameraEnabled
+        cameraWasEnabledBefore = isCameraEnabled
         // Disable video stream
         if(!DatabaseCache.database.settings.cameraOnWhenScreenLocked) {
             setCameraEnabled(false)
@@ -94,8 +95,21 @@ class RTCCall : RTCPeerConnection {
     override fun screenUnlocked() {
         // Enable video stream (if needed)
         if(!DatabaseCache.database.settings.cameraOnWhenScreenLocked) {
-            setCameraEnabled(cameraWasEnabledBeforeScreenLocked)
+            setCameraEnabled(cameraWasEnabledBefore)
         }
+    }
+
+    fun callOnHold() {
+        cameraWasEnabledBefore = isCameraEnabled
+        microphoneWasEnabledBefore = isMicrophoneEnabled
+        // Disable video stream
+        setCameraEnabled(false)
+        setMicrophoneEnabled(false)
+    }
+
+    fun callResume() {
+        setCameraEnabled(cameraWasEnabledBefore)
+        setMicrophoneEnabled(microphoneWasEnabledBefore)
     }
 
     fun getMicrophoneEnabled(): Boolean {

@@ -681,9 +681,14 @@ abstract class RTCPeerConnection(
                         return
                     }
                     Log.d(this, "createOutgoingCallInternal() on_hold")
-                    incomingRTCCall?.reportStateChange(CallState.ON_HOLD)
-                    outgoingRTCCall?.reportStateChange(CallState.ON_HOLD)
-
+                    incomingRTCCall?.apply{
+                        reportStateChange(CallState.ON_HOLD)
+                        callOnHold()
+                    }
+                    outgoingRTCCall?.apply{
+                        reportStateChange(CallState.ON_HOLD)
+                        callOnHold()
+                    }
                 }
                 "resume" -> {
                     if (!CallActivity.isCallInProgress) {
@@ -692,8 +697,14 @@ abstract class RTCPeerConnection(
                         return
                     }
                     Log.d(this, "createOutgoingCallInternal() resume")
-                    incomingRTCCall?.reportStateChange(CallState.RESUME)
-                    outgoingRTCCall?.reportStateChange(CallState.RESUME)
+                    incomingRTCCall?.apply {
+                        reportStateChange(CallState.RESUME)
+                        callResume()
+                    }
+                    outgoingRTCCall?.apply {
+                        reportStateChange(CallState.RESUME)
+                        callResume()
+                    }
                 }
             }
         }

@@ -10,6 +10,9 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import org.json.JSONObject
+import org.rivchain.cuplink.call.RTCPeerConnection.CallState
+import org.rivchain.cuplink.call.RTCPeerConnection.Companion.incomingRTCCall
+import org.rivchain.cuplink.call.RTCPeerConnection.Companion.outgoingRTCCall
 import org.rivchain.cuplink.message.ActionMessageDispatcher
 import org.rivchain.cuplink.util.ServiceUtil
 
@@ -57,28 +60,49 @@ class CallStatusHandler(private val context: Context, private val dispatcher: Ac
     private fun processCallStateChanged(state: Int){
         when (state) {
             TelephonyManager.CALL_STATE_RINGING -> {
-                onHold = true
-                Log.d("CallStatusHandler", "Incoming GSM call detected")
-                Log.d("VoIP", "Muting VoIP call")
-                val obj = JSONObject().apply {
-                    put("action", "on_hold")
+                /*
+                Added this condition just in case. !onHold shouldn't ever be false.
+                 */
+                if (!onHold) {
+                    onHold = true
+                    Log.d("CallStatusHandler", "Incoming GSM call detected")
+                    Log.d("VoIP", "Muting VoIP call")
+                    val obj = JSONObject().apply {
+                        put("action", "on_hold")
+                    }
+                    Thread {
+                        dispatcher.sendMessage(obj)
+                        dispatcher.closeSocket()
+                    }.start()
+                    incomingRTCCall?.apply {
+                        reportStateChange(CallState.ON_HOLD)
+                        callOnHold()
+                    }
+                    outgoingRTCCall?.apply {
+                        reportStateChange(CallState.ON_HOLD)
+                        callOnHold()
+                    }
                 }
-                Thread {
-                    dispatcher.sendMessage(obj)
-                    dispatcher.closeSocket()
-                }.start()
             }
             TelephonyManager.CALL_STATE_OFFHOOK -> {
-                onHold = true
-                Log.d("CallStatusHandler", "GSM call in progress")
-                val obj = JSONObject().apply {
-                    put("action", "on_hold")
+                /*
+                This condition runs for outgoing calls only.
+                In such case the CALL_STATE_RINGING state is not being called back.
+                Otherwise incoming calls invoke both states sequentially.
+                 */
+                if (!onHold) {
+                    onHold = true
+                    Log.d("CallStatusHandler", "GSM call in progress")
+                    val obj = JSONObject().apply {
+                        put("action", "on_hold")
+                    }
+                    Thread {
+                        dispatcher.sendMessage(obj)
+                        dispatcher.closeSocket()
+                    }.start()
+                    incomingRTCCall?.callOnHold()
+                    outgoingRTCCall?.callOnHold()
                 }
-                Thread {
-                    dispatcher.sendMessage(obj)
-                    dispatcher.closeSocket()
-                }.start()
-
             }
             TelephonyManager.CALL_STATE_IDLE -> {
                 Log.d("CallStatusHandler", "No active GSM call")
@@ -91,6 +115,14 @@ class CallStatusHandler(private val context: Context, private val dispatcher: Ac
                         dispatcher.sendMessage(obj)
                         dispatcher.closeSocket()
                     }.start()
+                    incomingRTCCall?.apply {
+                        reportStateChange(CallState.RESUME)
+                        callResume()
+                    }
+                    outgoingRTCCall?.apply {
+                        reportStateChange(CallState.RESUME)
+                        callResume()
+                    }
                 }
             }
         }
