@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.ComponentName
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.ServiceConnection
@@ -26,7 +27,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.preference.PreferenceManager
 import com.google.android.material.textfield.TextInputEditText
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.MainService.MainBinder
@@ -79,7 +79,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         // set by BootUpReceiver
         isStartOnBootup = intent.getBooleanExtra(BootUpReceiver.IS_START_ON_BOOTUP, false)
         setContentView(R.layout.activity_empty)
-        preferences = PreferenceManager.getDefaultSharedPreferences(this.baseContext)
+        preferences = this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
 
         requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
