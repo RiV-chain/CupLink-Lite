@@ -80,6 +80,7 @@ abstract class RTCPeerConnection(
             CallState.ENDED -> R.raw.ended
             CallState.CONNECTED -> R.raw.connected
             CallState.ON_HOLD -> R.raw.waiting
+            CallState.BUSY -> R.raw.stop
             CallState.RESUME -> R.raw.connected
             CallState.ERROR_COMMUNICATION -> R.raw.stop
             CallState.ERROR_AUTHENTICATION -> R.raw.stop
@@ -441,6 +442,7 @@ abstract class RTCPeerConnection(
         RINGING,
         CONNECTED,
         ON_HOLD,
+        BUSY,
         RESUME,
         DISMISSED,
         ENDED,
@@ -493,7 +495,7 @@ abstract class RTCPeerConnection(
         }
 
         private fun handleIncomingMessageInternal(service: MainService, socket: Socket) {
-            Log.d(this, "createIncomingCallInternal()")
+            Log.d(this, "handleIncomingMessageInternal()")
 
             val otherPublicKey = ByteArray(Sodium.crypto_sign_publickeybytes())
             val settings = DatabaseCache.database.settings
@@ -502,7 +504,7 @@ abstract class RTCPeerConnection(
             val ownPublicKey = settings.publicKey
 
             val decline = {
-                Log.d(this, "createIncomingCallInternal() declining...")
+                Log.d(this, "handleIncomingMessageInternal() declining...")
 
                 try {
                     val encrypted = Crypto.encryptMessage(
@@ -523,15 +525,37 @@ abstract class RTCPeerConnection(
                 }
             }
 
+            val busy = {
+                Log.d(this, "handleIncomingMessageInternal() declining...")
+
+                try {
+                    val encrypted = Crypto.encryptMessage(
+                        "{\"action\":\"busy\"}",
+                        otherPublicKey,
+                        ownPublicKey,
+                        ownSecretKey
+                    )
+
+                    if (encrypted != null) {
+                        val pw = PacketWriter(socket)
+                        pw.writeMessage(encrypted)
+                    }
+
+                    socket.close()
+                } catch (e: Exception) {
+                    closeSocket(socket)
+                }
+            }
+
             val remoteAddress = socket.remoteSocketAddress as InetSocketAddress
             val pw = PacketWriter(socket)
             val pr = PacketReader(socket)
 
-            Log.d(this, "createIncomingCallInternal() incoming peerConnection from $remoteAddress")
+            Log.d(this, "handleIncomingMessageInternal() incoming peerConnection from $remoteAddress")
 
             val request = pr.readMessage()
             if (request == null) {
-                Log.d(this, "createIncomingCallInternal() connection closed")
+                Log.d(this, "handleIncomingMessageInternal() connection closed")
                 socket.close()
                 return
             }
@@ -540,23 +564,23 @@ abstract class RTCPeerConnection(
 
             val decrypted = Crypto.decryptMessage(request, otherPublicKey, ownPublicKey, ownSecretKey)
             if (decrypted == null) {
-                Log.d(this, "createIncomingCallInternal() decryption failed")
+                Log.d(this, "handleIncomingMessageInternal() decryption failed")
                 // cause: the caller might use the wrong key
                 socket.close()
                 return
             }
 
-            Log.d(this, "createIncomingCallInternal() request: $decrypted")
+            Log.d(this, "handleIncomingMessageInternal() request: $decrypted")
 
             var contact = DatabaseCache.database.contacts.getContactByPublicKey(otherPublicKey)
             if (contact == null && blockUnknown) {
-                Log.d(this, "createIncomingCallInternal() block unknown contact => decline")
+                Log.d(this, "handleIncomingMessageInternal() block unknown contact => decline")
                 decline()
                 return
             }
 
             if (contact != null && contact.blocked) {
-                Log.d(this, "createIncomingCallInternal() blocked contact => decline")
+                Log.d(this, "handleIncomingMessageInternal() blocked contact => decline")
                 decline()
                 return
             }
@@ -568,7 +592,7 @@ abstract class RTCPeerConnection(
 
             // suspicious change of identity in during peerConnection...
             if (!contact.publicKey.contentEquals(otherPublicKey)) {
-                Log.d(this, "createIncomingCallInternal() suspicious change of key")
+                Log.d(this, "handleIncomingMessageInternal() suspicious change of key")
                 decline()
                 return
             }
@@ -578,24 +602,24 @@ abstract class RTCPeerConnection(
 
             val obj = JSONObject(decrypted)
             val action = obj.optString("action", "")
-            Log.d(this, "createIncomingCallInternal() action: $action")
+            Log.d(this, "handleIncomingMessageInternal() action: $action")
             when (action) {
                 "call" -> {
                     contact.state = Contact.State.CONTACT_ONLINE
                     //MainService.refreshContacts(service)
 
                     if (CallActivity.isCallInProgress) {
-                        Log.d(this, "createIncomingCallInternal() call in progress => decline")
-                        decline() // TODO: send busy
+                        Log.d(this, "handleIncomingMessageInternal() call in progress => busy")
+                        busy()
                         return
                     }
 
-                    Log.d(this, "createIncomingCallInternal() got WebRTC offer")
+                    Log.d(this, "handleIncomingMessageInternal() got WebRTC offer")
 
                     // someone calls us
                     val offer = obj.optString("offer")
                     if (offer.isEmpty()) {
-                        Log.d(this, "createIncomingCallInternal() missing offer")
+                        Log.d(this, "handleIncomingMessageInternal() missing offer")
                         decline()
                         return
                     }
@@ -609,7 +633,7 @@ abstract class RTCPeerConnection(
                     )
 
                     if (encrypted == null) {
-                        Log.d(this, "createIncomingCallInternal() encryption failed")
+                        Log.d(this, "handleIncomingMessageInternal() encryption failed")
                         decline()
                         return
                     }
@@ -624,7 +648,7 @@ abstract class RTCPeerConnection(
                         if (DatabaseCache.database.settings.autoAcceptCalls) {
                                 Log.d(
                                     this,
-                                    "createIncomingCallInternal() start incoming call from Service"
+                                    "handleIncomingMessageInternal() start incoming call from Service"
                                 )
                                 val intent = Intent(service, CallActivity::class.java)
                                 intent.action = "ACTION_INCOMING_CALL"
@@ -645,7 +669,7 @@ abstract class RTCPeerConnection(
                     }
                 }
                 "ping" -> {
-                    Log.d(this, "createIncomingCallInternal() ping...")
+                    Log.d(this, "handleIncomingMessageInternal() ping...")
                     // someone wants to know if we are online
                     contact.state = Contact.State.CONTACT_ONLINE
                     //MainService.refreshContacts(service)
@@ -658,7 +682,7 @@ abstract class RTCPeerConnection(
                     )
 
                     if (encrypted == null) {
-                        Log.d(this, "createIncomingCallInternal() encryption failed")
+                        Log.d(this, "handleIncomingMessageInternal() encryption failed")
                         decline()
                         return
                     }
@@ -671,7 +695,7 @@ abstract class RTCPeerConnection(
                         contact.state = Contact.State.CONTACT_OFFLINE
                         //MainService.refreshContacts(service)
                     } else {
-                        Log.d(this, "createIncomingCallInternal() received unknown status_change: $status")
+                        Log.d(this, "handleIncomingMessageInternal() received unknown status_change: $status")
                     }
                 }
                 "on_hold" -> {
@@ -680,7 +704,7 @@ abstract class RTCPeerConnection(
                         decline()
                         return
                     }
-                    Log.d(this, "createOutgoingCallInternal() on_hold")
+                    Log.d(this, "handleIncomingMessageInternal() on_hold")
                     incomingRTCCall?.apply{
                         reportStateChange(CallState.ON_HOLD)
                         callOnHold()
@@ -696,7 +720,7 @@ abstract class RTCPeerConnection(
                         decline()
                         return
                     }
-                    Log.d(this, "createOutgoingCallInternal() resume")
+                    Log.d(this, "handleIncomingMessageInternal() resume")
                     incomingRTCCall?.apply {
                         reportStateChange(CallState.RESUME)
                         callResume()

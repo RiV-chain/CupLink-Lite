@@ -181,11 +181,11 @@ class ActionMessageDispatcher(
 
     fun confirmConnected() {
         while (!socket.isClosed) {
-            Log.d(this, "createOutgoingCallInternal() expect connected/dismissed")
+            Log.d(this, "confirmConnected() expect connected/dismissed")
             val response = pr.readMessage()
             if (response == null) {
                 Thread.sleep(SOCKET_TIMEOUT_MS / 10)
-                Log.d(this, "createOutgoingCallInternal() response is null")
+                Log.d(this, "confirmConnected() response is null")
                 continue
             }
 
@@ -209,7 +209,7 @@ class ActionMessageDispatcher(
             val obj = JSONObject(decrypted)
             val action = obj.getString("action")
             if (action == "connected") {
-                Log.d(this, "createOutgoingCallInternal() connected")
+                Log.d(this, "confirmConnected() connected")
                 peerConnection.reportStateChange(CallState.CONNECTED)
                 val answer = obj.optString("answer")
                 if (answer.isNotEmpty()) {
@@ -220,11 +220,15 @@ class ActionMessageDispatcher(
                     break
                 }
             } else if (action == "dismissed") {
-                Log.d(this, "createOutgoingCallInternal() dismissed")
+                Log.d(this, "confirmConnected() dismissed")
                 peerConnection.reportStateChange(CallState.DISMISSED)
                 break
+            } else if (action == "busy") {
+                Log.d(this, "confirmConnected() busy")
+                peerConnection.reportStateChange(CallState.BUSY)
+                break
             } else {
-                Log.w(this, "createOutgoingCallInternal() unknown action reply $action")
+                Log.w(this, "confirmConnected() unknown action reply $action")
                 //peerConnection.reportStateChange(CallState.ERROR_COMMUNICATION)
                 //break
             }
@@ -238,7 +242,7 @@ class ActionMessageDispatcher(
             val response = pr.readMessage()
             if (response == null) {
                 Thread.sleep(SOCKET_TIMEOUT_MS / 10)
-                Log.d(this, "continueOnIncomingSocket() response is null")
+                Log.d(this, "receiveIncoming() response is null")
                 continue
             }
 
@@ -257,12 +261,17 @@ class ActionMessageDispatcher(
             val obj = JSONObject(decrypted)
             val action = obj.optString("action")
             if (action == "dismissed") {
-                Log.d(this, "continueOnIncomingSocket() received dismissed")
+                Log.d(this, "receiveIncoming() received dismissed")
                 peerConnection.reportStateChange(CallState.DISMISSED)
                 peerConnection.declineOwnCall()
                 break
+            } else if (action == "busy") {
+                Log.d(this, "receiveIncoming() busy")
+                peerConnection.reportStateChange(CallState.BUSY)
+                peerConnection.declineOwnCall()
+                break
             } else {
-                Log.w(this, "continueOnIncomingSocket() received unknown action reply: $action")
+                Log.w(this, "receiveIncoming() received unknown action reply: $action")
                 //peerConnection.reportStateChange(CallState.ERROR_COMMUNICATION)
                 //break
             }
