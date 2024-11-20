@@ -477,7 +477,7 @@ class MainService : VpnService() {
                             Log.d(TAG, "Client connected: ${clientSocket.inetAddress}")
                             Log.d(this, "run() new incoming connection")
 
-                            RTCPeerConnection.createIncomingCall(this, clientSocket)
+                            RTCPeerConnection.handleIncomingMessage(this, clientSocket)
                         }
                     } catch (e: IOException) {
                         e.printStackTrace()

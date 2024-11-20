@@ -7,9 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import org.json.JSONException
 import org.json.JSONObject
-import org.rivchain.cuplink.Crypto
 import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.MainService
+import org.rivchain.cuplink.message.ActionMessageDispatcher
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils
@@ -57,6 +57,7 @@ import java.nio.ByteBuffer
 import java.util.Timer
 import java.util.TimerTask
 
+
 class RTCCall : RTCPeerConnection {
     private lateinit var factory: PeerConnectionFactory
     private var peerConnection: PeerConnection? = null
@@ -80,10 +81,11 @@ class RTCCall : RTCPeerConnection {
     private var isCameraEnabled = false
     private var isMicrophoneEnabled = false
     private var useFrontFacingCamera = true
-    private var cameraWasEnabledBeforeScreenLocked = false
+    private var cameraWasEnabledBefore = false
+    private var microphoneWasEnabledBefore = true
 
     override fun screenLocked() {
-        cameraWasEnabledBeforeScreenLocked = isCameraEnabled
+        cameraWasEnabledBefore = isCameraEnabled
         // Disable video stream
         if(!DatabaseCache.database.settings.cameraOnWhenScreenLocked) {
             setCameraEnabled(false)
@@ -93,8 +95,21 @@ class RTCCall : RTCPeerConnection {
     override fun screenUnlocked() {
         // Enable video stream (if needed)
         if(!DatabaseCache.database.settings.cameraOnWhenScreenLocked) {
-            setCameraEnabled(cameraWasEnabledBeforeScreenLocked)
+            setCameraEnabled(cameraWasEnabledBefore)
         }
+    }
+
+    fun callOnHold() {
+        cameraWasEnabledBefore = isCameraEnabled
+        microphoneWasEnabledBefore = isMicrophoneEnabled
+        // Disable video stream
+        setCameraEnabled(false)
+        setMicrophoneEnabled(false)
+    }
+
+    fun callResume() {
+        setCameraEnabled(cameraWasEnabledBefore)
+        setMicrophoneEnabled(microphoneWasEnabledBefore)
     }
 
     fun getMicrophoneEnabled(): Boolean {
@@ -262,7 +277,7 @@ class RTCCall : RTCPeerConnection {
         service: MainService,
         contact: Contact,
         commSocket: Socket,
-        offer: String
+        offer: String,
     ) : super(service, contact, commSocket) {
         Log.d(this, "RTCCall() created for incoming calls")
 
@@ -276,15 +291,16 @@ class RTCCall : RTCPeerConnection {
             addAction(Intent.ACTION_USER_PRESENT)
         }
         service.registerReceiver(screenStateReceiver, filter)
+
     }
 
     // called for outgoing calls
     constructor(
         service: MainService,
-        contact: Contact
+        contact: Contact,
     ) : super(service, contact, null) {
         Log.d(this, "RTCCall() created for outgoing calls")
-
+        outgoingRTCCall = this
         createMediaConstraints()
     }
 
@@ -536,7 +552,7 @@ class RTCCall : RTCPeerConnection {
             }
 
             override fun onWebRtcAudioRecordStartError(
-                errorCode: JavaAudioDeviceModule.AudioRecordStartErrorCode, errorMessage: String
+                errorCode: JavaAudioDeviceModule.AudioRecordStartErrorCode, errorMessage: String,
             ) {
                 Log.e(this, "onWebRtcAudioRecordStartError: $errorCode. $errorMessage")
                 callActivity!!.showTextMessage(errorMessage)
@@ -554,7 +570,7 @@ class RTCCall : RTCPeerConnection {
             }
 
             override fun onWebRtcAudioTrackStartError(
-                errorCode: JavaAudioDeviceModule.AudioTrackStartErrorCode, errorMessage: String
+                errorCode: JavaAudioDeviceModule.AudioTrackStartErrorCode, errorMessage: String,
             ) {
                 Log.e(this, "onWebRtcAudioTrackStartError: $errorCode. $errorMessage")
                 callActivity!!.showTextMessage(errorMessage)
@@ -707,7 +723,6 @@ class RTCCall : RTCPeerConnection {
         execute {
             Log.d(this, "initIncoming() executor start")
             val settings = DatabaseCache.database.settings
-            val remoteAddress = commSocket!!.remoteSocketAddress as InetSocketAddress
             val rtcConfig = RTCConfiguration(emptyList())
             rtcConfig.sdpSemantics = SdpSemantics.UNIFIED_PLAN
             rtcConfig.continualGatheringPolicy = ContinualGatheringPolicy.GATHER_ONCE
@@ -745,28 +760,7 @@ class RTCCall : RTCPeerConnection {
 
                     if (iceGatheringState == IceGatheringState.COMPLETE) {
                         try {
-                            val ownPublicKey = settings.publicKey
-                            val ownSecretKey = settings.secretKey
-                            val pw = PacketWriter(commSocket!!)
-                            val obj = JSONObject()
-                            obj.put("action", "connected")
-                            obj.put("answer", peerConnection!!.localDescription.description)
-                            val encrypted = Crypto.encryptMessage(
-                                obj.toString(),
-                                contact.publicKey,
-                                ownPublicKey,
-                                ownSecretKey
-                            )
-                            if (encrypted != null) {
-                                Log.d(this, "onIceGatheringChange() send connected")
-                                pw.writeMessage(encrypted)
-                                callActivity?.onRemoteAddressChange(remoteAddress, true)
-                                // connected state will be reported by WebRTC onIceConnectionChange()
-                                //reportStateChange(CallState.CONNECTED)
-                            } else {
-                                Log.d(this, "onIceGatheringChange() encryption failed")
-                                reportStateChange(CallState.ERROR_COMMUNICATION)
-                            }
+                            ActionMessageDispatcher(contact, this@RTCCall, commSocket!!).answerCall(peerConnection!!.localDescription.description)
                         } catch (e: Exception) {
                             e.printStackTrace()
                             reportStateChange(CallState.ERROR_COMMUNICATION)
