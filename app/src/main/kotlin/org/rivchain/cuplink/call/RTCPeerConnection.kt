@@ -706,10 +706,18 @@ abstract class RTCPeerConnection(
                     }
                     Log.d(this, "handleIncomingMessageInternal() on_hold")
                     incomingRTCCall?.apply{
+                        // decline non callers requests
+                        if(!incomingRTCCall!!.contact.publicKey.contentEquals(otherPublicKey)){
+                            decline()
+                        }
                         reportStateChange(CallState.ON_HOLD)
                         callOnHold()
                     }
                     outgoingRTCCall?.apply{
+                        // decline non callers requests
+                        if(!outgoingRTCCall!!.contact.publicKey.contentEquals(otherPublicKey)){
+                            decline()
+                        }
                         reportStateChange(CallState.ON_HOLD)
                         callOnHold()
                     }
@@ -722,10 +730,18 @@ abstract class RTCPeerConnection(
                     }
                     Log.d(this, "handleIncomingMessageInternal() resume")
                     incomingRTCCall?.apply {
+                        // decline non callers requests
+                        if(!incomingRTCCall!!.contact.publicKey.contentEquals(otherPublicKey)){
+                            decline()
+                        }
                         reportStateChange(CallState.RESUME)
                         callResume()
                     }
                     outgoingRTCCall?.apply {
+                        // decline non callers requests
+                        if(!outgoingRTCCall!!.contact.publicKey.contentEquals(otherPublicKey)){
+                            decline()
+                        }
                         reportStateChange(CallState.RESUME)
                         callResume()
                     }
