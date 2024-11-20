@@ -492,6 +492,10 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                     handleExit(R.string.call_denied)
                     setContactState(Contact.State.CONTACT_ONLINE)
                 }
+                CallState.BUSY -> {
+                    handleExit(R.string.busy)
+                    setContactState(Contact.State.CONTACT_ONLINE)
+                }
                 CallState.ENDED -> {
                     // normal call end
                     handleExit(R.string.call_ended)

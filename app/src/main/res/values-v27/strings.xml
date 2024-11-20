@@ -20,4 +20,5 @@
     <string name="accept">Accept</string>
     <string name="duplicated_contact_data">Duplicated contact data</string>
     <string name="ignore_battery_optimizations">Ignore Battery Optimizations</string>
+    <string name="busy">Busy</string>
 </resources>
