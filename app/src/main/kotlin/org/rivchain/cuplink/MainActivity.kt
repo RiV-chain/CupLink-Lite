@@ -3,6 +3,7 @@ package org.rivchain.cuplink
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -20,7 +21,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -148,7 +148,7 @@ class MainActivity : BaseActivity() {
             Log.d(this, "Power management fix skipped")
         }
 
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this.baseContext)
+        val preferences = this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         preferences.edit(commit = true) { putBoolean(PREF_KEY_ENABLED, true) }
 
         Log.d(this, "onServiceConnected()")

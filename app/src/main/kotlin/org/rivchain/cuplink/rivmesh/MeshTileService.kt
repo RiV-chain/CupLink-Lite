@@ -1,5 +1,6 @@
 package org.rivchain.cuplink.rivmesh
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Build
@@ -8,7 +9,6 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.preference.PreferenceManager
 import org.rivchain.cuplink.CallActivity
 import org.rivchain.cuplink.MainActivity
 import org.rivchain.cuplink.MainApplication
@@ -94,7 +94,7 @@ class MeshTileService: TileService(), AppStateReceiver.StateReceiver {
     private fun updateTileState(state: State) {
         val tile = qsTile ?: return
         val oldState = tile.state
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this.baseContext)
+        val preferences = this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         val enabled = preferences.getBoolean(PREF_KEY_ENABLED, true)
         tile.state = when (enabled) {
             false -> Tile.STATE_INACTIVE

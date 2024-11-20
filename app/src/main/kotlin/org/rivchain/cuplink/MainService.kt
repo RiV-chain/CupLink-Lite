@@ -15,7 +15,6 @@ import android.system.OsConstants
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.preference.PreferenceManager
 import mobile.Mesh
 import org.json.JSONArray
 import org.rivchain.cuplink.call.PacketWriter
@@ -194,7 +193,7 @@ class MainService : VpnService() {
                 }
             }
             else -> {
-                val preferences = PreferenceManager.getDefaultSharedPreferences(this.baseContext)
+                val preferences = this.applicationContext.getSharedPreferences("preferences", Context.MODE_PRIVATE)
                 val enabled = preferences.getBoolean(PREF_KEY_ENABLED, true)
                 if (!enabled) {
                     Log.d(TAG, "Service is disabled")
@@ -263,7 +262,7 @@ class MainService : VpnService() {
             builder.setMetered(false)
         }
 
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this.baseContext)
+        val preferences = this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         val serverString = preferences.getString(KEY_DNS_SERVERS, "")
         if (serverString!!.isNotEmpty()) {
             val servers = serverString.split(",")

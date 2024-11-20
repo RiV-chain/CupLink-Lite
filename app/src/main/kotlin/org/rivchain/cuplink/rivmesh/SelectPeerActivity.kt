@@ -1,11 +1,11 @@
 package org.rivchain.cuplink.rivmesh
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hbb20.CCPCountry
@@ -91,7 +91,7 @@ open class SelectPeerActivity : BaseActivity(), ServiceConnection {
         bindService(Intent(this, MainService::class.java), this, 0)
 
         val preferences =
-            PreferenceManager.getDefaultSharedPreferences(this.baseContext)
+            this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         val peerListUrl: String =
             preferences.getString(PEER_LIST, "")!!
         if(peerListUrl.isNotBlank()){

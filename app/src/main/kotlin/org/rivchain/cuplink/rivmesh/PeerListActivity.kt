@@ -1,5 +1,6 @@
 package org.rivchain.cuplink.rivmesh
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,7 +14,6 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.PopupWindow
 import android.widget.TextView
-import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.hbb20.CountryCodePicker
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -77,7 +77,7 @@ class PeerListActivity : SelectPeerActivity() {
             }
             peerListUrl = url
             val preferences =
-                PreferenceManager.getDefaultSharedPreferences(this.baseContext)
+                this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
             preferences.edit().putString(PEER_LIST, peerListUrl).apply()
             dialog.dismiss()
         }
