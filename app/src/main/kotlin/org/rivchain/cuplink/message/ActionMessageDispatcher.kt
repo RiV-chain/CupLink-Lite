@@ -156,6 +156,10 @@ class ActionMessageDispatcher(
             Log.d(this, "createOutgoingCallInternal() got dismissed")
             peerConnection.reportStateChange(CallState.DISMISSED)
             return
+        } else if (action == "busy") {
+                Log.d(this, "createOutgoingCallInternal() got busy")
+                peerConnection.reportStateChange(CallState.BUSY)
+                return
         } else {
             Log.d(this, "createOutgoingCallInternal() unexpected action: $action")
             peerConnection.reportStateChange(CallState.ERROR_COMMUNICATION)
