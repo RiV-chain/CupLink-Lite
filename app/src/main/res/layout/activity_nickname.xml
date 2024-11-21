@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/background_view"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cup_link"
+            app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/splashText"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginStart="@dimen/padding_40"
+            android:layout_marginEnd="@dimen/padding_40"
+            android:layout_marginTop="@dimen/padding_40"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="start"
+            android:lineSpacingExtra="10sp"
+            android:text=""
+            android:textColor="@color/light_light_grey"
+            android:textSize="@dimen/name_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/background_view" />
+
+        <EditText
+            android:id="@+id/nickname"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/padding_40"
+            android:layout_marginEnd="@dimen/padding_40"
+            android:layout_marginBottom="@dimen/padding_40"
+            android:gravity="center"
+            android:textSize="@dimen/name_text_size"
+            android:fontFamily="@font/lato_bold"
+            android:visibility="invisible"
+            android:text=""
+            android:digits="0,1,2,3,4,5,6,7,8,9,abcdefghijklmnopqrstuvwxyz,ABCDEFGHIJKLMNOPQRSTUVWXYZ,-"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_50"
+            android:layout_marginStart="@dimen/padding_40"
+            android:layout_marginEnd="@dimen/padding_40"
+            android:layout_marginTop="@dimen/padding_10"
+            android:layout_marginBottom="@dimen/padding_40"
+            android:background="@drawable/next_button_background"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/button_next"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_test_size"
+            app:backgroundTint="@null"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

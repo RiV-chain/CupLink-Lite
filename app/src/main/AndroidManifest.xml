@@ -260,6 +260,11 @@
         </activity>
 
         <activity
+            android:name=".NicknameActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:parentActivityName=".StartActivity" />
+
+        <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />
 
@@ -348,7 +353,6 @@
             android:value="false" />
         <meta-data android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
-
 
     </application>
 </manifest>

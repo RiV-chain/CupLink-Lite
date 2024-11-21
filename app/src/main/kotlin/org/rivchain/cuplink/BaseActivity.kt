@@ -16,6 +16,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
@@ -142,18 +145,19 @@ open class BaseActivity : AppCompatActivity() {
         // Restart service
         val intentStop = Intent(this, MainService::class.java)
         intentStop.action = MainService.ACTION_STOP
-        startService(intentStop)
-        Thread {
-            Thread.sleep(1000)
-            val intentStart = Intent(this, MainService::class.java)
-            intentStart.action = MainService.ACTION_START
+        val intentStart = Intent(this@BaseActivity, MainService::class.java).apply {
+            action = MainService.ACTION_START
+        }
+        Log.d(this, "Restarting service ...")
+        lifecycleScope.launch {
+            startService(intentStop)
+            delay(1000)
             startService(intentStart)
-            Thread.sleep(2000)
-            runOnUiThread {
-                dialog.dismiss()
-                onServiceRestart()
-            }
-        }.start()
+            delay(2000)
+            dialog.dismiss()
+            delay(200)
+            onServiceRestart()
+        }
     }
 
     fun setDefaultNightMode(nightModeSetting: String) {
