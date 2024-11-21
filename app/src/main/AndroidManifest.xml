@@ -206,7 +206,7 @@
             android:permission="android.permission.FOREGROUND_SERVICE"/>
 
         <service
-            android:name=".CarService"
+            android:name=".automotive.CarService"
             android:exported="true">
             <intent-filter>
                 <action android:name="androidx.car.app.CarAppService" />
@@ -246,7 +246,7 @@
         </activity>
 
         <activity
-            android:name=".CallActivity"
+            android:name=".call.CallActivity"
             android:parentActivityName=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|touchscreen|uiMode|navigation"
             android:supportsPictureInPicture="true"

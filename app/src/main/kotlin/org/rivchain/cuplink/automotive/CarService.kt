@@ -1,4 +1,4 @@
-package org.rivchain.cuplink
+package org.rivchain.cuplink.automotive
 
 import android.app.PendingIntent
 import android.content.ComponentName
@@ -17,9 +17,13 @@ import androidx.car.app.Session
 import androidx.car.app.validation.HostValidator
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import org.rivchain.cuplink.automotive.AutoControlScreen
+import org.rivchain.cuplink.CallService
+import org.rivchain.cuplink.DatabaseCache
+import org.rivchain.cuplink.MainService
+import org.rivchain.cuplink.call.CallActivity
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.RlpUtils
+
 @RequiresApi(Build.VERSION_CODES.O)
 class CarService : CarAppService() {
 

@@ -9,7 +9,7 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import android.util.Log
 import androidx.annotation.RequiresApi
-import org.rivchain.cuplink.CallActivity
+import org.rivchain.cuplink.call.CallActivity
 import org.rivchain.cuplink.MainActivity
 import org.rivchain.cuplink.MainApplication
 import org.rivchain.cuplink.PREF_KEY_ENABLED

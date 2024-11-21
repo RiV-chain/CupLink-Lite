@@ -1,4 +1,4 @@
-package org.rivchain.cuplink
+package org.rivchain.cuplink.call
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -47,14 +47,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-import org.rivchain.cuplink.call.CaptureQualityController
-import org.rivchain.cuplink.call.MicrophoneUsageMonitor
-import org.rivchain.cuplink.call.RTCAudioManager
-import org.rivchain.cuplink.call.RTCCall
-import org.rivchain.cuplink.call.RTCPeerConnection
+import org.rivchain.cuplink.BaseActivity
+import org.rivchain.cuplink.CallService
+import org.rivchain.cuplink.CallStatusService
+import org.rivchain.cuplink.DatabaseCache
+import org.rivchain.cuplink.MainActivity
+import org.rivchain.cuplink.MainService
+import org.rivchain.cuplink.R
 import org.rivchain.cuplink.call.RTCPeerConnection.CallState
-import org.rivchain.cuplink.call.RTCProximitySensor
-import org.rivchain.cuplink.call.StatsReportUtil
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.renderer.TextureViewRenderer
@@ -317,7 +317,8 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     private fun startCallStatusService() {
         val intent = Intent(this, CallStatusService::class.java)
-            .putExtra(CallService.SERVICE_CONTACT_KEY,
+            .putExtra(
+                CallService.SERVICE_CONTACT_KEY,
                 contact)
         startService(intent)
     }
@@ -1460,6 +1461,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             toggleFrontCameraButton.visibility = VISIBLE
             Log.d(this,"Unhide navigation")
         }
+        updateVideoDisplay()
         updateControlDisplay()
     }
 }
