@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".CallActivity"
+    tools:context=".call.CallActivity"
     android:background="@color/colorBackground">
 
     <!-- Background image (for audio calls) -->

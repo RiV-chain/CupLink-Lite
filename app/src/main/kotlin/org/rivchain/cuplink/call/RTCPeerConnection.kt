@@ -11,7 +11,6 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.libsodium.jni.Sodium
-import org.rivchain.cuplink.CallActivity
 import org.rivchain.cuplink.CallService
 import org.rivchain.cuplink.Crypto
 import org.rivchain.cuplink.DatabaseCache

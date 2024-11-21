@@ -13,7 +13,7 @@ import androidx.car.app.model.ListTemplate
 import androidx.car.app.model.Row
 import androidx.car.app.model.Template
 import androidx.core.graphics.drawable.IconCompat
-import org.rivchain.cuplink.CallActivity
+import org.rivchain.cuplink.call.CallActivity
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Contacts

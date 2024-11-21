@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.adapter.EventListAdapter
+import org.rivchain.cuplink.call.CallActivity
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.json.JSONException
 import org.rivchain.cuplink.adapter.ContactListAdapter
+import org.rivchain.cuplink.call.CallActivity
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.RlpUtils

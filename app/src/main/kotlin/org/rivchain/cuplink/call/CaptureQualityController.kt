@@ -14,7 +14,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Spinner
 import android.widget.TextView
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
-import org.rivchain.cuplink.CallActivity
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.model.Settings
 import org.rivchain.cuplink.util.Log

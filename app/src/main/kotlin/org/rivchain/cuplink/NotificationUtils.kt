@@ -33,6 +33,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.rivchain.cuplink.BaseActivity.Companion.isNightmodeEnabled
 import org.rivchain.cuplink.CallService.Companion.ID_ONGOING_CALL_NOTIFICATION
 import org.rivchain.cuplink.CallStatusService.Companion.CHANNEL_ID
+import org.rivchain.cuplink.automotive.CarService
+import org.rivchain.cuplink.call.CallActivity
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
