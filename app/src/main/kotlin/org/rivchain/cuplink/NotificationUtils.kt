@@ -329,9 +329,9 @@ internal object NotificationUtils {
             builder.setSound(null)
         }
         var endTitle: CharSequence =
-            service.getString(R.string.call_denied)
+            service.getString(R.string.call_decline)
         var answerTitle: CharSequence =
-            service.getString(R.string.call_connected)
+            service.getString(R.string.call_answer)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             endTitle = SpannableString(endTitle)
             endTitle.setSpan(ForegroundColorSpan(-0xbbcca), 0, endTitle.length, 0)
@@ -412,29 +412,28 @@ internal object NotificationUtils {
                 R.layout.notification_call_rtl
             )
             customView.setTextViewText(R.id.name, contact.name)
-            customView.setViewVisibility(R.id.subtitle, View.GONE)
             customView.setTextViewText(
                 R.id.title,
                 contact.name,
             )
             customView.setTextViewText(
                 R.id.answer_text,
-                service.getString(R.string.call_connected)
+                service.getString(R.string.call_answer)
             )
             customView.setTextViewText(
                 R.id.decline_text,
-                service.getString(R.string.button_abort)
+                service.getString(R.string.call_decline)
             )
             customView.setImageViewBitmap(R.id.photo, avatar)
-
             customView.setOnClickPendingIntent(R.id.answer_btn, answerPendingIntent)
             customView.setOnClickPendingIntent(R.id.decline_btn, endPendingIntent)
             builder.setLargeIcon(avatar)
             builder.setCustomBigContentView(customView)
+            builder.setCustomContentView(customView)
             builder.setCustomHeadsUpContentView(customView)
             incomingNotification = builder.build()
-            incomingNotification.bigContentView = customView
-            incomingNotification.headsUpContentView = customView
+            //incomingNotification.bigContentView = customView
+            //incomingNotification.headsUpContentView = customView
         }
         incomingNotification.flags = incomingNotification.flags or (Notification.FLAG_NO_CLEAR or Notification.FLAG_ONGOING_EVENT)
         if(contact.name.isEmpty()){

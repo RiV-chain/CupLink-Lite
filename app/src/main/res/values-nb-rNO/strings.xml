@@ -28,10 +28,10 @@
     <string name="button_skip">Hopp over</string>
     <string name="button_yes">Ja</string>
     <string name="call_authentication_failed">Identitetsbekreftelse mislyktes</string>
-    <string name="call_connected">Tilkoblet</string>
+    <string name="call_answer">Svare</string>
     <string name="call_connecting">Ringer …</string>
     <string name="call_connection_failed">Tilkobling mislyktes</string>
-    <string name="call_denied">Avslått</string>
+    <string name="call_decline">Avslå</string>
     <string name="call_ended">Anrop avsluttet</string>
     <string name="call_error">Feil</string>
     <string name="call_error_no_address">Feil: Ingen adresse</string>

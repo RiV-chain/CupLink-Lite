@@ -31,10 +31,10 @@
     <string name="button_skip">Skip</string>
     <string name="button_yes">Yes</string>
     <string name="call_authentication_failed">Authentication Failed</string>
-    <string name="call_connected">Connected</string>
+    <string name="call_answer">Answer</string>
     <string name="call_connecting">Calling</string>
     <string name="call_connection_failed">Connection Failed</string>
-    <string name="call_denied">Declined</string>
+    <string name="call_decline">Decline</string>
     <string name="call_ended">Call Ended</string>
     <string name="call_error">Error</string>
     <string name="call_error_no_address">Error: No address</string>

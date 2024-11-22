@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Request
 import org.rivchain.cuplink.BaseActivity
 import org.rivchain.cuplink.BuildConfig
 import org.rivchain.cuplink.DatabaseCache
@@ -26,6 +27,7 @@ import org.rivchain.cuplink.rivmesh.models.Status
 import org.rivchain.cuplink.rivmesh.util.Utils.deserializeStringList2PeerInfoSet
 import org.rivchain.cuplink.rivmesh.util.Utils.ping
 import org.rivchain.cuplink.util.Log
+import org.rivchain.cuplink.util.NetworkUtils
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.lang.reflect.Type
@@ -53,13 +55,17 @@ open class SelectPeerActivity : BaseActivity(), ServiceConnection {
         const val DISK_MAX_SIZE = 100000
     }
 
-    private fun downloadJson(link: String): String {
-        URL(link).openStream().use { input ->
-            val outStream = ByteArrayOutputStream()
-            outStream.use { output ->
-                input.copyTo(output)
+    private fun downloadJson(link: String, charset: Charset = Charsets.UTF_8): String {
+        val client = NetworkUtils.getOkHttpClient()
+        val request = Request.Builder()
+            .url(link)
+            .build()
+
+        return client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                throw RuntimeException("Failed to download JSON: HTTP ${response.code}")
             }
-            return String(outStream.toByteArray(), Charset.forName("UTF-8"))
+            response.body?.string() ?: throw RuntimeException("Response body is null")
         }
     }
 

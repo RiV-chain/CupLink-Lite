@@ -28,10 +28,10 @@
     <string name="button_skip">Sauter</string>
     <string name="button_yes">Oui</string>
     <string name="call_authentication_failed">Authentification échouée</string>
-    <string name="call_connected">Connecté.</string>
+    <string name="call_answer">Répondre</string>
     <string name="call_connecting">Appel en cours …</string>
     <string name="call_connection_failed">La connexion a échoué</string>
-    <string name="call_denied">Décliné</string>
+    <string name="call_decline">Refuser</string>
     <string name="call_ended">Appel terminé</string>
     <string name="call_error">Erreur</string>
     <string name="call_error_no_address">Erreur : Pas d\'adresse</string>

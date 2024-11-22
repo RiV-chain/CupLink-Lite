@@ -4,6 +4,7 @@ import android.net.InetAddresses
 import android.os.Build
 import android.util.Patterns
 import net.mm2d.upnp.Device
+import okhttp3.OkHttpClient
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.model.AddressEntry
 import org.rivchain.cuplink.model.Contact
@@ -16,11 +17,58 @@ import java.net.InetSocketAddress
 import java.net.NetworkInterface
 import java.util.Collections
 import java.util.regex.Pattern
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 import kotlin.experimental.and
 import kotlin.experimental.xor
 
-
 internal object NetworkUtils {
+
+    fun getOkHttpClient(): OkHttpClient {
+        try {
+            // Create a trust manager that does not validate certificate chains
+            val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+
+                override fun checkClientTrusted(
+                    chain: Array<out java.security.cert.X509Certificate>?,
+                    authType: String?,
+                ) {
+
+                }
+
+                override fun checkServerTrusted(
+                    chain: Array<out java.security.cert.X509Certificate>?,
+                    authType: String?,
+                ) {
+
+                }
+
+                override fun getAcceptedIssuers(): Array<out java.security.cert.X509Certificate> = arrayOf()
+            })
+
+            // Install the all-trusting trust manager
+            val sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+
+            // Create an ssl socket factory with our all-trusting manager
+            val sslSocketFactory = sslContext.socketFactory
+
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
+                OkHttpClient.Builder().build()
+            } else {
+                // Overcome CertPathValidatorException error
+                OkHttpClient.Builder()
+                    .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+                    .hostnameVerifier { hostname, session ->
+                        true
+                    }
+                    .build()
+            }
+        } catch (e: Exception) {
+            throw RuntimeException(e)
+        }
+    }
 
     fun openPortWithUPnP(device: Device, internalIP: String, internalPort: Int, externalPort: Int) {
         if (device.deviceType == "urn:schemas-upnp-org:device:InternetGatewayDevice:1") {

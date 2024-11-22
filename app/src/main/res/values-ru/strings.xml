@@ -18,9 +18,9 @@
     <string name="button_save">Сохранить</string>
     <string name="button_skip">Пропустить</string>
     <string name="button_yes">Да</string>
-    <string name="call_connected">Соединено</string>
+    <string name="call_answer">Ответить</string>
     <string name="call_connecting">Вызов…</string>
-    <string name="call_denied">Отклонено</string>
+    <string name="call_decline">Отклонить</string>
     <string name="call_ended">Звонок закончен</string>
     <string name="call_error">Ошибка</string>
     <string name="call_ringing">Звонит…</string>

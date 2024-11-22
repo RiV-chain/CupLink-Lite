@@ -26,10 +26,10 @@
     <string name="button_skip">跳过</string>
     <string name="button_yes">是</string>
     <string name="call_authentication_failed">身份验证失败</string>
-    <string name="call_connected">已连接</string>
+    <string name="call_answer">接听电话</string>
     <string name="call_connecting">正在呼叫…</string>
     <string name="call_connection_failed">连接失败</string>
-    <string name="call_denied">已拒绝</string>
+    <string name="call_decline">拒绝接听电话</string>
     <string name="call_ended">通话结束</string>
     <string name="call_error">错误</string>
     <string name="call_error_no_address">错误：没有地址</string>

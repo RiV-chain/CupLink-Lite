@@ -28,10 +28,10 @@
     <string name="button_skip">Pular</string>
     <string name="button_yes">Sim</string>
     <string name="call_authentication_failed">Falha na autenticação</string>
-    <string name="call_connected">Conectado.</string>
+    <string name="call_answer">Conectado.</string>
     <string name="call_connecting">Chamando…</string>
     <string name="call_connection_failed">Falha na conexão</string>
-    <string name="call_denied">Rejeitado</string>
+    <string name="call_decline">Rejeitado</string>
     <string name="call_ended">Ligação encerrada</string>
     <string name="call_error">Erro</string>
     <string name="call_error_no_address">Erro: Sem endereço</string>

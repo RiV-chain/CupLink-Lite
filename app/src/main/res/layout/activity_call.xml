@@ -314,14 +314,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Picture-in-Picture window -->
-        <com.google.android.flexbox.FlexboxLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/controlPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp"
-            app:justifyContent="space_evenly"
             app:layout_constraintBottom_toBottomOf="parent"
             android:translationZ="1dp">
 
@@ -334,7 +331,11 @@
                 android:padding="@dimen/call_button_image_padding"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_call_accept"
-                app:tint="@android:color/white" />
+                app:tint="@android:color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/toggleCameraButton" />
 
             <ImageButton
                 android:id="@+id/toggleCameraButton"
@@ -345,7 +346,11 @@
                 android:padding="@dimen/call_button_image_padding"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_camera_on"
-                app:tint="@android:color/white" />
+                app:tint="@android:color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/acceptButton"
+                app:layout_constraintEnd_toStartOf="@id/declineButton" />
 
             <ImageButton
                 android:id="@+id/declineButton"
@@ -356,7 +361,11 @@
                 android:padding="@dimen/call_button_image_padding"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_call_decline"
-                app:tint="@android:color/white" />
+                app:tint="@android:color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/toggleCameraButton"
+                app:layout_constraintEnd_toStartOf="@id/toggleMicButton" />
 
             <ImageButton
                 android:id="@+id/toggleMicButton"
@@ -367,7 +376,11 @@
                 android:padding="@dimen/call_button_image_padding"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_mic_on"
-                app:tint="@android:color/white" />
+                app:tint="@android:color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/declineButton"
+                app:layout_constraintEnd_toStartOf="@id/speakerphoneButton" />
 
             <ImageButton
                 android:id="@+id/speakerphoneButton"
@@ -378,9 +391,14 @@
                 android:padding="@dimen/call_button_image_padding"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_audio_device_automatic"
-                app:tint="@android:color/white" />
+                app:tint="@android:color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/toggleMicButton"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        </com.google.android.flexbox.FlexboxLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <!-- fullscreen video window -->
         <org.webrtc.SurfaceViewRenderer
