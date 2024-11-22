@@ -13,6 +13,7 @@ import org.json.JSONObject
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.CallService
 import org.rivchain.cuplink.Crypto
+import org.rivchain.cuplink.Database
 import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.R
@@ -366,9 +367,11 @@ abstract class RTCPeerConnection(
         return null
     }
 
-    fun createMessageSocket(contact: Contact): Socket? {
+    fun createMessageSocket(contact: Contact, attempt: Int = 0): Socket? {
         Log.d(this, "createCommSocket()")
-
+        if(attempt > DatabaseCache.database.settings.connectRetries){
+            return null
+        }
         Utils.checkIsNotOnMainThread()
 
         val settings = DatabaseCache.database.settings
@@ -382,10 +385,10 @@ abstract class RTCPeerConnection(
         var exception = false
 
         val allGeneratedAddresses = NetworkUtils.getAllSocketAddresses(contact, useNeighborTable)
-        Log.d(this, "createCommSocket() contact.addresses: ${contact.addresses}, allGeneratedAddresses: $allGeneratedAddresses")
+        Log.d(this, "createMessageSocket() contact.addresses: ${contact.addresses}, allGeneratedAddresses: $allGeneratedAddresses")
 
         for (iteration in 0..max(0, min(connectRetries, 4))) {
-            Log.d(this, "createCommSocket() loop number $iteration")
+            Log.d(this, "createMessageSocket() loop number $iteration")
 
             for (address in allGeneratedAddresses) {
                 callActivity?.onRemoteAddressChange(address, false)
@@ -396,18 +399,18 @@ abstract class RTCPeerConnection(
                     return socket
                 } catch (e: SocketTimeoutException) {
                     // no connection
-                    Log.d(this, "createCommSocket() socket has thrown SocketTimeoutException")
+                    Log.d(this, "createMessageSocket() socket has thrown SocketTimeoutException")
                     socketTimeoutException = true
                 } catch (e: ConnectException) {
                     // device is online, but does not listen on the given port
-                    Log.d(this, "createCommSocket() socket has thrown ConnectException")
+                    Log.d(this, "createMessageSocket() socket has thrown ConnectException")
                     connectException = true
                 } catch (e: UnknownHostException) {
                     // hostname did not resolve
-                    Log.d(this, "createCommSocket() socket has thrown UnknownHostException")
+                    Log.d(this, "createMessageSocket() socket has thrown UnknownHostException")
                     unknownHostException = true
                 } catch (e: Exception) {
-                    Log.d(this, "createCommSocket() socket has thrown Exception")
+                    Log.d(this, "createMessageSocket() socket has thrown Exception")
                     exception = true
                 }
 
@@ -416,13 +419,17 @@ abstract class RTCPeerConnection(
         }
 
         if (connectException) {
-            reportStateChange(CallState.ERROR_CONNECT_PORT)
+            //reportStateChange(CallState.ERROR_CONNECT_PORT)
+            createMessageSocket(contact, attempt + 1)
         } else if (unknownHostException) {
-            reportStateChange(CallState.ERROR_UNKNOWN_HOST)
+            //reportStateChange(CallState.ERROR_UNKNOWN_HOST)
+            createMessageSocket(contact, attempt + 1)
         } else if (exception) {
-            reportStateChange(CallState.ERROR_COMMUNICATION)
+            //reportStateChange(CallState.ERROR_COMMUNICATION)
+            createMessageSocket(contact, attempt + 1)
         } else if (socketTimeoutException) {
-            reportStateChange(CallState.ERROR_NO_CONNECTION)
+            //reportStateChange(CallState.ERROR_NO_CONNECTION)
+            createMessageSocket(contact, attempt + 1)
         } else if (contact.addresses.isEmpty()) {
             reportStateChange(CallState.ERROR_NO_ADDRESSES)
         } else {
