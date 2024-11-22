@@ -13,7 +13,6 @@ import org.json.JSONObject
 import org.libsodium.jni.Sodium
 import org.rivchain.cuplink.CallService
 import org.rivchain.cuplink.Crypto
-import org.rivchain.cuplink.Database
 import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.R
@@ -368,7 +367,7 @@ abstract class RTCPeerConnection(
     }
 
     fun createMessageSocket(contact: Contact, attempt: Int = 0): Socket? {
-        Log.d(this, "createCommSocket()")
+        Log.d(this, "createMessageSocket()")
         if(attempt > DatabaseCache.database.settings.connectRetries){
             return null
         }

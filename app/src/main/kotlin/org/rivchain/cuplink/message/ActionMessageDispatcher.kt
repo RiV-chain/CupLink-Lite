@@ -37,14 +37,14 @@ class ActionMessageDispatcher(
      * Sends a generic message.
      * @param message The JSONObject to be sent.
      */
-    fun sendMessage(message: JSONObject) {
+    fun sendMessage(message: JSONObject): Boolean {
         socketLock.withLock {
             if (!isSocketOpen()) {
                 val socket = peerConnection.createMessageSocket(contact)
                 if(socket!=null){
                     this.socket = socket
                 } else {
-                    return
+                    return false
                 }
             }
 
@@ -58,10 +58,12 @@ class ActionMessageDispatcher(
 
                 val packetWriter = PacketWriter(socket)
                 packetWriter.writeMessage(encryptedMessage)
-                Log.d(this,  "sendMessage() - Message sent: ${message}")
+                Log.d(this,  "sendMessage() - Message sent: $message")
+                return true
             } catch (e: Exception) {
                 Log.e(this,  "sendMessage() - Error sending message: $e")
                 closeSocket()
+                return false
             }
         }
     }
@@ -103,32 +105,24 @@ class ActionMessageDispatcher(
 
     fun answerCall(description: String){
         val remoteAddress = socket.remoteSocketAddress as InetSocketAddress
-        val pw = PacketWriter(socket)
         val obj = JSONObject()
         obj.put("action", "connected")
         obj.put("answer", description)
-        val encrypted = Crypto.encryptMessage(
-            obj.toString(),
-            contact.publicKey,
-            ownPublicKey,
-            ownSecretKey
-        )
-        if (encrypted != null) {
-            Log.d(this, "onIceGatheringChange() send connected")
-            pw.writeMessage(encrypted)
+        val sent = sendMessage(obj)
+        if (sent) {
+            Log.d(this, "answerCall() send connected")
             peerConnection.callActivity?.onRemoteAddressChange(remoteAddress, true)
             // connected state will be reported by WebRTC onIceConnectionChange()
             //reportStateChange(CallState.CONNECTED)
         } else {
-            Log.d(this, "onIceGatheringChange() encryption failed")
+            Log.d(this, "answerCall() encryption failed")
             peerConnection.reportStateChange(CallState.ERROR_COMMUNICATION)
         }
-        sendMessage(obj)
     }
 
     fun receiveOfferResponse() {
 
-        Log.d(this, "createOutgoingCallInternal() outgoing call: expect ringing")
+        Log.d(this, "receiveOfferResponse() outgoing call: expect ringing")
         val response = pr.readMessage()
         if (response == null) {
             peerConnection.reportStateChange(CallState.ERROR_COMMUNICATION)
@@ -155,18 +149,18 @@ class ActionMessageDispatcher(
         val obj = JSONObject(decrypted)
         val action = obj.optString("action")
         if (action == "ringing") {
-            Log.d(this, "createOutgoingCallInternal() got ringing")
+            Log.d(this, "receiveOfferResponse() got ringing")
             peerConnection.reportStateChange(CallState.RINGING)
         } else if (action == "dismissed") {
-            Log.d(this, "createOutgoingCallInternal() got dismissed")
+            Log.d(this, "receiveOfferResponse() got dismissed")
             peerConnection.reportStateChange(CallState.DISMISSED)
             return
         } else if (action == "busy") {
-                Log.d(this, "createOutgoingCallInternal() got busy")
+                Log.d(this, "receiveOfferResponse() got busy")
                 peerConnection.reportStateChange(CallState.BUSY)
                 return
         } else {
-            Log.d(this, "createOutgoingCallInternal() unexpected action: $action")
+            Log.d(this, "receiveOfferResponse() unexpected action: $action")
             peerConnection.reportStateChange(CallState.ERROR_COMMUNICATION)
             return
         }
@@ -176,7 +170,7 @@ class ActionMessageDispatcher(
 
         val remoteAddress = socket.remoteSocketAddress as InetSocketAddress
 
-        Log.d(this, "createOutgoingCallInternal() outgoing call from remote address: $remoteAddress")
+        Log.d(this, "storeLastAddress() outgoing call from remote address: $remoteAddress")
         // remember latest working address and set state
         val workingAddress = InetSocketAddress(remoteAddress.address, MainService.serverPort)
         val storedContact = DatabaseCache.database.contacts.getContactByPublicKey(contact.publicKey)
