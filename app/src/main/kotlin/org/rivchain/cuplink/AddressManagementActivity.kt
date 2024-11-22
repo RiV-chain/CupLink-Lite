@@ -12,6 +12,7 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.model.AddressEntry
@@ -123,8 +124,8 @@ class AddressManagementActivity : BaseActivity() {
 
     inner class AddressListAdapter(private val context: Activity): BaseAdapter() {
         // hack, we want android:textColorPrimary
-        private val defaultColor = Color.parseColor(if (isNightmodeEnabled(context)) "#EC3E3E" else "#000000")
         private val markColor = Color.parseColor("#39b300")
+        private val defaultColor = ContextCompat.getColor(context, R.color.colorPrimary)
         var allAddresses = mutableListOf<AddressEntry>()
         private var systemAddresses = mutableListOf<AddressEntry>()
         var storedAddresses = mutableListOf<AddressEntry>()
@@ -164,7 +165,6 @@ class AddressManagementActivity : BaseActivity() {
                 // no addresses
                 label.text = getString(R.string.empty_list_item)
                 label.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                label.setTextColor(defaultColor)
                 icon.isVisible = false
             } else {
                 val ae = allAddresses[position]
