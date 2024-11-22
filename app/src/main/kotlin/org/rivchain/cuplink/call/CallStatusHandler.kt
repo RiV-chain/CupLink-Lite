@@ -9,6 +9,9 @@ import android.telephony.TelephonyCallback
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.rivchain.cuplink.call.RTCPeerConnection.CallState
 import org.rivchain.cuplink.call.RTCPeerConnection.Companion.incomingRTCCall
@@ -57,12 +60,9 @@ class CallStatusHandler(private val context: Context, private val dispatcher: Ac
         }
     }
 
-    private fun processCallStateChanged(state: Int){
+    private fun processCallStateChanged(state: Int) {
         when (state) {
             TelephonyManager.CALL_STATE_RINGING -> {
-                /*
-                Added this condition just in case. !onHold shouldn't ever be false.
-                 */
                 if (!onHold) {
                     onHold = true
                     Log.d("CallStatusHandler", "Incoming GSM call detected")
@@ -70,10 +70,10 @@ class CallStatusHandler(private val context: Context, private val dispatcher: Ac
                     val obj = JSONObject().apply {
                         put("action", "on_hold")
                     }
-                    Thread {
+                    CoroutineScope(Dispatchers.IO).launch {
                         dispatcher.sendMessage(obj)
                         dispatcher.closeSocket()
-                    }.start()
+                    }
                     incomingRTCCall?.apply {
                         reportStateChange(CallState.ON_HOLD)
                         callOnHold()
@@ -85,21 +85,16 @@ class CallStatusHandler(private val context: Context, private val dispatcher: Ac
                 }
             }
             TelephonyManager.CALL_STATE_OFFHOOK -> {
-                /*
-                This condition runs for outgoing calls only.
-                In such case the CALL_STATE_RINGING state is not being called back.
-                Otherwise incoming calls invoke both states sequentially.
-                 */
                 if (!onHold) {
                     onHold = true
                     Log.d("CallStatusHandler", "GSM call in progress")
                     val obj = JSONObject().apply {
                         put("action", "on_hold")
                     }
-                    Thread {
+                    CoroutineScope(Dispatchers.IO).launch {
                         dispatcher.sendMessage(obj)
                         dispatcher.closeSocket()
-                    }.start()
+                    }
                     incomingRTCCall?.callOnHold()
                     outgoingRTCCall?.callOnHold()
                 }
@@ -111,10 +106,10 @@ class CallStatusHandler(private val context: Context, private val dispatcher: Ac
                     val obj = JSONObject().apply {
                         put("action", "resume")
                     }
-                    Thread {
+                    CoroutineScope(Dispatchers.IO).launch {
                         dispatcher.sendMessage(obj)
                         dispatcher.closeSocket()
-                    }.start()
+                    }
                     incomingRTCCall?.apply {
                         reportStateChange(CallState.RESUME)
                         callResume()
@@ -127,7 +122,6 @@ class CallStatusHandler(private val context: Context, private val dispatcher: Ac
             }
         }
     }
-
 
     fun stopCallStatusListening() {
         callStatusListener?.let {

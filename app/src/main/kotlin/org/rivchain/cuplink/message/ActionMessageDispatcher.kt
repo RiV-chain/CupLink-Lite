@@ -40,7 +40,12 @@ class ActionMessageDispatcher(
     fun sendMessage(message: JSONObject) {
         socketLock.withLock {
             if (!isSocketOpen()) {
-                socket = peerConnection.createMessageSocket(contact)!!
+                val socket = peerConnection.createMessageSocket(contact)
+                if(socket!=null){
+                    this.socket = socket
+                } else {
+                    return
+                }
             }
 
             try {
