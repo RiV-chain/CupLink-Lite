@@ -54,6 +54,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     private var startState = 0
     private var isStartOnBootup = false
     private var requestPermissionLauncher: ActivityResultLauncher<Array<String>>? = null
+    private var requestNicknameLauncher: ActivityResultLauncher<Intent>? = null
     private var requestPeersLauncher: ActivityResultLauncher<Intent>? = null
     private var requestListenLauncher: ActivityResultLauncher<Intent>? = null
     private val POLICY = "policy"
@@ -84,6 +85,11 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { result: Map<String, Boolean> ->
+            continueInit()
+        }
+        requestNicknameLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
             continueInit()
         }
         requestPeersLauncher =
@@ -147,7 +153,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 Log.d(this, "init $startState: check username")
                 if (DatabaseCache.database.settings.username.isEmpty()) {
                     // set username
-                    showMissingUsernameDialog()
+                    enterNickname()
                 } else {
                     continueInit()
                 }
@@ -195,7 +201,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             9 -> {
                 // All persistent settings must be set up prior this step!
-                Log.d(this, "init $startState: restart main service if needed")
+                Log.d(this, "init $startState: restart main service if needed:$restartService")
                 if(restartService) {
                     restartService()
                 } else {
@@ -335,71 +341,9 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     }
 
     // initial dialog to set the username
-    private fun showMissingUsernameDialog() {
-        // Inflate the custom layout
-        val dialogView = layoutInflater.inflate(R.layout.dialog_username, null)
-
-        // Get references to the UI components
-        val etUsername: EditText = dialogView.findViewById(R.id.et_username)
-
-        // Apply filters and other properties to EditText if needed
-        etUsername.filters = arrayOf(getEditTextFilter())
-        val username = generateRandomUserName()
-        etUsername.hint = username
-        // Build the dialog
-        val dialog = createBlurredPPTCDialog(dialogView)
-        dialog.setCancelable(false)
-        dialog.setCanceledOnTouchOutside(false)
-        val noButton = dialogView.findViewById<Button>(R.id.CancelButton)
-        val yesButton = dialogView.findViewById<Button>(R.id.OkButton)
-        yesButton.setOnClickListener {
-            if (Utils.isValidName(username)) {
-                DatabaseCache.database.settings.username = etUsername.text.toString()
-                DatabaseCache.save()
-                // close dialog
-                dialog.dismiss()
-                continueInit()
-            } else {
-                Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
-            }
-        }
-        noButton.setOnClickListener {
-            if (Utils.isValidName(username)) {
-                DatabaseCache.database.settings.username = username
-                DatabaseCache.save()
-                // close dialog
-                dialog.dismiss()
-                continueInit()
-            } else {
-                Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        dialog.setOnShowListener { dialog: DialogInterface ->
-
-            etUsername.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                    // nothing to do
-                }
-
-                override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                    // nothing to do
-                }
-
-                override fun afterTextChanged(editable: Editable) {
-                    val ok = Utils.isValidName(editable.toString())
-                    yesButton.isClickable = ok
-                    yesButton.alpha = if (ok) 1.0f else 0.5f
-                }
-            })
-            yesButton.isClickable = false
-            yesButton.alpha = 0.5f
-        }
-
-        this.dialog?.dismiss()
-        this.dialog = dialog
-
-        dialog.show()
+    private fun enterNickname() {
+        val intent = Intent(this, NicknameActivity::class.java)
+        requestNicknameLauncher!!.launch(intent)
     }
 
     private fun getEditTextFilter(): InputFilter {
@@ -477,19 +421,6 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         this.dialog = dialog
 
         dialog.show()
-    }
-
-    private fun generateRandomUserName(): String {
-        // Load the string arrays from resources
-        val adjectives = this.resources.getStringArray(R.array.adjectives)
-        val animals = this.resources.getStringArray(R.array.animals)
-
-        // Pick a random adjective and a random animal
-        val randomAdjective = adjectives.random()
-        val randomAnimal = animals.random()
-
-        // Return the concatenated result
-        return "$randomAdjective$randomAnimal"
     }
 
     private var requestTcActivityLauncher =
