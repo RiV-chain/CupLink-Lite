@@ -22,9 +22,9 @@
     <string name="button_save">Speichern</string>
     <string name="button_skip">Überspringen</string>
     <string name="button_yes">Yes</string>
-    <string name="call_connected">Verbunden</string>
+    <string name="call_answer">Anruf</string>
     <string name="call_connecting">Verbinde…</string>
-    <string name="call_denied">Abgelehnt</string>
+    <string name="call_decline">Ablehnen</string>
     <string name="call_ended">Beendet</string>
     <string name="call_error">Verbindungsfehler</string>
     <string name="call_ringing">Klingelt…</string>

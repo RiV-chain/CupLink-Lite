@@ -490,7 +490,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 }
                 CallState.DISMISSED -> {
                     // call did not start
-                    handleExit(R.string.call_denied)
+                    handleExit(R.string.call_decline)
                     setContactState(Contact.State.CONTACT_ONLINE)
                 }
                 CallState.BUSY -> {

@@ -28,7 +28,7 @@
     <string name="button_save">حفظ</string>
     <string name="button_import">استيراد</string>
     <string name="call_connection_failed">فشل الاتصال</string>
-    <string name="call_denied">رُفِضَ</string>
+    <string name="call_decline">رفض مكالمة</string>
     <string name="address_management_help_text">حدد عنوانًا واحدًا أو أكثر ليتم تضمينه في رمز الاستجابة السريعة الخاص بك. من الأفكار الجيدة استخدام عنوان MAC الخاص بمحول Wi-Fi (wlan0). لكن انتبه إلى أن Android قد يغيره اعتمادًا على إعدادات النظام. إذا لم يكن عنوان MAC مرئيًا، فقم بتمكين شبكة Wi-Fi لديك.</string>
     <string name="app_description">"  السماح بالاتصالات الصوتية والمرئية دون أي خادم أو الوصول إلى الإنترنت. ما عليك سوى مسح رمز الاستجابة السريعة للاتصال ببعضهم البعض والاتصال ببعضهم البعض. يعمل هذا على معظم الشبكات، على سبيل المثال. في المنزل أو في شبكات المجتمع أو في العمل."</string>
     <string name="audio_device_auto">%s (تلقائي)</string>
@@ -38,7 +38,7 @@
     <string name="button_skip">تخطي</string>
     <string name="contact_address_list">العناوين</string>
     <string name="button_reset">إعادة التعيين</string>
-    <string name="call_connected">متصل</string>
+    <string name="call_answer">الرد على المكالمة</string>
     <string name="call_connecting">الاتصال جارٍ…</string>
     <string name="button_yes">نعم</string>
     <string name="button_export">تصدير</string>

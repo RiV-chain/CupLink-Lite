@@ -28,10 +28,10 @@
     <string name="button_skip">Пропустити</string>
     <string name="button_yes">Так</string>
     <string name="call_authentication_failed">Помилка автентифікації</string>
-    <string name="call_connected">Підключений</string>
+    <string name="call_answer">Відповісти</string>
     <string name="call_connecting">Виклик…</string>
     <string name="call_connection_failed">"З'єднання не вдалося"</string>
-    <string name="call_denied">Відхилено</string>
+    <string name="call_decline">Відхилити</string>
     <string name="call_ended">Виклик завершено</string>
     <string name="call_error">Помилка</string>
     <string name="call_error_no_address">Помилка: немає адреси</string>

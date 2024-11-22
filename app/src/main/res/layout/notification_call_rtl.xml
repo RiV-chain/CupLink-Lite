@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="RtlHardcoded"
     android:layout_width="match_parent"
-    android:layout_height="128dip"
-    android:background="@drawable/button_background">
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground">
 
     <ImageView
         android:id="@+id/photo"
@@ -27,6 +27,7 @@
         android:layout_alignStart="@+id/photo"
         android:layout_marginStart="-2dip"
         android:layout_marginBottom="-2dip"
+        app:tint="@color/colorPrimary"
         android:src="@drawable/ic_audio_device_phone" />
 
     <LinearLayout
@@ -50,7 +51,7 @@
             android:textSize="17sp"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textColor="#FFF"
+            android:textColor="@color/light_light_grey"
             android:fontFamily="@font/poppins_regular"
             android:gravity="end"
             tools:text="Wow Such Doge" />
@@ -60,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/subtitle_text_size"
-            android:textColor="#FFF"
+            android:textColor="@color/light_light_grey"
             android:singleLine="true"
             android:ellipsize="end"
             android:gravity="end"
@@ -77,7 +78,8 @@
             android:ellipsize="end"
             android:gravity="end"
             android:fontFamily="@font/poppins_light"
-            tools:text="to Account Name" />
+            tools:text="to Account Name"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
@@ -108,8 +110,9 @@
                 android:textColor="#5ee067"
                 android:fontFamily="@font/poppins_regular"
                 android:drawablePadding="12dip"
+                app:drawableTint="#5ee067"
                 app:drawableRightCompat="@drawable/ic_call_accept"
-                tools:text="@string/button_yes"/>
+                tools:text="@string/call_answer"/>
 
         </FrameLayout>
 
@@ -131,8 +134,9 @@
                 android:textColor="#ef5050"
                 android:fontFamily="@font/poppins_regular"
                 android:drawablePadding="12dip"
+                app:drawableTint="#ef5050"
                 app:drawableRightCompat="@drawable/ic_call_decline"
-                tools:text="@string/button_abort"/>
+                tools:text="@string/call_decline"/>
 
         </FrameLayout>
     </LinearLayout>
