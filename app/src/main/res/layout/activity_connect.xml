@@ -11,8 +11,7 @@
         android:id="@+id/barcodeScannerContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/padding_20"
-        android:layout_marginBottom="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_40"
         android:layout_marginLeft="@dimen/padding_20"
         android:layout_marginRight="@dimen/padding_20"
         app:cardBackgroundColor="@color/colorPrimary"
@@ -22,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fabShare"
+        app:layout_constraintBottom_toTopOf="@+id/sharedManualInputLayout"
         app:layout_constraintVertical_weight="4.5">
         <!-- Inner Barcode Scanner Container -->
         <androidx.cardview.widget.CardView
@@ -39,72 +38,81 @@
         </androidx.cardview.widget.CardView>
     </androidx.cardview.widget.CardView>
 
-    <!-- Floating Action Button Share -->
-    <ImageButton
-        android:id="@+id/fabShare"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sharedManualInputLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleX="1.5"
-        android:scaleY="1.5"
-        android:layout_marginLeft="@dimen/padding_30"
-        android:layout_marginRight="@dimen/padding_30"
         app:layout_constraintBottom_toTopOf="@+id/qrCodeContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/barcodeScannerContainer"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintVertical_weight="1"
-        app:srcCompat="@drawable/ic_baseline_share_24"
-        app:tint="@color/white"
-        android:background="@color/zxing_transparent"
-        android:contentDescription="@string/contact_menu_share" />
+        app:layout_constraintTop_toBottomOf="@id/barcodeScannerContainer">
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/EditLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_5"
-        android:layout_marginLeft="65dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/edit_text_rounded_corner"
-        android:textColorHint="@color/light_grey"
-        app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toStartOf="@+id/manualInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/barcodeScannerContainer"
-        app:layout_constraintBottom_toTopOf="@+id/scan_label_top"
-        android:visibility="invisible">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextInput"
-            style="@style/EditText.OutlinedBox"
-            android:layout_width="match_parent"
+        <!-- Floating Action Button Share -->
+        <ImageButton
+            android:id="@+id/fabShare"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:hint="@string/paste_qr_code_data"
-            android:textSize="14dp"
-            android:importantForAutofill="no"
-            android:inputType="textNoSuggestions"
-            android:textColor="@color/light_grey"
-            android:textCursorDrawable="@null"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginStart="@dimen/padding_30"
+            android:background="@color/zxing_transparent"
+            android:contentDescription="@string/contact_menu_share"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintVertical_weight="1"
+            app:srcCompat="@drawable/ic_baseline_share_24"
+            app:tint="@color/white" />
 
-    <!-- Floating Action Button Manual Input -->
-    <ImageButton
-        android:id="@+id/manualInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleX="1.5"
-        android:scaleY="1.5"
-        android:layout_marginLeft="@dimen/padding_30"
-        android:layout_marginRight="@dimen/padding_30"
-        app:layout_constraintBottom_toBottomOf="@+id/fabShare"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fabShare"
-        app:srcCompat="@android:drawable/stat_notify_more"
-        app:tint="@color/white"
-        android:background="@color/zxing_transparent"
-        android:contentDescription="@string/add_contact_link_or_json" />
+        <!-- Text Input Layout -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/EditLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_5"
+            android:layout_marginStart="65dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/edit_text_rounded_corner"
+            android:textColorHint="@color/light_grey"
+            app:boxBackgroundMode="none"
+            app:layout_constraintEnd_toStartOf="@+id/manualInput"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="invisible">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextInput"
+                style="@style/EditText.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:hint="@string/paste_qr_code_data"
+                android:textSize="14dp"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions"
+                android:textColor="@color/light_grey"
+                android:textCursorDrawable="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Floating Action Button Manual Input -->
+        <ImageButton
+            android:id="@+id/manualInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:layout_marginStart="@dimen/padding_30"
+            android:layout_marginEnd="@dimen/padding_30"
+            app:layout_constraintBottom_toBottomOf="@+id/fabShare"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fabShare"
+            app:srcCompat="@android:drawable/stat_notify_more"
+            app:tint="@color/white"
+            android:background="@color/zxing_transparent"
+            android:contentDescription="@string/add_contact_link_or_json" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <!-- Scan Me Text (Top) -->
     <TextView
@@ -130,8 +138,7 @@
         android:id="@+id/qrCodeContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/padding_20"
-        android:layout_marginBottom="@dimen/padding_30"
+        android:layout_marginBottom="@dimen/padding_40"
         android:layout_marginLeft="@dimen/padding_20"
         android:layout_marginRight="@dimen/padding_20"
         app:cardBackgroundColor="@color/colorPrimary"
@@ -142,7 +149,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_weight="4.5"
-        app:layout_constraintTop_toBottomOf="@+id/fabShare">
+        app:layout_constraintTop_toBottomOf="@+id/sharedManualInputLayout">
         <!-- Inner QR Code Container -->
         <androidx.cardview.widget.CardView
             android:id="@+id/qrCodeContainerInner"
