@@ -19,7 +19,7 @@
     <dimen name="headline_text_size">18sp</dimen>
 
     <!-- Calls -->
-    <dimen name="cardview_corner_radius">8dp</dimen>
+    <dimen name="cardview_corner_radius">30dp</dimen>
     <dimen name="image_corner_radius">20dp</dimen>
     <dimen name="image_inner_corner_radius">16dp</dimen>
     <dimen name="password_text_size">25sp</dimen>
