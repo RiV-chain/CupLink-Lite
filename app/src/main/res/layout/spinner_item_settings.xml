@@ -5,6 +5,6 @@
     android:textSize="@dimen/options_text_size"
     android:gravity="end"
     android:textColor="@color/light_grey"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/colorTransparent"
     android:padding="@dimen/padding_5"
     android:fontFamily="@font/poppins_regular"/>

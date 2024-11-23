@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:minWidth="@dimen/padding_50"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorTransparent"
             android:checked="false"
             android:textColor="@color/light_grey"
             android:text="@string/agree_to_connect1"

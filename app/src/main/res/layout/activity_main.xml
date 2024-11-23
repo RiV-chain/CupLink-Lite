@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorTransparent"
         android:layout_marginTop="30dp">
 
         <androidx.appcompat.widget.Toolbar
@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorPrimaryDark"/>
+        android:background="@color/colorTransparent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -63,7 +63,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorTransparent"
         android:paddingBottom="50dp"
         app:menu="@menu/menu_bottom_navigation"
         app:itemTextAppearanceActive="@style/CustomBottomNavActiveLabel"

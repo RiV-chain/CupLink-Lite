@@ -8,4 +8,4 @@
     android:ellipsize="marquee"
     android:textColor="?android:textColorSecondary"
     android:fontFamily="@font/poppins_regular"
-    android:background="@color/colorPrimaryDark"/>
+    android:background="@color/colorTransparent"/>
