@@ -2,7 +2,8 @@
 <resources>
     <color name="colorPrimary">#B1B1B1</color>
     <color name="colorBackground">#181818</color>
-    <color name="colorPrimaryDark">@color/zxing_transparent</color>
+    <color name="colorPrimaryDark">#181818</color>
+    <color name="colorTransparent">@color/zxing_transparent</color>
     <color name="colorAccent">#B1B1B1</color>
     <color name="light_grey">#B1B1B1</color>
     <color name="light_light_grey">#E3E3E3</color>

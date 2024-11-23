@@ -25,7 +25,7 @@
             android:id="@+id/background_view"
             android:layout_width="170dp"
             android:layout_height="170dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorTransparent"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:src="@drawable/cup_link"
