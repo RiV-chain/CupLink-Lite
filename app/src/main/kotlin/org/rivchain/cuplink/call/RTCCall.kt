@@ -116,6 +116,16 @@ class RTCCall : RTCPeerConnection {
         return isMicrophoneEnabled
     }
 
+    fun onPiP() {
+        cameraWasEnabledBefore = isCameraEnabled
+        // Disable video stream
+        setCameraEnabled(false)
+    }
+
+    fun onResumeCallActivity() {
+        setCameraEnabled(cameraWasEnabledBefore)
+    }
+
     fun getCameraEnabled(): Boolean {
         return isCameraEnabled
     }
