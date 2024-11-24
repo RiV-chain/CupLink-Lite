@@ -8,9 +8,9 @@
     android:paddingEnd="20dp"
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
-    android:textSize="20sp"
+    android:textSize="@dimen/title_text_size"
     android:gravity="start"
     android:textColor="@color/white"
     android:textIsSelectable="false"
-    android:fontFamily="@font/poppins_regular"
+    android:fontFamily="@font/poppins_light"
     android:background="@color/colorTransparent"/>
