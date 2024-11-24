@@ -79,7 +79,7 @@
     <string name="clear_history">Очистить События</string>
     <string name="capture_format_change_text">Проведите чтобы изменить захват</string>
     <string name="overlay_permission_missing">Разрешение поверх окон недоступно. Вы не сможете принимать звонки в фоновом режиме!</string>
-    <string name="contact_menu_details">Детали</string>
+    <string name="contact_menu_details">Данные пользователя</string>
     <string name="settings_public_key">Публичный ключ</string>
     <string name="settings_enable_camera_by_default">Включить камеру по умолчанию</string>
     <string name="settings_connect_retries">Повторить попытку подключения</string>

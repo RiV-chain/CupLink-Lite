@@ -56,11 +56,11 @@
     <string name="contact_key_conflict">A contact with the same key exists:</string>
     <string name="contact_menu_add">Add</string>
     <string name="contact_menu_block">Block</string>
-    <string name="contact_menu_delete">Delete</string>
-    <string name="contact_menu_details">Details</string>
-    <string name="contact_menu_ping">Ping</string>
-    <string name="contact_menu_qrcode">QR code</string>
-    <string name="contact_menu_share">Share</string>
+    <string name="contact_menu_delete">Delete Contact</string>
+    <string name="contact_menu_details">Contact Details</string>
+    <string name="contact_menu_ping">Ping Contact</string>
+    <string name="contact_menu_qrcode">Show Contact QR code</string>
+    <string name="contact_menu_share">Share Contact</string>
     <string name="contact_menu_unblock">Unblock</string>
     <string name="contact_nickname">Nickname</string>
     <string name="contact_name_conflict">A contact with the same name exists.</string>
