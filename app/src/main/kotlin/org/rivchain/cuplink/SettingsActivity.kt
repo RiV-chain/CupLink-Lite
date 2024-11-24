@@ -89,7 +89,7 @@ class SettingsActivity : BaseActivity() {
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_yes_no, null)
         val dialog = this.createBlurredPPTCDialog(view)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
         val titleText = view.findViewById<TextView>(R.id.title)
         titleText.text = getString(R.string.clear_history)
         val messageText = view.findViewById<TextView>(R.id.message)
