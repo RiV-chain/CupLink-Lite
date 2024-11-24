@@ -1,6 +1,7 @@
 package org.rivchain.cuplink
 
 import org.rivchain.cuplink.rivmesh.models.PeerInfo
+import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils.readInternalFile
 import org.rivchain.cuplink.util.Utils.writeInternalFile
 import java.io.File
@@ -50,6 +51,24 @@ class DatabaseCache {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+
+        fun isDecrypted(): Boolean{
+            /**
+             * Test DB access. If that fail stop service and
+             * prompt user for a password in StartActivity
+             */
+            try {
+                load()
+                return true
+            } catch (e: Database.WrongPasswordException) {
+                // ignore and continue with initialization,
+                // the password dialog comes on the next startState
+                dbEncrypted = true
+            } catch (e: Exception) {
+                Log.e(this, "${e.message}")
+            }
+            return false
         }
     }
 }
