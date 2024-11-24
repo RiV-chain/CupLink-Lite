@@ -231,7 +231,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_margin="10dp"
-                app:cardCornerRadius="@dimen/cardview_corner_radius"
+                app:cardCornerRadius="@dimen/image_corner_radius"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="W,3:4"
@@ -313,7 +313,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Picture-in-Picture window -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/controlPanel"
             android:layout_width="match_parent"
