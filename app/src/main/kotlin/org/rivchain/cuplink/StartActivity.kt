@@ -109,6 +109,15 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         startState += 1
         when (startState) {
             1 -> {
+                Log.d(this, "init $startState: check database")
+                if (isDatabaseEncrypted()) {
+                    // database is probably encrypted
+                    showDatabasePasswordDialog()
+                } else {
+                    continueInit()
+                }
+            }
+            2 -> {
                 Log.d(this, "init $startState: show policy and start VPN")
                 if(preferences?.getString(POLICY, null) == null) {
                     showPolicy("En-Us")
@@ -124,7 +133,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                     }
                 }
             }
-            2 -> {
+            3 -> {
                 Log.d(this, "init $startState: choose peers")
                 if(preferences?.getString(PEERS, null) == null) {
                     val intent = Intent(this, AutoSelectPeerActivity::class.java)
@@ -136,15 +145,6 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                     )
                     requestPeersLauncher!!.launch(intent)
                     restartService = true
-                } else {
-                    continueInit()
-                }
-            }
-            3 -> {
-                Log.d(this, "init $startState: check database")
-                if (isDatabaseEncrypted()) {
-                    // database is probably encrypted
-                    showDatabasePasswordDialog()
                 } else {
                     continueInit()
                 }
@@ -240,7 +240,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         service = (iBinder as MainBinder).getService()
         isServiceBound = true
 
-        if (startState == 1) {
+        if (startState == 2) {
             setContentView(R.layout.activity_splash)
             findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
             if (DatabaseCache.firstStart) {
@@ -396,25 +396,20 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString()
             DatabaseCache.databasePassword = password
-            try {
-                DatabaseCache.load()
-                //MainService first run wasn't success due to db encryption
+            if(!DatabaseCache.isDecrypted()){
+                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
+            } else {
                 MainService.startPacketsStream(this)
                 // close dialog
                 dialog.dismiss()
                 // continue
                 continueInit()
-            } catch (e: Database.WrongPasswordException) {
-                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
             }
         }
         exitButton.setOnClickListener {
             // shutdown app
             dialog.dismiss()
-            service!!.shutdown()
-            finish()
+            finishAffinity()
         }
 
         this.dialog?.dismiss()

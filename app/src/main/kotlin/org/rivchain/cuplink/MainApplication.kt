@@ -75,16 +75,7 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver {
         // open without password
         Log.d(this, "init 1: load database")
         DatabaseCache.databasePath = this.filesDir.toString() + "/database.bin"
-        try {
-            DatabaseCache.load()
-        } catch (e: Database.WrongPasswordException) {
-            // ignore and continue with initialization,
-            // the password dialog comes on the next startState
-            DatabaseCache.dbEncrypted = true
-        } catch (e: Exception) {
-            Log.e(this, "${e.message}")
-            Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
-        }
+        DatabaseCache.isDecrypted()
         Log.d(this, "init 1: load database complete")
     }
 

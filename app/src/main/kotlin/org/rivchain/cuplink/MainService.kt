@@ -109,7 +109,9 @@ class MainService : VpnService() {
 
     override fun onDestroy() {
         Log.d(this, "onDestroy()")
-
+        if(!DatabaseCache.isDecrypted()){
+            return
+        }
         stopServer()
         stopPacketsStream()
 
@@ -222,6 +224,10 @@ class MainService : VpnService() {
     }
 
     private fun startPacketsStream() {
+        if(!DatabaseCache.isDecrypted()){
+            stopSelf()
+            return
+        }
         // !this::database.isInitialized means db is encrypted
         // we will re-try to load it after the next db password prompt
         if (!started.compareAndSet(false, true)) {
