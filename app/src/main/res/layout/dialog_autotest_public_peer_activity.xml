@@ -8,7 +8,7 @@
     android:paddingStart="@dimen/padding_20"
     android:paddingEnd="@dimen/padding_20"
     android:paddingBottom="@dimen/padding_20"
-    android:background="@drawable/dialog_rounded_corner">
+    android:background="@drawable/dialog_pptc_rounded_corner">
 
     <TextView
         android:id="@+id/checkboxDialogTitle"

@@ -19,7 +19,6 @@ import android.os.Build
 import android.text.SpannableString
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
-import android.view.View
 import android.widget.RemoteViews
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.car.app.notification.CarAppExtender
@@ -456,7 +455,7 @@ internal object NotificationUtils {
                         AppCompatResources.getDrawable(service, R.drawable.cup_link)!!.toBitmap()
                     )
                     .setImportance(NotificationManager.IMPORTANCE_HIGH)
-                    .setSmallIcon(R.drawable.dialog_rounded_corner)
+                    .setSmallIcon(R.drawable.dialog_pptc_rounded_corner)
                     .addAction(
                         R.drawable.ic_audio_device_phone,
                         answerTitle,

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:padding="10dp"
-    android:background="@drawable/dialog_rounded_corner">
+    android:background="@drawable/dialog_pptc_rounded_corner">
 
     <TextView
         android:id="@+id/ConnectTimeoutTextView"
@@ -43,7 +43,8 @@
             android:hint="Timeout(ms)"
             android:inputType="number"
             android:textColor="@color/light_grey"
-            android:textCursorDrawable="@null" />
+            android:textCursorDrawable="@null"
+            android:gravity="center_horizontal"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton

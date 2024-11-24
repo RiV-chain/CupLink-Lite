@@ -108,13 +108,10 @@ open class BaseActivity : AppCompatActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
     }
 
-    fun createBlurredPPTCDialog(view: View): AlertDialog {
-        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
-            .setView(view) // Set the custom view to the dialog
-        val dialog = b.create()
+    private fun createBlurredDialog(builder: AlertDialog.Builder): AlertDialog {
+        val dialog = builder.create()
         val window = dialog.window
-        mWindowBackgroundDrawable = AppCompatResources.getDrawable(this, R.drawable.dialog_rounded_corner);
-        window?.setBackgroundDrawable(mWindowBackgroundDrawable);
+        window?.setBackgroundDrawable(mWindowBackgroundDrawable)
         if (buildIsAtLeastS()) {
             // Enable blur behind. This can also be done in xml with R.attr#windowBlurBehindEnabled
             window?.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
@@ -129,6 +126,27 @@ open class BaseActivity : AppCompatActivity() {
         return dialog
     }
 
+    fun createBlurredPPTCDialog(view: View): AlertDialog {
+        val b = AlertDialog.Builder(this, R.style.PPTCDialog)
+            .setView(view) // Set the custom view to the dialog
+        mWindowBackgroundDrawable = AppCompatResources.getDrawable(this, R.drawable.dialog_pptc_rounded_corner)
+        return createBlurredDialog(b)
+    }
+
+    fun createBlurredMessageDialog(view: View): AlertDialog {
+        val b = AlertDialog.Builder(this, R.style.MessageDialog)
+            .setView(view) // Set the custom view to the dialog
+        mWindowBackgroundDrawable = AppCompatResources.getDrawable(this, R.drawable.dialog_message_rounded_corner)
+        return createBlurredDialog(b)
+    }
+
+    fun createBlurredProgressDialog(view: View): AlertDialog {
+        val b = AlertDialog.Builder(this, R.style.MessageDialog)
+            .setView(view) // Set the custom view to the dialog
+        mWindowBackgroundDrawable = AppCompatResources.getDrawable(this, R.drawable.dialog_message_rounded_corner)
+        return createBlurredDialog(b)
+    }
+
     protected open fun onServiceRestart(){
 
     }
@@ -137,7 +155,7 @@ open class BaseActivity : AppCompatActivity() {
         // Inflate the layout for the dialog
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_restart_service, null)
         // Create the AlertDialog
-        val dialog = createBlurredPPTCDialog(dialogView)
+        val dialog = createBlurredMessageDialog(dialogView)
         dialog.setCancelable(false)
         // Show the dialog
         dialog.show()

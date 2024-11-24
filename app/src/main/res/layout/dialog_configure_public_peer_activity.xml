@@ -8,7 +8,7 @@
     android:paddingStart="@dimen/padding_20"
     android:paddingEnd="@dimen/padding_20"
     android:paddingBottom="@dimen/padding_20"
-    android:background="@drawable/dialog_rounded_corner">
+    android:background="@drawable/dialog_pptc_rounded_corner">
 
     <TextView
         android:id="@+id/checkboxDialogTitle"
@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/portInfoText"
-        android:background="@drawable/dialog_rounded_corner"
+        android:background="@drawable/dialog_pptc_rounded_corner"
         android:src="@drawable/ic_status_unknown"
         android:padding="30dp"
         android:scaleType="centerInside"/>
