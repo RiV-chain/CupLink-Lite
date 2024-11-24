@@ -46,6 +46,11 @@
         <item name="android:windowMinWidthMinor">85%</item>
     </style>
 
+    <style name="MessageDialog" parent="PPTCDialog">
+        <item name="android:windowMinWidthMajor">40%</item>
+        <item name="android:windowMinWidthMinor">40%</item>
+    </style>
+
     <!-- Custom Button Style -->
     <style name="CustomAlertDialogButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/white</item>

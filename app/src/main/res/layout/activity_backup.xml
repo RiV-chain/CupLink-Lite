@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/edit_text_rounded_corner"
+            android:background="@drawable/dialog_message_rounded_corner"
             android:maxLines="1"
             android:paddingStart="@dimen/padding_10"
             android:paddingEnd="@dimen/padding_10"

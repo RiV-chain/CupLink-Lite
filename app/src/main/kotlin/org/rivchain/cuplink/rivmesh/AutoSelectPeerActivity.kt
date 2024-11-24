@@ -127,7 +127,7 @@ class AutoSelectPeerActivity: SelectPeerActivity() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
 
         // Create the AlertDialog
-        progressDialog = createBlurredPPTCDialog(dialogView)
+        progressDialog = createBlurredProgressDialog(dialogView)
         progressDialog.setCancelable(false)
         currentStageTextView = dialogView.findViewById(R.id.current_stage)
         progressBar = dialogView.findViewById(R.id.progress_bar)

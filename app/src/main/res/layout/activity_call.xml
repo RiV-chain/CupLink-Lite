@@ -218,7 +218,7 @@
                 android:lines="10"
                 android:textSize="@dimen/subtitle_text_size"
                 android:textColor="@android:color/holo_green_light"
-                android:background="@drawable/dialog_rounded_corner"
+                android:background="@drawable/dialog_pptc_rounded_corner"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/captureResolutionSliderWrapper"

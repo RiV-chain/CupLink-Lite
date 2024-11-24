@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorPrimaryDark">
 
     <!-- Barcode Scanner Container -->
     <androidx.cardview.widget.CardView
@@ -43,13 +43,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/qrCodeContainer"
-        app:layout_constraintTop_toBottomOf="@id/barcodeScannerContainer">
+        app:layout_constraintTop_toBottomOf="@id/barcodeScannerContainer"
+        android:layout_marginBottom="@dimen/padding_5">
 
         <!-- Floating Action Button Share -->
         <ImageButton
             android:id="@+id/fabShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:layout_marginStart="@dimen/padding_30"
             android:background="@color/zxing_transparent"
             android:contentDescription="@string/contact_menu_share"
@@ -99,6 +101,7 @@
             android:id="@+id/manualInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:scaleX="1.5"
             android:scaleY="1.5"
             android:layout_marginStart="@dimen/padding_30"
@@ -113,18 +116,17 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <!-- Scan Me Text (Top) -->
     <TextView
         android:id="@+id/scan_label_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-12dp"
-        android:layout_marginBottom="-12dp"
+        android:layout_marginTop="-11dp"
+        android:layout_marginBottom="-11dp"
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
         android:translationZ="110dp"
-        android:background="@color/colorBackground"
+        android:background="@color/colorPrimaryDark"
         android:text="SCAN ME"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
@@ -155,7 +157,7 @@
             android:id="@+id/qrCodeContainerInner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardBackgroundColor="@color/colorBackground"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
             app:cardCornerRadius="@dimen/image_inner_corner_radius"
             app:layout_constraintDimensionRatio="1:1">
             <com.google.android.material.imageview.ShapeableImageView
@@ -173,12 +175,12 @@
         android:id="@+id/scan_label_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="-42dp"
-        android:layout_marginRight="-42dp"
+        android:layout_marginLeft="-40dp"
+        android:layout_marginRight="-40dp"
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
         android:translationZ="110dp"
-        android:background="@color/colorBackground"
+        android:background="@color/colorPrimaryDark"
         android:text="SCAN ME"
         android:rotation="90"
         android:textColor="@color/colorPrimary"
@@ -193,12 +195,12 @@
         android:id="@+id/scan_label_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="-42dp"
-        android:layout_marginRight="-42dp"
+        android:layout_marginLeft="-40dp"
+        android:layout_marginRight="-40dp"
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
         android:translationZ="110dp"
-        android:background="@color/colorBackground"
+        android:background="@color/colorPrimaryDark"
         android:text="SCAN ME"
         android:rotation="-90"
         android:textColor="@color/colorPrimary"
@@ -215,10 +217,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/padding_10"
         android:paddingRight="@dimen/padding_10"
-        android:layout_marginTop="-13dp"
+        android:layout_marginTop="-12dp"
         android:layout_marginBottom="20dp"
         android:translationZ="110dp"
-        android:background="@color/colorBackground"
+        android:background="@color/colorPrimaryDark"
         android:text="SCAN ME"
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"

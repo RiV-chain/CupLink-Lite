@@ -7,7 +7,7 @@
     android:paddingStart="@dimen/padding_20"
     android:paddingEnd="@dimen/padding_20"
     android:gravity="center"
-    android:background="@drawable/dialog_rounded_corner">
+    android:background="@drawable/dialog_pptc_rounded_corner">
 
     <ListView
         android:id="@+id/listView"
