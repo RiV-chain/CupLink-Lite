@@ -28,17 +28,15 @@ import org.rivchain.cuplink.rivmesh.util.Utils.deserializeStringList2PeerInfoSet
 import org.rivchain.cuplink.rivmesh.util.Utils.ping
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
-import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.lang.reflect.Type
 import java.net.InetAddress
 import java.net.URI
-import java.net.URL
 import java.net.UnknownHostException
 import java.nio.charset.Charset
 import java.util.Locale
 
-open class SelectPeerActivity : BaseActivity(), ServiceConnection {
+open class PingPeerListActivity : BaseActivity(), ServiceConnection {
 
     private var service: MainService? = null
     var peerListUrl = PEER_LIST_URL
@@ -101,7 +99,7 @@ open class SelectPeerActivity : BaseActivity(), ServiceConnection {
         val peerListUrl: String =
             preferences.getString(PEER_LIST, "")!!
         if(peerListUrl.isNotBlank()){
-            this@SelectPeerActivity.peerListUrl = peerListUrl
+            this@PingPeerListActivity.peerListUrl = peerListUrl
         }
         val extras = intent.extras
 
@@ -135,7 +133,7 @@ open class SelectPeerActivity : BaseActivity(), ServiceConnection {
                             }
                         }
                     }
-                    val json = downloadJson(this@SelectPeerActivity.peerListUrl)
+                    val json = downloadJson(this@PingPeerListActivity.peerListUrl)
                     val countries = CCPCountry.getLibraryMasterCountriesEnglish()
                     val mapType: Type = object :
                         TypeToken<Map<String?, Map<String, Status>>>() {}.type

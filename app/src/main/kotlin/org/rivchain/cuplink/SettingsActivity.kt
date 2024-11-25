@@ -29,7 +29,7 @@ import org.rivchain.cuplink.DatabaseCache.Companion.database
 import org.rivchain.cuplink.renderer.DescriptiveTextView
 import org.rivchain.cuplink.rivmesh.ConfigurePublicPeerActivity
 import org.rivchain.cuplink.rivmesh.PeerListActivity
-import org.rivchain.cuplink.rivmesh.SelectPeerActivity.Companion.PEER_LIST
+import org.rivchain.cuplink.rivmesh.PingPeerListActivity.Companion.PEER_LIST
 import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.rivmesh.util.Utils.serializePeerInfoSet2StringList
 import org.rivchain.cuplink.util.Log

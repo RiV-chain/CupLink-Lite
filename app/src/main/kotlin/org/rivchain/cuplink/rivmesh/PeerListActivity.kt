@@ -29,7 +29,7 @@ import org.rivchain.cuplink.rivmesh.util.Utils.ping
 import java.net.InetAddress
 import java.util.Locale
 
-class PeerListActivity : SelectPeerActivity() {
+class PeerListActivity : PingPeerListActivity() {
 
     private var popup: PopupWindow? = null
     private lateinit var adapter: SelectPeerInfoListAdapter
