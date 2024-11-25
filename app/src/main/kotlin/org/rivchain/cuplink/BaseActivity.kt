@@ -173,7 +173,23 @@ open class BaseActivity : AppCompatActivity() {
             startService(intentStart)
             delay(2000)
             dialog.dismiss()
-            delay(200)
+            onServiceRestart()
+        }
+    }
+
+    protected open fun restartServiceInBackground(){
+        // Restart service
+        val intentStop = Intent(this, MainService::class.java)
+        intentStop.action = MainService.ACTION_STOP
+        val intentStart = Intent(this@BaseActivity, MainService::class.java).apply {
+            action = MainService.ACTION_START
+        }
+        Log.d(this, "Restarting service ...")
+        lifecycleScope.launch {
+            startService(intentStop)
+            delay(1000)
+            startService(intentStart)
+            delay(2000)
             onServiceRestart()
         }
     }

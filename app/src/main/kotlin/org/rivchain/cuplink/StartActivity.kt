@@ -198,7 +198,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 // All persistent settings must be set up prior this step!
                 Log.d(this, "init $startState: restart main service if needed:$restartService")
                 if(restartService) {
-                    restartService()
+                    restartServiceInBackground()
                 } else {
                     continueInit()
                 }
