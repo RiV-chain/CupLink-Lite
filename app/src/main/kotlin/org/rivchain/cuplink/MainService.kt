@@ -486,12 +486,14 @@ class MainService : VpnService() {
                         }
                     } catch (e: IOException) {
                         e.printStackTrace()
-                        Handler(mainLooper).post {
-                            Toast.makeText(
-                                this,
-                                e.message,
-                                Toast.LENGTH_LONG
-                            ).show()
+                        if(e.message != "Socket closed") {
+                            Handler(mainLooper).post {
+                                Toast.makeText(
+                                    this,
+                                    e.message,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                         }
                     }
                 }

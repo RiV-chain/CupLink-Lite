@@ -159,7 +159,11 @@
         </activity>
 
         <activity
-            android:name=".rivmesh.SelectPeerActivity"
+            android:name=".rivmesh.PingPeerListActivity"
+            android:noHistory="true" />
+
+        <activity
+            android:name=".rivmesh.ProgressSelectPeerActivity"
             android:noHistory="true" />
 
         <activity

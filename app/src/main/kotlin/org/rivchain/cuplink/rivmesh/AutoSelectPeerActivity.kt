@@ -1,25 +1,17 @@
 package org.rivchain.cuplink.rivmesh
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import androidx.appcompat.app.AlertDialog
-import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.textview.MaterialTextView
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.rivmesh.models.Status
 import kotlin.math.exp
 import kotlin.math.pow
 
-class AutoSelectPeerActivity: SelectPeerActivity() {
+open class AutoSelectPeerActivity: PingPeerListActivity() {
 
-    private var addedPeers = 0
+    var addedPeers = 0
 
-    private var maxPeersSelection = 3
-
-    private lateinit var currentStageTextView: MaterialTextView
-    private lateinit var progressBar: LinearProgressIndicator
-    private lateinit var progressDialog: AlertDialog
+    var maxPeersSelection = 3
 
     private val selectedPeers = ArrayList<PeerInfo>()
 
@@ -58,8 +50,7 @@ class AutoSelectPeerActivity: SelectPeerActivity() {
         }
         // Do peers selection
         super.saveSelectedPeers(selectPeers(selectedPeers))
-        // TODO show success status
-        progressDialog.dismiss()
+
         finish()
     }
 
@@ -123,27 +114,11 @@ class AutoSelectPeerActivity: SelectPeerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_empty)
-        // Inflate the layout for the dialog
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_progress, null)
-
-        // Create the AlertDialog
-        progressDialog = createBlurredProgressDialog(dialogView)
-        progressDialog.setCancelable(false)
-        currentStageTextView = dialogView.findViewById(R.id.current_stage)
-        progressBar = dialogView.findViewById(R.id.progress_bar)
-
-        // Show the dialog
-        progressDialog.show()
-
         // Initialize progress
         updateProgress()
     }
 
-    private fun updateProgress() {
-        if (maxPeersSelection > 0) {
-            val progress = (addedPeers.toFloat() / maxPeersSelection) * 100
-            progressBar.progress = progress.toInt()
-            currentStageTextView.text = "Adding Peers ($addedPeers / $maxPeersSelection)"
-        }
+    protected open fun updateProgress() {
+
     }
 }

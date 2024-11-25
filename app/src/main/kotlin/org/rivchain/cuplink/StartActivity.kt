@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.ComponentName
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.SharedPreferences
@@ -13,16 +12,13 @@ import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.text.Editable
 import android.text.InputFilter
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -33,13 +29,12 @@ import org.rivchain.cuplink.MainService.MainBinder
 import org.rivchain.cuplink.model.AddressEntry
 import org.rivchain.cuplink.rivmesh.AutoSelectPeerActivity
 import org.rivchain.cuplink.rivmesh.AutoTestPublicPeerActivity
-import org.rivchain.cuplink.rivmesh.SelectPeerActivity
+import org.rivchain.cuplink.rivmesh.PingPeerListActivity
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.PermissionManager.haveCameraPermission
 import org.rivchain.cuplink.util.PermissionManager.haveMicrophonePermission
 import org.rivchain.cuplink.util.PermissionManager.havePostNotificationPermission
-import org.rivchain.cuplink.util.Utils
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -138,7 +133,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 if(preferences?.getString(PEERS, null) == null) {
                     val intent = Intent(this, AutoSelectPeerActivity::class.java)
                     intent.putStringArrayListExtra(
-                        SelectPeerActivity.PEER_LIST,
+                        PingPeerListActivity.PEER_LIST,
                         org.rivchain.cuplink.rivmesh.util.Utils.serializePeerInfoSet2StringList(
                             setOf()
                         )
