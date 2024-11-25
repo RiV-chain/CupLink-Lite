@@ -605,6 +605,7 @@ class SettingsActivity : BaseActivity() {
             val newPassword = passwordEditText.text.toString()
             DatabaseCache.databasePassword = newPassword
             DatabaseCache.save()
+            DatabaseCache.dbEncrypted = newPassword != ""
             Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
             initViews()
             dialog.cancel()
