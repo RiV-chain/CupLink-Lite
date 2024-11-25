@@ -58,7 +58,7 @@ class NicknameActivity : AppCompatActivity() {
 
     private fun enterNickname(){
         if (nicknameEditText.text.toString()==""){
-            DatabaseCache.database.settings.username = nicknameEditText.hint.toString()
+            DatabaseCache.database.settings.username = nickname
             DatabaseCache.save()
             finish()
         } else if (nicknameEditText.text != null && Utils.isValidName(nicknameEditText.text.toString())) {
