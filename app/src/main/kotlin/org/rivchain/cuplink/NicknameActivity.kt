@@ -29,6 +29,7 @@ import kotlin.coroutines.suspendCoroutine
 
 class NicknameActivity : AppCompatActivity() {
 
+    private lateinit var nickname: String
     private lateinit var backgroundView: ImageView
     private lateinit var splashText: TextView
     private lateinit var parent: LinearLayout
@@ -40,13 +41,12 @@ class NicknameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nickname)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-        val nickname = generateRandomNickname()
+        nickname = generateRandomNickname()
         // Bind views
         backgroundView = findViewById(R.id.background_view)
         parent = findViewById(R.id.container)
         splashText = findViewById(R.id.splashText)
         nicknameEditText = findViewById(R.id.nickname)
-        nicknameEditText.hint = nickname
         nicknameEditText.filters = arrayOf(getEditTextFilter())
         nextButton = findViewById(R.id.next)
         nextButton.setOnClickListener {
@@ -205,7 +205,7 @@ class NicknameActivity : AppCompatActivity() {
                     splashText.text = ""
                     animateText(
                         splashText,
-                        "You can insert your name or use your generated RiV Mesh Space nickname:"
+                        "You can insert your name or use your generated RiV Mesh Space nickname: $nickname"
                     ) {
                         continuation.resumeWith(Result.success(Unit))
                     }
@@ -253,5 +253,4 @@ class NicknameActivity : AppCompatActivity() {
             onComplete() // Invoke the callback after completing the text animation
         }
     }
-
 }

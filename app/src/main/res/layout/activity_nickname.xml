@@ -42,7 +42,7 @@
             android:layout_marginStart="@dimen/padding_40"
             android:layout_marginEnd="@dimen/padding_40"
             android:layout_marginTop="@dimen/padding_40"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/poppins_light"
             android:gravity="start"
             android:lineSpacingExtra="10sp"
             android:text=""
@@ -52,7 +52,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/background_view" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nickname"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -61,11 +61,11 @@
             android:layout_marginBottom="@dimen/padding_40"
             android:gravity="center"
             android:textSize="@dimen/name_text_size"
-            android:fontFamily="@font/lato_bold"
+            android:fontFamily="@font/poppins_light"
             android:visibility="invisible"
             android:text=""
             android:digits="0,1,2,3,4,5,6,7,8,9,abcdefghijklmnopqrstuvwxyz,ABCDEFGHIJKLMNOPQRSTUVWXYZ,-"
-            />
+            android:textCursorDrawable="@null"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/next"
