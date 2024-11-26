@@ -25,7 +25,7 @@ class ActionMessageDispatcher(
     private var socket: Socket,
 ) {
 
-    private val pr: PacketReader = PacketReader(socket)
+    private val reader: PacketReader = PacketReader(socket)
     private val otherPublicKey: ByteArray = ByteArray(Sodium.crypto_sign_publickeybytes())
     private val ownPublicKey: ByteArray = DatabaseCache.database.settings.publicKey
     private val ownSecretKey: ByteArray = DatabaseCache.database.settings.secretKey
@@ -123,7 +123,7 @@ class ActionMessageDispatcher(
     fun receiveOfferResponse() {
 
         Log.d(this, "receiveOfferResponse() outgoing call: expect ringing")
-        val response = pr.readMessage()
+        val response = reader.readMessage()
         if (response == null) {
             peerConnection.reportStateChange(CallState.ERROR_COMMUNICATION)
             return
@@ -185,7 +185,7 @@ class ActionMessageDispatcher(
     fun confirmConnected() {
         while (!socket.isClosed) {
             Log.d(this, "confirmConnected() expect connected/dismissed")
-            val response = pr.readMessage()
+            val response = reader.readMessage()
             if (response == null) {
                 Thread.sleep(SOCKET_TIMEOUT_MS / 10)
                 Log.d(this, "confirmConnected() response is null")
@@ -242,7 +242,7 @@ class ActionMessageDispatcher(
 
     fun receiveIncoming(){
         while (!socket.isClosed) {
-            val response = pr.readMessage()
+            val response = reader.readMessage()
             if (response == null) {
                 Thread.sleep(SOCKET_TIMEOUT_MS / 10)
                 Log.d(this, "receiveIncoming() response is null")

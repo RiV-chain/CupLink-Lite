@@ -796,7 +796,6 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
                 updateControlDisplay()
                 updateVideoDisplay()
-
                 continueCallSetup()
 
                 if (!DatabaseCache.database.settings.promptOutgoingCalls) {
@@ -1274,48 +1273,33 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     override fun onDestroy() {
         Log.d(this, "onDestroy()")
-        isCallInProgress = false
-        currentCall.callStatusHandler?.stopCallStatusListening()
-        stopService(Intent(this, CallStatusService::class.java))
-
         try {
-            proximitySensor.stop()
-
-            if (this::currentCall.isInitialized) {
+            isCallInProgress = false
+            if(this::currentCall.isInitialized ){
+                currentCall.callStatusHandler?.stopCallStatusListening()
                 currentCall.cleanup()
+                currentCall.releaseCamera()
             }
-
             if(this::microphoneUsageMonitor.isInitialized){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     microphoneUsageMonitor.stopMonitoring()
                 }
             }
-
+            stopService(Intent(this, CallStatusService::class.java))
+            proximitySensor.stop()
             if (callEventType != Event.Type.UNKNOWN) {
                 val event = Event(contact.publicKey, contact.lastWorkingAddress, callEventType, Date())
                 addEvent(event)
             }
-
             unbindService(connection)
-
             proximityScreenLock?.release()
-
             rtcAudioManager.stop()
-
             remoteProxyVideoSink.setTarget(null)
             localProxyVideoSink.setTarget(null)
-
             pipRenderer.release()
             fullscreenRenderer.release()
-
-            if (this::currentCall.isInitialized) {
-                currentCall.releaseCamera()
-            }
-
             eglBase.release()
-
             callDuration.stop()
-
         } catch (e: Exception) {
             Log.e(this, "onDestroy() e=$e")
         } finally {
