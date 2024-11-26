@@ -42,8 +42,7 @@ open class AutoSelectPeerActivity: PingPeerListActivity() {
     }
 
     override fun addAlreadySelectedPeers(alreadySelectedPeers: ArrayList<PeerInfo>){
-        selectedPeers.addAll(alreadySelectedPeers)
-
+        selectedPeers.addAll(alreadySelectedPeers.sortedWith(compareBy { it.ping }))
         if (selectedPeers.size == 0) {
             // TODO show up a warning here
             finish()

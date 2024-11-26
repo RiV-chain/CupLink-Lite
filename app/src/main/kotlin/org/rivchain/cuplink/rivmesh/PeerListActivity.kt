@@ -33,6 +33,7 @@ class PeerListActivity : PingPeerListActivity() {
 
     private var popup: PopupWindow? = null
     private lateinit var adapter: SelectPeerInfoListAdapter
+
     override fun setAlreadySelectedPeers(alreadySelectedPeers: MutableSet<PeerInfo>) {
         adapter = SelectPeerInfoListAdapter(this, arrayListOf(), alreadySelectedPeers)
         val peerList = findViewById<ListView>(R.id.peerList)
@@ -42,11 +43,19 @@ class PeerListActivity : PingPeerListActivity() {
         adapter.addItem(peerInfo)
         if (adapter.count % 5 == 0) {
             adapter.sort()
+            adapter.notifyDataSetChanged()
         }
     }
 
+    override fun onPeersCollected() {
+        super.onPeersCollected()
+        adapter.sort()
+    }
+
     override fun addAlreadySelectedPeers(alreadySelectedPeers: ArrayList<PeerInfo>){
-        adapter.addAll(0, alreadySelectedPeers)
+        val sortedSelectedPeers = alreadySelectedPeers.sortedWith(compareBy { it.ping })
+        adapter.addAll(0, sortedSelectedPeers)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

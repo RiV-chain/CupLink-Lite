@@ -210,14 +210,19 @@ open class PingPeerListActivity : BaseActivity(), ServiceConnection {
                         else -> e.printStackTrace()
                     }
                 }
-                val currentPeers = ArrayList(alreadySelectedPeers.sortedWith(compareBy { it.ping }))
+                val currentPeers = ArrayList(alreadySelectedPeers)
                 withContext(Dispatchers.Main) {
+                    onPeersCollected()
                     addAlreadySelectedPeers(currentPeers)
                 }
             } catch (e: Throwable) {
                 e.printStackTrace()
             }
         }
+    }
+
+    protected open fun onPeersCollected() {
+
     }
 
     protected open fun cancelPeerListPing() {
