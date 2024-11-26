@@ -193,21 +193,19 @@ abstract class RTCPeerConnection(
 
         val socket = commSocket ?: throw IllegalStateException("commSocket not expected to be null")
 
-        val dispatcher = ActionMessageDispatcher(contact, this, socket)
-
         if (!socket.isClosed) {
+            val dispatcher = ActionMessageDispatcher(contact, this, socket)
             Log.d(this, "continueOnIncomingSocket() expected dismissed/keep_alive")
 
             callStatusHandler = CallStatusHandler(service, dispatcher)
             MainScope().launch {
                 callStatusHandler!!.startCallStatusListening()
             }
-
             dispatcher.receiveIncoming()
-
             Log.d(this, "continueOnIncomingSocket() wait for writeExecutor")
+            dispatcher.stop()
         }
-        dispatcher.stop()
+
 
         // detect broken initial connection
         if (isCallInit(state) && socket.isClosed) {
