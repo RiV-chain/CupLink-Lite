@@ -187,9 +187,9 @@ internal object Utils {
     }
 
     fun writeExternalFile(ctx: Context, uri: Uri, dataArray: ByteArray) {
-        val fos = ctx.contentResolver.openOutputStream(uri)
-        fos!!.write(dataArray)
-        fos.close()
+        ctx.contentResolver.openOutputStream(uri)?.use { fos ->
+            fos.write(dataArray)
+        } ?: throw IOException("Failed to open output stream for URI: $uri")
     }
 
     // write file to external storage

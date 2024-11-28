@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
+import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils.readExternalFile
 import org.rivchain.cuplink.util.Utils.writeExternalFile
 
@@ -69,7 +70,7 @@ class BackupActivity : BaseActivity() {
         exportButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
             intent.addCategory(Intent.CATEGORY_OPENABLE)
-            intent.putExtra(Intent.EXTRA_TITLE, "cuplink-backup.json")
+            intent.putExtra(Intent.EXTRA_TITLE, "cuplink-backup-${BuildConfig.VERSION_NAME}.json")
             intent.type = "application/json"
             exportFileLauncher.launch(intent)
         }
@@ -88,7 +89,18 @@ class BackupActivity : BaseActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data ?: return@registerForActivityResult
             val uri: Uri = intent.data ?: return@registerForActivityResult
-            exportDatabase(uri)
+
+            try {
+                // Persist URI permissions (useful if reopening later)
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                exportDatabase(uri)
+            } catch (e: SecurityException) {
+                Log.e("ExportFile", "Failed to take URI permission: ${e.message}")
+                showMessage(getString(R.string.error),"Failed to take URI permission: ${e.message}")
+            }
         }
     }
 
@@ -98,13 +110,14 @@ class BackupActivity : BaseActivity() {
             val database = DatabaseCache.database
             val dbData = Database.toData(database, password)
 
-            if (dbData != null) {
+            if (dbData != null && dbData.isNotEmpty()) {
                 writeExternalFile(this, uri, dbData)
                 Toast.makeText(this, R.string.done, Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, R.string.failed_to_export_database, Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
+            Log.e(this, "Error during export: ${e.message}")
             showMessage(getString(R.string.error), e.message ?: "unknown")
         }
     }
