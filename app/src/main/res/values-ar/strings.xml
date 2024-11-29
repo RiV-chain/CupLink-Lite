@@ -26,7 +26,7 @@
     <string name="call_authentication_failed">فشلت المصادقة</string>
     <string name="call_waiting">جارٍ الانتظار…</string>
     <string name="button_save">حفظ</string>
-    <string name="button_import">استيراد</string>
+    <string name="button_restore">يعيد</string>
     <string name="call_connection_failed">فشل الاتصال</string>
     <string name="call_decline">رفض مكالمة</string>
     <string name="address_management_help_text">حدد عنوانًا واحدًا أو أكثر ليتم تضمينه في رمز الاستجابة السريعة الخاص بك. من الأفكار الجيدة استخدام عنوان MAC الخاص بمحول Wi-Fi (wlan0). لكن انتبه إلى أن Android قد يغيره اعتمادًا على إعدادات النظام. إذا لم يكن عنوان MAC مرئيًا، فقم بتمكين شبكة Wi-Fi لديك.</string>
@@ -41,7 +41,7 @@
     <string name="call_answer">الرد على المكالمة</string>
     <string name="call_connecting">الاتصال جارٍ…</string>
     <string name="button_yes">نعم</string>
-    <string name="button_export">تصدير</string>
+    <string name="button_backup">نسخة احتياطية</string>
     <string name="button_no">لا</string>
     <string name="audio_device_bluetooth">البلوتوث</string>
     <string name="call_error_not_listening">خطأ: لا يوجد تطبيق قيد التشغيل</string>
@@ -82,4 +82,11 @@
     <string name="duplicated_contact_data">Duplicated contact data</string>
     <string name="ignore_battery_optimizations">Ignore Battery Optimizations</string>
     <string name="busy">Busy</string>
+    <string name="last_backup">Last backup</string>
+    <string name="backup_size">Backup size</string>
+    <string name="backup_result">Backup result</string>
+    <string name="secure_backup_title">Secure your backup</string>
+    <string name="secure_backup_description">Protect your CupLink identity with a strong backup password</string>
+    <string name="export_success">was successfully exported</string>
+    <string name="success">Success</string>
 </resources>

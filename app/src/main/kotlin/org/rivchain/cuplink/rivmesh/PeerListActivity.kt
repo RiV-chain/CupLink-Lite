@@ -85,8 +85,6 @@ class PeerListActivity : PingPeerListActivity() {
                 return@setOnClickListener;
             }
             peerListUrl = url
-            val preferences =
-                this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
             preferences.edit().putString(PEER_LIST, peerListUrl).apply()
             dialog.dismiss()
         }

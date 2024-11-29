@@ -34,96 +34,196 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/import_export_buttons"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingStart="@dimen/padding_50"
-        android:paddingTop="@dimen/padding_20"
-        android:paddingEnd="@dimen/padding_50"
-        app:layout_constraintTop_toBottomOf="@+id/backup_appbar">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:scrollbarThumbVertical="@color/selectedColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backup_appbar"
+        app:layout_constraintBottom_toTopOf="@+id/footerLayout">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:fontFamily="@font/poppins_regular"
-            android:text="@string/password_title"
-            android:textSize="16sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_width="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/change_password_edit_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/dialog_message_rounded_corner"
-            android:maxLines="1"
-            android:paddingStart="@dimen/padding_10"
-            android:paddingEnd="@dimen/padding_10"
-            android:paddingBottom="@dimen/padding_10"
-            android:scrollHorizontally="true"
-            android:textAlignment="textStart"
-            android:textColorHint="@color/light_grey"
-            android:textSize="16sp"
-            app:boxBackgroundMode="none"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="@+id/textView"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/selectedColor">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/PasswordEditText"
-                style="@style/EditText.OutlinedBox"
+            <org.rivchain.cuplink.renderer.DescriptiveTextView
+                android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint=""
-                android:textSize="@dimen/name_text_size"
-                android:paddingStart="@dimen/padding_50"
-                android:gravity="center_horizontal"
-                android:inputType="textPassword"
-                android:textColor="@color/light_grey"
-                android:textCursorDrawable="@null" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="@dimen/padding_20"
+                android:layout_marginStart="@dimen/padding_20"
+                android:layout_marginEnd="@dimen/padding_20"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:subtitleFontFamily="@font/poppins_light"
+                app:titleFontFamily="@font/poppins_regular"
+                app:titleText="Securely Backup Your CupLink Identity"
+                app:subtitleText="\nProtect your IPv6 Address, Contacts, Call History and Public Peers by creating a backup. Backup is essential for safeguarding your digital identity.\n\nIf you switch or lose your device, restoring your profile without a backup won't be possible.\nBacking up ensures you can pick up right where you left off."
+                app:titleTextSize="@dimen/title_text_size"
+                app:subtitleTextSize="@dimen/subtitle_text_size"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/ImportButton"
-            android:layout_width="110dp"
-            android:layout_height="@dimen/padding_50"
-            android:layout_marginTop="@dimen/padding_20"
-            android:background="@drawable/next_button_background"
-            android:fontFamily="@font/lato_bold"
-            android:text="@string/button_import"
-            android:textSize="@dimen/title_text_size"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            app:layout_constraintTop_toBottomOf="@+id/change_password_edit_textview"
-            app:layout_constraintStart_toStartOf="@+id/change_password_edit_textview"/>
+            <View
+                android:id="@+id/headerBasic"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/selectedColor"
+                app:layout_constraintTop_toBottomOf="@+id/description"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/padding_20"
+                android:layout_marginStart="@dimen/padding_20"
+                android:layout_marginEnd="@dimen/padding_20"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/ExportButton"
-            android:layout_width="110dp"
-            android:layout_height="@dimen/padding_50"
-            android:layout_marginTop="@dimen/padding_20"
-            android:background="@drawable/next_button_background"
-            android:fontFamily="@font/lato_bold"
-            android:text="@string/button_export"
-            android:textSize="@dimen/title_text_size"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            app:backgroundTint="@null"
-            app:layout_constraintTop_toBottomOf="@+id/change_password_edit_textview"
-            app:layout_constraintEnd_toEndOf="@+id/change_password_edit_textview"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/import_export_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:paddingStart="@dimen/padding_20"
+                android:paddingTop="@dimen/padding_20"
+                android:paddingEnd="@dimen/padding_20"
+                app:layout_constraintTop_toBottomOf="@+id/headerBasic">
+
+                <org.rivchain.cuplink.renderer.DescriptiveTextView
+                    android:id="@+id/autoBackupDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_20"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="@dimen/padding_80"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:subtitleFontFamily="@font/poppins_light"
+                    app:titleFontFamily="@font/poppins_regular"
+                    app:titleText="Enable Auto Backup"
+                    app:subtitleText="Automatically back up your data to keep it safe and restore it when needed."
+                    app:titleTextSize="@dimen/title_text_size"
+                    app:subtitleTextSize="@dimen/subtitle_text_size"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/autoBackupDescriptionSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="48dp"
+                    android:theme="@style/SwitchTheme"
+                    app:layout_constraintBottom_toBottomOf="@id/autoBackupDescription"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/autoBackupDescription" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lastBackupDateTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_20"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/last_backup"
+                    android:textSize="@dimen/subtitle_text_size"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toBottomOf="@+id/autoBackupDescription"
+                    app:layout_constraintStart_toStartOf="@+id/autoBackupDescription"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/backupSizeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/backup_size"
+                    android:textSize="@dimen/subtitle_text_size"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toBottomOf="@+id/lastBackupDateTitle"
+                    app:layout_constraintStart_toStartOf="@+id/lastBackupDateTitle"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/backupResultTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/backup_result"
+                    android:textSize="@dimen/subtitle_text_size"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toBottomOf="@+id/backupSizeTitle"
+                    app:layout_constraintStart_toStartOf="@+id/backupSizeTitle"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lastBackupDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_120"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="27 Nov 2024 6:40pm"
+                    android:textSize="@dimen/subtitle_text_size"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toTopOf="@+id/lastBackupDateTitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/lastBackupDateTitle"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/backupSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_120"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="24.0.2kB"
+                    android:textSize="@dimen/subtitle_text_size"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toTopOf="@+id/backupSizeTitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/backupSizeTitle"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/backupResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_120"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="Success"
+                    android:textSize="@dimen/subtitle_text_size"
+                    android:textAllCaps="false"
+                    android:textColor="@color/selectedColor"
+                    app:layout_constraintTop_toTopOf="@+id/backupResultTitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/backupResultTitle"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ImportButton"
+                    android:layout_width="110dp"
+                    android:layout_height="@dimen/padding_50"
+                    android:layout_marginTop="@dimen/padding_80"
+                    android:layout_marginStart="@dimen/padding_30"
+                    android:layout_marginEnd="@dimen/padding_30"
+                    android:background="@drawable/next_button_background"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/button_restore"
+                    android:textSize="@dimen/title_text_size"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
+                    app:layout_constraintTop_toBottomOf="@+id/backupResultTitle"
+                    app:layout_constraintStart_toStartOf="@+id/backupResultTitle"/>
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ExportButton"
+                    android:layout_width="110dp"
+                    android:layout_height="@dimen/padding_50"
+                    android:layout_marginTop="@dimen/padding_80"
+                    android:layout_marginStart="@dimen/padding_30"
+                    android:layout_marginEnd="@dimen/padding_30"
+                    android:background="@drawable/next_button_background"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="@string/button_backup"
+                    android:textSize="@dimen/title_text_size"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
+                    app:layout_constraintTop_toBottomOf="@+id/backupResultTitle"
+                    app:layout_constraintEnd_toEndOf="@+id/autoBackupDescriptionSwitch"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
     <View
         android:id="@+id/footerShadow"
         android:layout_width="match_parent"

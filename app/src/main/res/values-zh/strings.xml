@@ -15,8 +15,8 @@
     <string name="audio_device_wired_headset">有线耳机</string>
     <string name="button_abort">挂断</string>
     <string name="button_cancel">取消</string>
-    <string name="button_export">导出</string>
-    <string name="button_import">导入</string>
+    <string name="button_backup">备份</string>
+    <string name="button_restore">恢复</string>
     <string name="button_next">下一步</string>
     <string name="button_no">否</string>
     <string name="button_ok">好了</string>
@@ -186,4 +186,11 @@
     <string name="duplicated_contact_data">Duplicated contact data</string>
     <string name="ignore_battery_optimizations">Ignore Battery Optimizations</string>
     <string name="busy">Busy</string>
+    <string name="last_backup">Last backup</string>
+    <string name="backup_size">Backup size</string>
+    <string name="backup_result">Backup result</string>
+    <string name="secure_backup_title">Secure your backup</string>
+    <string name="secure_backup_description">Protect your CupLink identity with a strong backup password</string>
+    <string name="export_success">was successfully exported</string>
+    <string name="success">Success</string>
 </resources>

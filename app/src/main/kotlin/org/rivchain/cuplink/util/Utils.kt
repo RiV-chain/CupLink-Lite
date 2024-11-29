@@ -1,12 +1,15 @@
 package org.rivchain.cuplink.util
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Looper
 import android.provider.OpenableColumns
 import androidx.core.content.ContextCompat
+import org.rivchain.cuplink.R
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -186,10 +189,18 @@ internal object Utils {
         return dataArray
     }
 
-    fun writeExternalFile(ctx: Context, uri: Uri, dataArray: ByteArray) {
+    private fun writeExternalFile(ctx: Context, uri: Uri, dataArray: ByteArray) {
         ctx.contentResolver.openOutputStream(uri)?.use { fos ->
             fos.write(dataArray)
         } ?: throw IOException("Failed to open output stream for URI: $uri")
+    }
+
+    fun exportDatabase(context: Context, uri: Uri, dbData: ByteArray?) {
+        if (dbData != null && dbData.isNotEmpty()) {
+            writeExternalFile(context, uri, dbData)
+        } else {
+            throw Exception(context.getString(R.string.failed_to_export_database))
+        }
     }
 
     // write file to external storage

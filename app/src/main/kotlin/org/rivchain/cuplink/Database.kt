@@ -360,6 +360,11 @@ class Database {
                 newFrom = "0.6.12.50"
             }
 
+            if (newFrom == "0.6.12.50") {
+                settings.put("enable_auto_backup", false)
+                newFrom = "0.6.13.33"
+            }
+
             alignSettings(settings)
 
             db.put("version", newFrom)
