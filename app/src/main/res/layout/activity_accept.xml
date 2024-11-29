@@ -51,7 +51,7 @@
         android:layout_margin="@dimen/padding_20"
         android:background="@color/colorBackground"
         app:layout_constraintTop_toBottomOf="@id/titleContainer"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/yes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -70,5 +70,21 @@
                 android:textSize="@dimen/subtitle_text_size" />
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/yes"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/padding_50"
+        android:layout_margin="@dimen/padding_40"
+        android:background="@drawable/next_button_background"
+        android:fontFamily="@font/lato_bold"
+        android:text="@string/accept"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/button_test_size"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
