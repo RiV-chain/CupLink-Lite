@@ -2,6 +2,7 @@ package org.rivchain.cuplink
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +17,10 @@ import org.json.JSONObject
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 import org.rivchain.cuplink.util.Utils
+import org.rivchain.cuplink.util.Utils.exportDatabase
 import org.rivchain.cuplink.util.ViewUtil.generateBlockies
 import org.rivchain.cuplink.util.ViewUtil.getRoundedCroppedBitmap
+import java.util.Date
 
 open class AddContactActivity: BaseActivity() {
 
@@ -80,6 +83,26 @@ open class AddContactActivity: BaseActivity() {
         } else {
             // no conflict
             super.addContact(contact)
+            if(DatabaseCache.database.settings.enableAutoBackup){
+                val lastBackupPath = preferences.getString("lastBackupPath", null)
+                if(lastBackupPath != null){
+                    val uri = Uri.parse(lastBackupPath)
+                    val password = getBackupPassword()
+                    val database = DatabaseCache.database
+                    val dbData = Database.toData(database, password)
+                    if (dbData == null || dbData.isEmpty()) {
+                        showMessage(getString(R.string.failed_to_export_database))
+                    } else {
+                        exportDatabase(this, uri, dbData)
+                        saveBackupDetails(
+                            uri,
+                            Date().time,
+                            dbData.size,
+                            getString(R.string.success)
+                        )
+                    }
+                }
+            }
             finish()
         }
     }

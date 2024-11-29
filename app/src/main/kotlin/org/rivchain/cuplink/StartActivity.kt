@@ -4,10 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.content.SharedPreferences
 import android.net.VpnService
 import android.os.Build
 import android.os.Bundle
@@ -55,7 +53,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     private val POLICY = "policy"
     private val PEERS = "peers"
     private val LISTEN = "listen"
-    private var preferences: SharedPreferences? = null
+
     private var restartService = false
     private var isServiceBound = false
 
@@ -75,7 +73,6 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         // set by BootUpReceiver
         isStartOnBootup = intent.getBooleanExtra(BootUpReceiver.IS_START_ON_BOOTUP, false)
         setContentView(R.layout.activity_empty)
-        preferences = this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
 
         requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -89,12 +86,12 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         }
         requestPeersLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                preferences!!.edit().putString(PEERS, "done").apply()
+                preferences.edit().putString(PEERS, "done").apply()
                 continueInit()
             }
         requestListenLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                preferences!!.edit().putString(LISTEN, "done").apply()
+                preferences.edit().putString(LISTEN, "done").apply()
                 continueInit()
             }
         continueInit()
@@ -114,7 +111,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             2 -> {
                 Log.d(this, "init $startState: show policy and start VPN")
-                if(preferences?.getString(POLICY, null) == null) {
+                if(preferences.getString(POLICY, null) == null) {
                     showPolicy("En-Us")
                 } else {
                     Log.d(this, "Start VPN")
@@ -130,7 +127,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             3 -> {
                 Log.d(this, "init $startState: choose peers")
-                if(preferences?.getString(PEERS, null) == null) {
+                if(preferences.getString(PEERS, null) == null) {
                     val intent = Intent(this, AutoSelectPeerActivity::class.java)
                     intent.putStringArrayListExtra(
                         PingPeerListActivity.PEER_LIST,
@@ -171,7 +168,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             }
             7 -> {
                 Log.d(this, "init $startState: test port")
-                if(preferences?.getString(LISTEN, null) == null) {
+                if(preferences.getString(LISTEN, null) == null) {
                     val intent = Intent(this, AutoTestPublicPeerActivity::class.java)
                     requestListenLauncher!!.launch(intent)
                 } else {
@@ -385,9 +382,9 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
 
-        val passwordEditText = view.findViewById<TextInputEditText>(R.id.change_password_edit_textview)
-        val exitButton = view.findViewById<Button>(R.id.change_password_cancel_button)
-        val okButton = view.findViewById<Button>(R.id.change_password_ok_button)
+        val passwordEditText = view.findViewById<TextInputEditText>(R.id.passwordEditTextView)
+        val exitButton = view.findViewById<Button>(R.id.cancelButton)
+        val okButton = view.findViewById<Button>(R.id.okButton)
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString()
             DatabaseCache.databasePassword = password
@@ -415,7 +412,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
 
     private var requestTcActivityLauncher =
     registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if(preferences?.getString(POLICY, null) == null){
+        if(preferences.getString(POLICY, null) == null){
             finish()
         } else {
             val vpnIntent = VpnService.prepare(this)

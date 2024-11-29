@@ -1,7 +1,6 @@
 package org.rivchain.cuplink.rivmesh
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
@@ -94,8 +93,6 @@ open class PingPeerListActivity : BaseActivity(), ServiceConnection {
 
         bindService(Intent(this, MainService::class.java), this, 0)
 
-        val preferences =
-            this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         val peerListUrl: String =
             preferences.getString(PEER_LIST, "")!!
         if(peerListUrl.isNotBlank()){

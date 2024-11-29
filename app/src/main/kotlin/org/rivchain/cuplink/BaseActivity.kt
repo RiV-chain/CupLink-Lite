@@ -2,8 +2,10 @@ package org.rivchain.cuplink
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +13,7 @@ import android.view.View
 import android.view.View.OnAttachStateChangeListener
 import android.view.Window
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +27,8 @@ import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
 import java.util.Date
 import java.util.function.Consumer
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 
 
 /*
@@ -31,6 +36,27 @@ import java.util.function.Consumer
 */
 open class BaseActivity : AppCompatActivity() {
 
+    protected val preferences: SharedPreferences by lazy {
+        this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
+    }
+
+    protected val securePreferences: SharedPreferences by lazy {
+        val masterKey = MasterKey.Builder(this, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        EncryptedSharedPreferences.create(
+            this,
+            "secure_preferences",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
+    protected fun getBackupPassword(): String? {
+        return securePreferences.getString("backupPassword", null) // Default: null
+    }
 
     private val mBackgroundBlurRadius = 80
     private val mBlurBehindRadius = 20
@@ -46,6 +72,11 @@ open class BaseActivity : AppCompatActivity() {
     // Use a rectangular shape drawable for the window background. The outline of this drawable
     // dictates the shape and rounded corners for the window background blur area.
     private var mWindowBackgroundDrawable: Drawable? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+    }
 
     private fun buildIsAtLeastS(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
@@ -103,11 +134,6 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-    }
-
     private fun createBlurredDialog(builder: AlertDialog.Builder): AlertDialog {
         val dialog = builder.create()
         val window = dialog.window
@@ -151,15 +177,22 @@ open class BaseActivity : AppCompatActivity() {
 
     }
 
-    protected open fun restartService(){
+    protected open fun showMessage(message: String): AlertDialog {
         // Inflate the layout for the dialog
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_restart_service, null)
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_message, null)
+        val messageText = dialogView.findViewById<TextView>(R.id.message)
+        messageText.text = message
         // Create the AlertDialog
         val dialog = createBlurredMessageDialog(dialogView)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
         // Show the dialog
         dialog.show()
+        return dialog
+    }
 
+    protected open fun restartService(){
+        val dialog = showMessage("Loading...")
         // Restart service
         val intentStop = Intent(this, MainService::class.java)
         intentStop.action = MainService.ACTION_STOP
@@ -299,6 +332,54 @@ open class BaseActivity : AppCompatActivity() {
         val oldDatabase = DatabaseCache.database
         oldDatabase.settings = newDb.settings
         oldDatabase.mesh = newDb.mesh
+    }
+
+    fun getTemporalBackupPassword(): String? {
+        return securePreferences.getString("backupPasswordTmp", null) // Default: null
+    }
+
+    fun saveTemporalBackupPassword(backupPassword: String) {
+        securePreferences.edit().apply {
+            putString("backupPasswordTmp", backupPassword)
+            apply()
+        }
+    }
+
+    private fun clearTemporalBackupPassword() {
+        securePreferences.edit().apply {
+            remove("backupPasswordTmp")
+            apply()
+        }
+    }
+
+    private fun saveBackupPassword(backupPassword: String) {
+        securePreferences.edit().apply {
+            putString("backupPassword", backupPassword)
+            apply()
+        }
+    }
+
+    fun saveBackupDetails(lastBackupPath: Uri, lastBackupDateTime: Long, dbSize: Int, backupStatus: String) {
+        val temporalBackupPassword = getTemporalBackupPassword()
+        if(temporalBackupPassword != null){
+            saveBackupPassword(temporalBackupPassword)
+            clearTemporalBackupPassword()
+        }
+        if (lastBackupDateTime != 0L && dbSize != 0) {
+            preferences.edit().apply {
+                putLong("lastBackupDateTime", lastBackupDateTime)
+                putString("lastBackupPath", lastBackupPath.toString())
+                putInt("dbSize", dbSize)
+                putString("backupStatus", backupStatus)
+                apply()
+            }
+        } else {
+            preferences.edit().apply {
+                putString("backupStatus", backupStatus)
+                putString("lastBackupPath", lastBackupPath.toString())
+                apply()
+            }
+        }
     }
 
     companion object {

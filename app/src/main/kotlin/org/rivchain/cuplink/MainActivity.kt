@@ -3,7 +3,6 @@ package org.rivchain.cuplink
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -148,7 +147,6 @@ class MainActivity : BaseActivity() {
             Log.d(this, "Power management fix skipped")
         }
 
-        val preferences = this.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         preferences.edit(commit = true) { putBoolean(PREF_KEY_ENABLED, true) }
 
         Log.d(this, "onServiceConnected()")
@@ -242,9 +240,9 @@ class MainActivity : BaseActivity() {
         val dialog = createBlurredPPTCDialog(view)
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
-        val passwordEditText = view.findViewById<TextInputEditText>(R.id.change_password_edit_textview)
-        val exitButton = view.findViewById<Button>(R.id.change_password_cancel_button)
-        val okButton = view.findViewById<Button>(R.id.change_password_ok_button)
+        val passwordEditText = view.findViewById<TextInputEditText>(R.id.passwordEditTextView)
+        val exitButton = view.findViewById<Button>(R.id.cancelButton)
+        val okButton = view.findViewById<Button>(R.id.okButton)
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString()
             if (menuPassword == password) {

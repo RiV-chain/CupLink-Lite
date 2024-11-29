@@ -19,8 +19,8 @@
     <string name="button_abort">Abort</string>
     <string name="button_add">Add</string>
     <string name="button_cancel">Cancel</string>
-    <string name="button_export">Export</string>
-    <string name="button_import">Import</string>
+    <string name="button_backup">Backup</string>
+    <string name="button_restore">Restore</string>
     <string name="button_next">Next</string>
     <string name="button_no">No</string>
     <string name="button_ok">OK</string>
@@ -177,4 +177,11 @@
     <string name="duplicated_contact_data">Duplicated contact data</string>
     <string name="ignore_battery_optimizations">Ignore Battery Optimizations</string>
     <string name="busy">Busy</string>
+    <string name="last_backup">Last backup</string>
+    <string name="backup_size">Backup size</string>
+    <string name="backup_result">Backup result</string>
+    <string name="secure_backup_title">Secure your backup</string>
+    <string name="secure_backup_description">Protect your CupLink identity with a strong backup password</string>
+    <string name="export_success">was successfully exported</string>
+    <string name="success">Success</string>
 </resources>
