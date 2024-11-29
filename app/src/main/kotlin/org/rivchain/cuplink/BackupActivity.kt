@@ -208,6 +208,7 @@ class BackupActivity : BaseActivity() {
                 findViewById<TextView>(R.id.lastBackupDate).text = formattedDate
                 findViewById<TextView>(R.id.backupSize).text = formatFileSize(this, dbSize.toLong())
                 findViewById<TextView>(R.id.backupResult).text = backupStatus
+                findViewById<TextView>(R.id.backupResult).setTextColor(ContextCompat.getColor(this, R.color.selectedColor))
                 val enableAutoBackup = findViewById<SwitchMaterial>(R.id.autoBackupDescriptionSwitch).isChecked
                 if(enableAutoBackup){
                     database.settings.enableAutoBackup = true
