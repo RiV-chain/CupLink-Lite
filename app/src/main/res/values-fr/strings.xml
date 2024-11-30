@@ -131,4 +131,12 @@
     <string name="secure_backup_description">Protect your CupLink identity with a strong backup password</string>
     <string name="export_success">was successfully exported</string>
     <string name="success">Success</string>
+    <string name="app_description_title">Serverless Communication in VPN</string>
+    <string name="app_description_long">CupLink is the first video-calling Serverless DApp to incorporate a VPN (Virtual Public Network). The Triple-layer encryption design, provides extra security to ensure your calls are private and protected.\n\nCupLink allows your device to self-generate its identity, using a private key, offering a unique and secure way to connect. We’ve also added call spy detection feature so you can be in-call instantly notified, if you are monitored.\n\nWhen it comes to call quality, we’ve got you covered with adjustable ultra-high-definition video, all the way up to 8K resolution.\n\nBuilt to give you seamless, secure, and high-quality communication without compromising your privacy.</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="licenses">Licenses</string>
+    <string name="docs">Docs</string>
+    <string name="telegram_website">https://t.me/rivchain</string>
+    <string name="x_website">https://x.com/rivchain</string>
 </resources>

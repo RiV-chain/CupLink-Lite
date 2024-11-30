@@ -427,7 +427,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
     }
 
     private fun showPolicy(language: String) {
-        val intent = Intent(this, TcActivity::class.java)
+        val intent = Intent(this, AcceptTermsAndConditionsActivity::class.java)
         requestTcActivityLauncher.launch(intent)
     }
 }
