@@ -29,18 +29,16 @@ class AboutActivity : BaseActivity() {
             val intent = Intent(this, TermsAndConditionsActivity::class.java)
             startActivity(intent)
         }
-
         findViewById<View>(R.id.privacyPolicy).setOnClickListener {
             val intent = Intent(this, TermsAndConditionsActivity::class.java)
             startActivity(intent)
         }
-
         findViewById<View>(R.id.licenses).setOnClickListener {
-            val intent = Intent(this, LicenseActivity::class.java)
+            val intent = Intent(this, LicensesActivity::class.java)
             startActivity(intent)
         }
         findViewById<View>(R.id.docs).setOnClickListener {
-
+            openWebsite(R.string.rivchain_website)
         }
         findViewById<View>(R.id.x).setOnClickListener {
             openWebsite(R.string.x_website)
@@ -49,11 +47,12 @@ class AboutActivity : BaseActivity() {
             openWebsite(R.string.app_website)
         }
         findViewById<View>(R.id.linkedIn).setOnClickListener {
-
+            openWebsite(R.string.linkedin_website)
         }
         findViewById<View>(R.id.telegram).setOnClickListener {
             openWebsite(R.string.telegram_website)
         }
+
         findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
     }
 

@@ -161,4 +161,6 @@
     <string name="x_website">https://x.com/rivchain</string>
     <string name="app_description_long_new">CupLink is the first serverless video-calling dApp with an integrated VPN, offering triple-layer encryption for ultimate call privacy.\n\nYour device generates a unique, secure identity with a private key, while our call spy detection feature keeps you notified of any third party monitoring background services.\n\nAll this, paired with ultra-high-definition video up to 8K resolution, ensures seamless and secure communication.\n\nYour privacy, uncompromised</string>
     <string name="terms">Terms</string>
+    <string name="linkedin_website">https://www.linkedin.com/company/riv-chain</string>
+    <string name="rivchain_website">https://www.rivchain.org/</string>
 </resources>
