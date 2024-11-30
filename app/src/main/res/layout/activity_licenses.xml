@@ -30,49 +30,52 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center_vertical"
-                android:text="Terms &amp; Conditions"
-                android:textSize="@dimen/title_text_size" />
-
-            <TextView
-                android:id="@+id/pp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:gravity="center_vertical"
-                android:text="Privacy Policy"
+                android:text="Licenses"
                 android:textSize="@dimen/title_text_size" />
 
 
         </LinearLayout>
 
-
         <ScrollView
-            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/padding_20"
             android:orientation="vertical"
             android:scrollbarThumbVertical="@color/selectedColor"
-            app:layout_constraintTop_toBottomOf="@id/titleContainer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/titleContainer">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/message"
-                    android:layout_width="match_parent"
+                <ProgressBar
+                    android:id="@+id/licenseLoadingBar"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/padding_20"
-                    android:fontFamily="@font/poppins_light"
-                    android:text=""
-                    android:textSize="@dimen/subtitle_text_size" />
-            </LinearLayout>
-        </ScrollView>
+                    android:layout_gravity="center_horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
+                <TextView
+                    android:id="@+id/licenceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/padding_20"
+                    android:layout_gravity="start"
+                    android:fontFamily="@font/poppins_light"
+                    android:textAlignment="viewStart"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

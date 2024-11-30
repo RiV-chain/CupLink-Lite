@@ -298,7 +298,7 @@
             android:parentActivityName=".SettingsActivity" />
 
         <activity
-            android:name=".LicenseActivity"
+            android:name=".LicensesActivity"
             android:parentActivityName=".AboutActivity"
             android:configChanges="uiMode"/>
 
