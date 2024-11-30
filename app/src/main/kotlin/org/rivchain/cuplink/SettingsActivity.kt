@@ -108,6 +108,28 @@ class SettingsActivity : BaseActivity() {
         dialog.show()
     }
 
+    private fun showConfirmExitDialog() {
+        Log.d(this, "showConfirmExitDialog()")
+
+        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_yes_no, null)
+        val dialog = this.createBlurredPPTCDialog(view)
+        dialog.setCancelable(true)
+        val titleText = view.findViewById<TextView>(R.id.title)
+        titleText.text = getString(R.string.exit_app)
+        val messageText = view.findViewById<TextView>(R.id.message)
+        messageText.text = getString(R.string.exit_app_message)
+        val noButton = view.findViewById<Button>(R.id.no)
+        val yesButton = view.findViewById<Button>(R.id.yes)
+        yesButton.setOnClickListener {
+            MainService.stopPacketsStream(this)
+            finishAffinity()
+        }
+        noButton.setOnClickListener {
+            dialog.cancel()
+        }
+        dialog.show()
+    }
+
     private fun initViews() {
 
         val settings = database.settings
@@ -128,8 +150,7 @@ class SettingsActivity : BaseActivity() {
 
         findViewById<View>(R.id.exit)
             .setOnClickListener {
-                MainService.stopPacketsStream(this)
-                finishAffinity()
+                showConfirmExitDialog()
             }
 
         findViewById<DescriptiveTextView>(R.id.settingsNickname)
