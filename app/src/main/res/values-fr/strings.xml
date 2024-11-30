@@ -39,7 +39,6 @@
     <string name="call_error_unresolved_hostname">Erreur : Impossible de résoudre l\'adresse</string>
     <string name="call_no_network">Pas de réseau - activer le Wi-Fi\\?</string>
     <string name="call_ringing">Entrain de sonner …</string>
-    <string name="call_start_or_abort">Démarrer ou abandonner</string>
     <string name="call_waiting">En attendant…</string>
     <string name="camera_back">Dos</string>
     <string name="camera_front">Devant</string>
@@ -68,7 +67,6 @@
     <string name="invalid_name">Nom incorrect</string>
     <string name="invalid_qr">Code QR invalide</string>
     <string name="invalid_qr_code_data">Données invalides</string>
-    <string name="listen_for_incoming_calls">Listen for incoming calls.</string>
     <string name="menu_about">À propos</string>
     <string name="menu_backup">Sauvegarde</string>
     <string name="menu_exit">Sortie</string>
@@ -82,7 +80,6 @@
     <string name="settings_database_password">Changer le mot de passe</string>
     <string name="settings_name">Changer de nom</string>
     <string name="settings_nightmode">Mode nuit</string>
-    <string name="startup_hello">Bonjour !</string>
     <string name="startup_prompt_name">Quel devrait être votre nom \?</string>
     <string name="title_contacts">Contacts</string>
     <string name="title_scan_qr_code">Numérisation de code QR</string>
@@ -102,7 +99,6 @@
     <string name="title_activity_peer_list">Public peers</string>
     <string name="node_info_copied">copied</string>
     <string name="peers">Peers</string>
-    <string name="contact_menu_edit">Edit</string>
     <string name="is_calling">is calling</string>
     <string name="contact_is_invalid">Contact is invalid</string>
     <string name="add_contact_link_or_json">Enter contact link or contact JSON manually</string>
@@ -139,4 +135,6 @@
     <string name="docs">Docs</string>
     <string name="telegram_website">https://t.me/rivchain</string>
     <string name="x_website">https://x.com/rivchain</string>
+    <string name="app_description_long_new">CupLink is the first serverless video-calling dApp with an integrated VPN, offering triple-layer encryption for ultimate call privacy.\n\nYour device generates a unique, secure identity with a private key, while our call spy detection feature keeps you notified of any third party monitoring background services.\n\nAll this, paired with ultra-high-definition video up to 8K resolution, ensures seamless and secure communication.\n\nYour privacy, uncompromised</string>
+    <string name="terms">Terms</string>
 </resources>

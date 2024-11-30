@@ -60,21 +60,31 @@
                 app:strokeColor="@null"
                 android:src="@drawable/cup_link"
                 android:background="@drawable/cup_link"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_description_long_new"
+                android:fontFamily="@font/poppins_light"
+                android:textSize="@dimen/subtitle_text_size"
+                android:layout_marginTop="@dimen/padding_40"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_20"
                 android:layout_gravity="center"
-                android:fontFamily="@font/poppins_regular"
-                android:text="@string/app_description_title"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/app_name"
                 android:textSize="@dimen/title_text_size" />
 
-            <TextView
+            <View
+                android:id="@+id/headerBasic"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_description_long"
-                android:fontFamily="@font/poppins_light"
-                android:textSize="@dimen/subtitle_text_size"
+                android:layout_height="1dp"
+                android:background="@color/selectedColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/menu"
                 android:layout_marginTop="@dimen/padding_20"/>
 
             <LinearLayout
@@ -87,7 +97,7 @@
                     android:id="@+id/termsOfService"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/terms_of_service"
+                    android:text="@string/terms"
                     android:fontFamily="@font/poppins_regular"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -130,15 +140,6 @@
                     android:fontFamily="@font/poppins_regular"/>
             </LinearLayout>
 
-            <View
-                android:id="@+id/headerBasic"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/selectedColor"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/menu"
-                android:layout_marginTop="@dimen/padding_10"/>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,8 +150,8 @@
                     android:id="@+id/x"
                     android:src="@drawable/ic_x"
                     android:background="@color/colorBackground"
-                    android:scaleX="0.84"
-                    android:scaleY="0.84"
+                    android:scaleX="0.76"
+                    android:scaleY="0.76"
                     android:scaleType="fitCenter"
                     android:layout_width="73dp"
                     android:layout_height="73dp"
@@ -160,8 +161,8 @@
                     android:src="@drawable/ic_linked_in"
                     android:background="@color/colorBackground"
                     app:tint="@color/colorPrimary"
-                    android:scaleX="0.64"
-                    android:scaleY="0.64"
+                    android:scaleX="0.62"
+                    android:scaleY="0.62"
                     android:scaleType="fitCenter"
                     android:layout_width="73dp"
                     android:layout_height="73dp"

@@ -88,7 +88,6 @@
     <string name="contact_address_input">Адрес</string>
     <string name="settings_disable_audio_processing">Отключить обработку звука</string>
     <string name="audio_device_wired_headset">Проводная гарнитура</string>
-    <string name="state_communication_failed">Соединение не установлено</string>
     <string name="call_error_no_address">Ошибка: Нет Адреса</string>
     <string name="audio_device_speakerphone">Спикер</string>
     <string name="error_address_multicast_not_supported">Мультикаст адреса не поддерживаются</string>
@@ -99,7 +98,6 @@
     <string name="settings_settings_mode">Режим настроек</string>
     <string name="warning_no_addresses_configured">Адрес для QR-кода не задан.</string>
     <string name="contact_menu_ping">Пинг</string>
-    <string name="state_app_not_running">Приложение не запущено</string>
     <string name="call_waiting">Ожидание…</string>
     <string name="camera_front">Вперёд</string>
     <string name="invalid_number">Недопустимое значение (должно быть %d..%d)</string>
@@ -115,7 +113,6 @@
     <string name="settings_camera_resolution">Разрешение по умолчанию</string>
     <string name="settings_start_on_bootup">Запуск при включении</string>
     <string name="settings_connect_timeout">Тайм-аут подключения (мс)</string>
-    <string name="state_contact_network_unreachable">Сеть не доступна</string>
     <string name="settings_speakerphone_mode">Громкая связь</string>
     <string name="settings_auto_accept_calls">Автоматически принимать звонки</string>
     <string name="error_address_invalid">Адрес неверен</string>
@@ -129,7 +126,6 @@
     <string name="settings_video_degradation_mode">Снижение видеокачества</string>
     <string name="call_no_network">Нет соединения - включить Wi-Fi?</string>
     <string name="button_reset">Сбросить</string>
-    <string name="state_contact_online">Контакт в сети</string>
     <string name="settings_push_to_talk">Нажмите чтобы говорить</string>
     <string name="settings_menu_password">Пароль меню</string>
     <string name="settings_exclusive_call_mode">Режим приоритетного звонка</string>
@@ -147,8 +143,6 @@
     <string name="call_connection_failed">Ошибка Соединения</string>
     <string name="startup_name_prefix">Пользователь</string>
     <string name="audio_device_bluetooth">Блютуз</string>
-    <string name="state_contact_offline">Контакт не в сети</string>
-    <string name="state_authentication_failed">Аутентификация не удалась</string>
     <string name="contact_menu_qrcode">QR код</string>
     <string name="failed_to_export_database">Не удалось экспортировать базу данных</string>
     <string name="report_dialog_text">Sorry, the application crashed.</string>
@@ -199,4 +193,6 @@
     <string name="docs">Docs</string>
     <string name="telegram_website">https://t.me/rivchain</string>
     <string name="x_website">https://x.com/rivchain</string>
+    <string name="app_description_long_new">CupLink is the first serverless video-calling dApp with an integrated VPN, offering triple-layer encryption for ultimate call privacy.\n\nYour device generates a unique, secure identity with a private key, while our call spy detection feature keeps you notified of any third party monitoring background services.\n\nAll this, paired with ultra-high-definition video up to 8K resolution, ensures seamless and secure communication.\n\nYour privacy, uncompromised</string>
+    <string name="terms">Terms</string>
 </resources>

@@ -68,7 +68,6 @@
     <string name="enter_password">Введіть пароль</string>
     <string name="error">Помилка</string>
     <string name="failed_to_export_database">Не вдалося експортувати базу даних</string>
-    <string name="import_dialog">Імпортувати нові налаштування та додати %d контакти і %d події?</string>
     <string name="invalid_name">"Недопустиме ім'я"</string>
     <string name="invalid_number">Недопустиме значення (має бути %d.. %d)</string>
     <string name="invalid_qr">Недійсний QR-код</string>
@@ -94,7 +93,6 @@
     <string name="settings_connect_timeout">"Час очікування з'єднання (мс)"</string>
     <string name="settings_database_password">Пароль</string>
     <string name="settings_disable_audio_processing">Вимкнути обробку звуку</string>
-    <string name="settings_disable_call_history">Відключити історію викликів</string>
     <string name="settings_disable_proximity_sensor">Вимкнути датчик наближення</string>
     <string name="settings_name">"Ім'я"</string>
     <string name="settings_nightmode">Нічний режим</string>
@@ -173,4 +171,6 @@
     <string name="docs">Docs</string>
     <string name="telegram_website">https://t.me/rivchain</string>
     <string name="x_website">https://x.com/rivchain</string>
+    <string name="app_description_long_new">CupLink is the first serverless video-calling dApp with an integrated VPN, offering triple-layer encryption for ultimate call privacy.\n\nYour device generates a unique, secure identity with a private key, while our call spy detection feature keeps you notified of any third party monitoring background services.\n\nAll this, paired with ultra-high-definition video up to 8K resolution, ensures seamless and secure communication.\n\nYour privacy, uncompromised</string>
+    <string name="terms">Terms</string>
 </resources>
