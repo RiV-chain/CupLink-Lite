@@ -205,4 +205,6 @@
     <string name="terms">Terms</string>
     <string name="linkedin_website">https://www.linkedin.com/company/riv-chain</string>
     <string name="rivchain_website">https://www.rivchain.org/</string>
+    <string name="exit_app">Exit App</string>
+    <string name="exit_app_message">Are you sure you want to exit the app?</string>
 </resources>
