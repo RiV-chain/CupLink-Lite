@@ -71,14 +71,12 @@ class BackupActivity : BaseActivity() {
         findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
 
         // Load preferences
-        val lastBackupDateTime = preferences.getLong("lastBackupDateTime", 0L) // Default: -1 if not set
-        val dbSize = preferences.getInt("dbSize", 0) // Default: -1 if not set
+        val lastBackupDateTime = preferences.getLong("lastBackupDateTime", 0L) // Default: 0 if not set
+        val dbSize = preferences.getInt("dbSize", 0) // Default: 0 if not set
         val backupStatus = preferences.getString("backupStatus", "No backup available") //
         // Update UI or variables based on loaded values
         val lastBackupTextView = findViewById<TextView>(R.id.lastBackupDate)
-        if(lastBackupDateTime == 0L){
-            lastBackupTextView.text = "No backup available"
-        } else {
+        if(lastBackupDateTime > 0L){
             val formattedDate = SimpleDateFormat("dd MMM yyyy h:mma", Locale.US)
                 .format(Date(lastBackupDateTime))
             lastBackupTextView.text = formattedDate
