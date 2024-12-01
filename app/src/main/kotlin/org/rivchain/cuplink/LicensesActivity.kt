@@ -2,6 +2,7 @@ package org.rivchain.cuplink
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,11 @@ class LicensesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_licenses)
+        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
 
         // Use repeatOnLifecycle to launch a coroutine tied to lifecycle state
         lifecycleScope.launch {
