@@ -61,7 +61,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:subtitleFontFamily="@font/poppins_light"
                 app:titleFontFamily="@font/poppins_regular"
-                app:titleText="Securely Backup Your CupLink Identity"
+                app:titleText="Backup Your CupLink Identity"
                 app:subtitleText="\nProtect your IPv6 Address, Contacts, Call History and Public Peers by creating a backup. Backup is essential for safeguarding your digital identity.\n\nIf you switch or lose your device, restoring your profile without a backup won't be possible.\nBacking up ensures you can pick up right where you left off."
                 app:titleTextSize="@dimen/title_text_size"
                 app:subtitleTextSize="@dimen/subtitle_text_size"/>
