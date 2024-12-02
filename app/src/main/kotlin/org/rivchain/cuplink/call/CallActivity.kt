@@ -29,6 +29,7 @@ import android.view.WindowManager
 import android.view.WindowManager.LayoutParams
 import android.widget.Button
 import android.widget.Chronometer
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -112,7 +113,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private lateinit var toggleFrontCameraButton: ImageButton
     private lateinit var speakerphoneButton: ImageButton
 
-    private lateinit var changePipButton: ImageButton // show/hide Picture-in-Picture window
+    private lateinit var changePipButton: FrameLayout // show/hide Picture-in-Picture window
     private lateinit var changeUiButton: ImageButton // show/hide different control
     private lateinit var controlPanel: View
     private lateinit var capturePanel: View
