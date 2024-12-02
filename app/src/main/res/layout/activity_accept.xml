@@ -79,7 +79,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/yes"
             android:layout_width="0dp"
-            android:layout_height="@dimen/padding_50"
+            android:layout_height="@dimen/button_height"
             android:layout_margin="@dimen/padding_40"
             android:background="@drawable/next_button_background"
             android:fontFamily="@font/lato_bold"

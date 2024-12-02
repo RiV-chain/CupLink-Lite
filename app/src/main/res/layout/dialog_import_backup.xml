@@ -64,8 +64,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/CancelButton"
-        android:layout_width="125dp"
-        android:layout_height="@dimen/padding_50"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
         android:layout_marginTop="@dimen/padding_20"
         android:background="@drawable/next_button_background"
         android:fontFamily="@font/lato_bold"
@@ -79,8 +79,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/OkButton"
-        android:layout_width="125dp"
-        android:layout_height="@dimen/padding_50"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height"
         android:layout_marginTop="@dimen/padding_20"
         android:background="@drawable/next_button_background"
         android:fontFamily="@font/lato_bold"
