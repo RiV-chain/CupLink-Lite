@@ -30,4 +30,6 @@
 
     <dimen name="radio_button_margin_bottom">10dp</dimen>
     <dimen name="button_test_size">18sp</dimen>
+    <dimen name="button_height">50dp</dimen>
+    <dimen name="button_width">120dp</dimen>
 </resources>
