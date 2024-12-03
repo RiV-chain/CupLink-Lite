@@ -11,5 +11,6 @@
     <color name="white">#FFFFFF</color>
     <color name="selectedColor">#009688</color>
     <color name="redStatus">#A43345</color>
+    <color name="lightRedStatus">#FF3345</color>
     <color name="yellowStatus">#E4FF45</color>
 </resources>

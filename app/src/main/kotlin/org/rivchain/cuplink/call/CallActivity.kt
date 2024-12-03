@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -114,6 +115,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private lateinit var speakerphoneButton: ImageButton
 
     private lateinit var changePipButton: FrameLayout // show/hide Picture-in-Picture window
+    private lateinit var redButton: ImageButton // show/hide Picture-in-Picture window
     private lateinit var changeUiButton: ImageButton // show/hide different control
     private lateinit var controlPanel: View
     private lateinit var capturePanel: View
@@ -181,6 +183,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         toggleFrontCameraButton = findViewById(R.id.frontFacingSwitch)
         speakerphoneButton = findViewById(R.id.speakerphoneButton)
         changePipButton = findViewById(R.id.change_pip_window)
+        redButton = findViewById(R.id.redButton)
         changeUiButton = findViewById(R.id.change_ui)
         controlPanel = findViewById(R.id.controlPanel)
         capturePanel = findViewById(R.id.capturePanel)
@@ -666,11 +669,23 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     private fun showPipView(enable: Boolean) {
         Log.d(this, "showPipView() enable=$enable")
+        changePipButton.bringToFront()
         if (enable) {
             pipRenderer.visibility = VISIBLE
-            changePipButton.bringToFront()
+            changePipButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorTransparent))
+            setBlinkFrequency(redButton, R.drawable.ic_camera_blinking_normal)
         } else {
             pipRenderer.visibility = GONE
+            changePipButton.setBackgroundResource(R.drawable.red_button_background)
+            setBlinkFrequency(redButton, R.drawable.ic_camera_blinking_short)
+        }
+    }
+
+    private fun setBlinkFrequency(imageButton: ImageButton, animationResId: Int) {
+        val drawable = ContextCompat.getDrawable(imageButton.context, animationResId)
+        if (drawable is AnimationDrawable) {
+            imageButton.setImageDrawable(drawable)
+            drawable.start()
         }
     }
 
@@ -1028,6 +1043,12 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         }
 
         changePipButton.setOnClickListener {
+            Log.d(this, "changePipButton.setOnClickListener()")
+            showPipEnabled = !showPipEnabled
+            updateVideoDisplay()
+        }
+
+        redButton.setOnClickListener {
             Log.d(this, "changePipButton.setOnClickListener()")
             showPipEnabled = !showPipEnabled
             updateVideoDisplay()

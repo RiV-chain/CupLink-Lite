@@ -241,23 +241,28 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <FrameLayout
                         android:id="@+id/change_pip_window"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:translationX="-3dp"
+                        android:translationY="3dp"
+                        android:background="@color/colorTransparent"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         android:visibility="gone">
-                    <!-- Close icon in the top right corner -->
+                        <!-- Close icon in the top right corner -->
                         <ImageButton
-                            android:layout_gravity="center"
+                            android:id="@+id/redButton"
                             android:layout_width="10dp"
                             android:layout_height="10dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/padding_10"
                             android:background="@android:color/transparent"
                             android:contentDescription="Close preview window"
-                            android:src="@drawable/ic_camera"/>
+                            android:src="@drawable/ic_camera_blinking_short" />
                     </FrameLayout>
-
                     <org.rivchain.cuplink.renderer.TextureViewRenderer
                         android:id="@+id/pip_video_view"
                         android:layout_width="match_parent"
