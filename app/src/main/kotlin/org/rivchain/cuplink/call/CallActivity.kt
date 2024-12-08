@@ -61,6 +61,7 @@ import org.rivchain.cuplink.call.RTCPeerConnection.CallState
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.renderer.TextureViewRenderer
+import org.rivchain.cuplink.renderer.VisualizerView
 import org.rivchain.cuplink.rivmesh.AppStateReceiver
 import org.rivchain.cuplink.rivmesh.STATE_CALLING
 import org.rivchain.cuplink.rivmesh.STATE_CALL_ENDED
@@ -127,6 +128,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private lateinit var backgroundView: ImageView
     private lateinit var settingsView: ConstraintLayout
     private lateinit var captureQualityController: CaptureQualityController
+    private lateinit var visualizerView: VisualizerView
 
     private var uiMode = 0
 
@@ -194,8 +196,10 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         framerateSlider = findViewById(R.id.captureFramerateSlider)
 
         // Background
-        backgroundView = findViewById(R.id.background_view);
-        settingsView = findViewById(R.id.call_status_view);
+        backgroundView = findViewById(R.id.background_view)
+        settingsView = findViewById(R.id.call_status_view)
+
+        visualizerView = findViewById(R.id.visualizerView)
 
         // make both invisible
         showPipView(false)
@@ -800,6 +804,13 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun visualizeAudio(magnitudeData: ByteArray?) {
+        visualizerView.post {
+            visualizerView.updateFFT(magnitudeData)
+        }
+    }
+
     private fun initOutgoingCall() {
         connection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
