@@ -247,7 +247,6 @@
         <activity
             android:name=".StartActivity"
             android:launchMode="singleTop"
-            android:configChanges="uiMode"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

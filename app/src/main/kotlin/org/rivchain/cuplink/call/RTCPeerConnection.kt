@@ -42,7 +42,7 @@ abstract class RTCPeerConnection(
 ) {
     protected var state = CallState.WAITING
     var callActivity: RTCCall.CallContext? = null
-    private val executor = Executors.newSingleThreadExecutor()
+    private val executor = Executors.newFixedThreadPool(5)
     private var mediaPlayer: MediaPlayer? = null
     var callStatusHandler: CallStatusHandler? = null
 
