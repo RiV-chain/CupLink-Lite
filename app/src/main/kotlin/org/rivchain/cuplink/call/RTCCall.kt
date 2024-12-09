@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import org.json.JSONException
 import org.json.JSONObject
+import org.jtransforms.fft.DoubleFFT_1D
 import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.MainService
 import org.rivchain.cuplink.message.ActionMessageDispatcher
@@ -56,6 +57,8 @@ import java.net.Socket
 import java.nio.ByteBuffer
 import java.util.Timer
 import java.util.TimerTask
+import kotlin.math.log10
+import kotlin.math.sqrt
 
 
 class RTCCall : RTCPeerConnection {
@@ -622,7 +625,50 @@ class RTCCall : RTCPeerConnection {
             .setAudioTrackErrorCallback(audioTrackErrorCallback)
             .setAudioRecordStateCallback(audioRecordStateCallback)
             .setAudioTrackStateCallback(audioTrackStateCallback)
+            .setSamplesReadyCallback { audioSamples ->
+                val data = audioSamples.data // Raw audio data
+                val sampleRate = audioSamples.sampleRate
+                val channels = audioSamples.channelCount
+                if(isMicrophoneEnabled) {
+                    // Handle raw audio samples here
+                    processRawAudio(data, sampleRate, channels)
+                }
+            }
             .createAudioDeviceModule()
+    }
+
+    private fun processRawAudio(data: ByteArray, sampleRate: Int, channels: Int) {
+        if (data.isEmpty()) {
+            callActivity?.visualizeAudio(null)
+            return
+        }
+
+        val audioData = DoubleArray(data.size / 2)
+        for (i in audioData.indices) {
+            val low = data[i * 2].toInt()
+            val high = data[i * 2 + 1].toInt() shl 8
+            audioData[i] = (low or high).toDouble() / Short.MAX_VALUE
+        }
+
+        val fft = DoubleFFT_1D(audioData.size.toLong())
+        val fftData = DoubleArray(audioData.size * 2)
+        System.arraycopy(audioData, 0, fftData, 0, audioData.size)
+        fft.realForward(fftData)
+
+        val magnitudeData = ByteArray(audioData.size / 4) // Half size for magnitude spectrum
+        for (i in magnitudeData.indices) {
+            val real = fftData[2 * i]
+            val imag = fftData[2 * i + 1]
+            val magnitude = sqrt(real * real + imag * imag)
+
+            // Apply logarithmic scaling and normalize
+            val scaledMagnitude = 15 * log10(magnitude + 1e-6) // Avoid log(0)
+            magnitudeData[i] = (scaledMagnitude / 100 * 128).toInt().coerceIn(0, 127).toByte()
+        }
+
+        // Update the VisualizerView (use a handler to post updates on the UI thread)
+        callActivity?.visualizeAudio(magnitudeData)
+
     }
 
     fun initVideo() {
@@ -893,6 +939,7 @@ class RTCCall : RTCPeerConnection {
         fun onDataChannelReady()
         fun onRemoteAddressChange(address: InetSocketAddress, isConnected: Boolean)
         fun showTextMessage(message: String)
+        fun visualizeAudio(magnitudeData: ByteArray?)
     }
 
     class ProxyVideoSink : VideoSink {
