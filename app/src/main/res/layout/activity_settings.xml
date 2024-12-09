@@ -107,7 +107,7 @@
                         android:textSize="@dimen/settings_menu_text_size"
                         android:gravity="center"
                         app:drawableTint="@color/colorPrimary"
-                        app:drawableTopCompat="@drawable/trash_bin"/>
+                        app:drawableTopCompat="@drawable/clear_history"/>
 
                     <TextView
                         android:id="@+id/exit"
