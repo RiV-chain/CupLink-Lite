@@ -20,6 +20,10 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.rivchain.cuplink.listener.OnSwipeTouchListener
 import org.rivchain.cuplink.model.Contact
@@ -68,9 +72,10 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
 
         try {
             val contact = getContactOrOwn(publicKey)!!
-            Thread {
+            CoroutineScope(Dispatchers.Main).launch {
+                // Directly call the suspending function
                 generateDeepLinkQR(contact)
-            }.start()
+            }
         } catch (e: NullPointerException) {
             e.printStackTrace()
             Toast.makeText(this, "NPE", Toast.LENGTH_LONG).show()
@@ -157,30 +162,44 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
         barcodeView.resume()
     }
 
-    private fun generateDeepLinkQR(contact: Contact) {
+    private suspend fun generateDeepLinkQR(contact: Contact) = withContext(Dispatchers.IO) {
+        // Validate contact
+        val validationError = validateContact(contact)
+        if (validationError != null) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@ConnectFragmentActivity, validationError, Toast.LENGTH_SHORT).show()
+            }
+            return@withContext
+        }
 
-        val data = RlpUtils.generateLink(contact)
-        if(data == null){
-            Toast.makeText(this, R.string.contact_is_invalid, Toast.LENGTH_SHORT).show()
+        try {
+            // Generate the QR code
+            val data = RlpUtils.generateLink(contact) ?: throw IllegalArgumentException(getString(R.string.contact_is_invalid))
+            val multiFormatWriter = MultiFormatWriter()
+            val bitMatrix = multiFormatWriter.encode(data, BarcodeFormat.QR_CODE, 1080, 1080)
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.createBitmap(bitMatrix)
+
+            // Update UI with the generated QR code
+            withContext(Dispatchers.Main) {
+                val qrCode = findViewById<ImageView>(R.id.QRView)
+                qrCode.setImageBitmap(bitmap)
+                val listener = ConnectOnSwipeTouchListener(this@ConnectFragmentActivity)
+                qrCode.setOnTouchListener(listener)
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@ConnectFragmentActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
-        if (contact.addresses.isEmpty()) {
-            Toast.makeText(this, R.string.contact_has_no_address_warning, Toast.LENGTH_SHORT).show()
-        }
-        if (contact.name.isEmpty()) {
-            Toast.makeText(this, R.string.contact_name_invalid, Toast.LENGTH_SHORT).show()
-        }
-        if (contact.publicKey.isEmpty()) {
-            Toast.makeText(this, R.string.contact_public_key_invalid, Toast.LENGTH_SHORT).show()
-        }
-        val multiFormatWriter = MultiFormatWriter()
-        val bitMatrix = multiFormatWriter.encode(data, BarcodeFormat.QR_CODE, 1080, 1080)
-        val barcodeEncoder = BarcodeEncoder()
-        val bitmap = barcodeEncoder.createBitmap(bitMatrix)
-        val qrCode = findViewById<ImageView>(R.id.QRView)
-        runOnUiThread {
-            qrCode.setImageBitmap(bitmap)
-            val listener = ConnectOnSwipeTouchListener(this@ConnectFragmentActivity)
-            qrCode.setOnTouchListener(listener)
+    }
+
+    private fun validateContact(contact: Contact): String? {
+        return when {
+            contact.addresses.isEmpty() -> getString(R.string.contact_has_no_address_warning)
+            contact.name.isEmpty() -> getString(R.string.contact_name_invalid)
+            contact.publicKey.isEmpty() -> getString(R.string.contact_public_key_invalid)
+            else -> null
         }
     }
 
