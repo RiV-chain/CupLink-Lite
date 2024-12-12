@@ -8,6 +8,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.drawable.AnimationDrawable
@@ -166,6 +167,8 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_call)
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         // keep screen on during the call
         //window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
