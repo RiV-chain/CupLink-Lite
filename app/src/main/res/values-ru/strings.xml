@@ -199,4 +199,7 @@
     <string name="rivchain_website">https://www.rivchain.org/</string>
     <string name="exit_app">Exit App</string>
     <string name="exit_app_message">Are you sure you want to exit the app?</string>
+    <string name="restore_backup">Restore backup</string>
+    <string name="restore_description">Restore your CupLink identity with a backup password</string>
+    <string name="export_backup">Export Backup</string>
 </resources>

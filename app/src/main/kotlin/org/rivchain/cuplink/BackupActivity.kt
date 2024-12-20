@@ -66,7 +66,7 @@ class BackupActivity : BaseActivity() {
         }
 
         exportButton.setOnClickListener {
-            showBackupPasswordDialog()
+            showBackupExportPasswordDialog()
         }
         findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
 
@@ -101,7 +101,7 @@ class BackupActivity : BaseActivity() {
             isChecked = DatabaseCache.database.settings.enableAutoBackup
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if(isChecked){
-                    showBackupPasswordDialog()
+                    showBackupExportPasswordDialog()
                 } else{
                     val database = DatabaseCache.database
                     database.settings.enableAutoBackup = false
@@ -111,7 +111,7 @@ class BackupActivity : BaseActivity() {
         }
     }
 
-    private fun showBackupPasswordDialog() {
+    private fun showBackupExportPasswordDialog() {
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_backup_password, null)
         val dialog = createBlurredPPTCDialog(view)
@@ -120,6 +120,7 @@ class BackupActivity : BaseActivity() {
         val backupFilenameText = view.findViewById<TextView>(R.id.backupFilename)
         val okButton = view.findViewById<Button>(R.id.okButton)
         backupFilenameText.text = backupFilename
+        okButton.text = getString(R.string.export_backup)
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString()
             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
@@ -133,16 +134,19 @@ class BackupActivity : BaseActivity() {
         dialog.show()
     }
 
-    private fun showRestorePasswordDialog(uri: Uri) {
+    private fun showRestoreBackupPasswordDialog(uri: Uri) {
         val fileName = getFileNameFromUri(this, uri)
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_backup_password, null)
         val dialog = createBlurredPPTCDialog(view)
         dialog.setCanceledOnTouchOutside(false)
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.passwordEditTextView)
         val title = view.findViewById<TextView>(R.id.enterPasswordTitle)
-        title.text = getString(R.string.enter_password)
+        val description = view.findViewById<TextView>(R.id.enterPasswordDescription)
+        title.text = getString(R.string.restore_backup)
+        description.text = getString(R.string.restore_description)
         val backupFilenameText = view.findViewById<TextView>(R.id.backupFilename)
         val okButton = view.findViewById<Button>(R.id.okButton)
+        okButton.text = getString(R.string.dialog_title_import_backup)
         backupFilenameText.text = fileName
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString()
@@ -156,7 +160,7 @@ class BackupActivity : BaseActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val intent = result.data ?: return@registerForActivityResult
             val uri = intent.data ?: return@registerForActivityResult
-            showRestorePasswordDialog(uri)
+            showRestoreBackupPasswordDialog(uri)
         }
     }
 
