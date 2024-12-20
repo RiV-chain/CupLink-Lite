@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#B1B1B1</color>
-    <color name="colorBackground">#111111</color>
-    <color name="colorBackgroundDialog">#33000000</color>
-    <color name="colorPrimaryDark">#111111</color>
+    <color name="colorBackground">#050505</color>
+    <color name="colorBackgroundDialog">#121212</color>
+    <color name="colorPrimaryDark">#0B0B0B</color>
     <color name="colorPrimaryBox">#33555555</color>
     <color name="colorTransparent">@color/zxing_transparent</color>
     <color name="colorAccent">#B1B1B1</color>
     <color name="light_grey">#B1B1B1</color>
     <color name="light_light_grey">#E3E3E3</color>
     <color name="white">#FFFFFF</color>
-    <color name="selectedColor">#009688</color>
+    <color name="selectedColor">#007F72</color>
     <color name="fftChartEdgeColor">#3DDB84</color>
     <color name="redStatus">#A43345</color>
     <color name="lightRedStatus">#FF3345</color>

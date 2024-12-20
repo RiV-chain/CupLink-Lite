@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="@dimen/padding_30"
     android:background="@drawable/dialog_pptc_rounded_corner">
 
     <TextView
@@ -15,6 +15,7 @@
         android:textSize="@dimen/name_text_size"
         android:text="@string/add_peer"
         android:textAllCaps="false"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +24,7 @@
         android:id="@+id/schema"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/padding_20"
         app:boxBackgroundMode="none"
         android:background="@drawable/edit_text_rounded_corner"
         android:textColorHint="@color/light_grey"
@@ -47,7 +48,7 @@
         android:id="@+id/ip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/padding_20"
         app:boxBackgroundMode="none"
         android:background="@drawable/edit_text_rounded_corner"
         android:textColorHint="@color/light_grey"
@@ -73,7 +74,7 @@
         android:id="@+id/port"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/padding_20"
         app:boxBackgroundMode="none"
         android:background="@drawable/edit_text_rounded_corner"
         android:textColorHint="@color/light_grey"
@@ -99,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center_vertical"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/padding_20"
         app:ccp_contentColor="@color/white"
         app:ccp_showFullName="true"
         app:ccp_showPhoneCode="false"
@@ -118,7 +119,7 @@
         android:id="@+id/add"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/padding_20"
         android:background="@drawable/next_button_background"
         android:text="Add"
         android:textAllCaps="false"
@@ -127,7 +128,6 @@
         android:textSize="@dimen/button_test_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ccp"
-        />
+        app:layout_constraintTop_toBottomOf="@id/ccp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

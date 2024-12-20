@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="@dimen/padding_30"
     android:background="@drawable/dialog_pptc_rounded_corner">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/padding_20"
         android:background="@drawable/edit_text_rounded_corner"
         android:textColorHint="@color/light_grey"
         app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/save"
+        app:layout_constraintStart_toStartOf="@+id/save"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -33,9 +33,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/save"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/padding_20"
         android:background="@drawable/next_button_background"
         android:text="@string/button_save"
         android:textAllCaps="false"

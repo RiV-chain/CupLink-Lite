@@ -84,7 +84,6 @@ class ContactListFragment() : Fragment() {
             listViewContactOptions.adapter = adapter
 
             val dialog = activity.createBlurredPPTCDialog(dialogView)
-            dialog.setCancelable(true)
 
             listViewContactOptions.setOnItemClickListener { _, _, position, _ ->
                 val selectedOption = options[position]
@@ -164,18 +163,13 @@ class ContactListFragment() : Fragment() {
 
         val view: View = LayoutInflater.from(activity).inflate(R.layout.dialog_yes_no, null)
         val dialog = activity.createBlurredPPTCDialog(view)
-        dialog.setCancelable(false)
         val titleText = view.findViewById<TextView>(R.id.title)
         titleText.text = getString(R.string.dialog_title_delete_contact)
         val messageText = view.findViewById<TextView>(R.id.message)
         messageText.text = name
-        val noButton = view.findViewById<Button>(R.id.no)
         val yesButton = view.findViewById<Button>(R.id.yes)
         yesButton.setOnClickListener {
             activity.deleteContact(publicKey)
-            dialog.cancel()
-        }
-        noButton.setOnClickListener {
             dialog.cancel()
         }
         dialog.show()

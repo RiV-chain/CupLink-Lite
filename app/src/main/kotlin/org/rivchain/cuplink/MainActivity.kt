@@ -238,10 +238,8 @@ class MainActivity : BaseActivity() {
     private fun showMenuPasswordDialog(itemId: Int, menuPassword: String) {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_database_password, null)
         val dialog = createBlurredPPTCDialog(view)
-        dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.passwordEditTextView)
-        val exitButton = view.findViewById<Button>(R.id.cancelButton)
         val okButton = view.findViewById<Button>(R.id.okButton)
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString()
@@ -252,11 +250,6 @@ class MainActivity : BaseActivity() {
                 passwordEditText.error = getString(R.string.wrong_password)
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show()
             }
-            // close dialog
-            dialog.dismiss()
-        }
-
-        exitButton.setOnClickListener {
             // close dialog
             dialog.dismiss()
         }

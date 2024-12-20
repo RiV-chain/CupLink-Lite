@@ -125,7 +125,6 @@ open class AddContactActivity: BaseActivity() {
         contactKey.text = Utils.byteArrayToHexString(otherContact.publicKey)
         val nameTextView =
             view.findViewById<TextView>(R.id.public_key_conflicting_contact_textview)
-        val abortButton = view.findViewById<Button>(R.id.public_key_conflict_abort_button)
         val replaceButton = view.findViewById<Button>(R.id.public_key_conflict_replace_button)
         nameTextView.text = otherContact.name
         replaceButton.setOnClickListener {
@@ -136,10 +135,6 @@ open class AddContactActivity: BaseActivity() {
             Toast.makeText(this@AddContactActivity, R.string.done, Toast.LENGTH_SHORT).show()
             dialog.cancel()
             finish()
-        }
-        abortButton.setOnClickListener {
-            dialog.cancel()
-            resume()
         }
         dialog.show()
     }
@@ -191,7 +186,6 @@ open class AddContactActivity: BaseActivity() {
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.dialog_manual_contact_input, null)
         val et = dialogView.findViewById<TextInputEditText>(R.id.editTextInput)
-        val cancelButton = dialogView.findViewById<Button>(R.id.CancelButton)
         val okButton = dialogView.findViewById<Button>(R.id.OkButton)
         // Set the custom view to the dialog
         val dialog: AlertDialog = createBlurredPPTCDialog(dialogView)
@@ -205,8 +199,7 @@ open class AddContactActivity: BaseActivity() {
             }
             dialog.cancel()
         }
-
-        cancelButton.setOnClickListener{
+        dialog.setOnCancelListener {
             dialog.cancel()
             resume()
         }
