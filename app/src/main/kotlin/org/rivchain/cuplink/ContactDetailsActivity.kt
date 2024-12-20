@@ -194,7 +194,6 @@ class ContactDetailsActivity : BaseActivity() {
         val dialogView: View = LayoutInflater.from(this).inflate(R.layout.dialog_contact_change_name, null)
         val dialog = createBlurredPPTCDialog(dialogView)
         val nameEditText = dialogView.findViewById<TextInputEditText>(R.id.NameEditText)
-        val cancelButton = dialogView.findViewById<Button>(R.id.CancelButton)
         val okButton = dialogView.findViewById<Button>(R.id.OkButton)
 
         nameEditText.setText(contactNameEdit.text, TextView.BufferType.EDITABLE)
@@ -211,10 +210,6 @@ class ContactDetailsActivity : BaseActivity() {
                 contactNameEdit.text = newName
                 dialog.dismiss()
             }
-        }
-
-        cancelButton.setOnClickListener {
-            dialog.dismiss()
         }
 
         dialog.show()

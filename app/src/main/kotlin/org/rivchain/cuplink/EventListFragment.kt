@@ -114,8 +114,6 @@ class EventListFragment() : Fragment() {
 
         // Create and show the dialog
         val dialog = activity.createBlurredPPTCDialog(dialogView)
-        dialog.setCancelable(true)
-
         listViewEventOptions.setOnItemClickListener { _, _, position, _ ->
             val selectedOption = options[position]
             when (selectedOption) {
@@ -215,7 +213,6 @@ class EventListFragment() : Fragment() {
         val view: View = LayoutInflater.from(activity).inflate(R.layout.dialog_add_contact, null)
         val dialog = activity.createBlurredPPTCDialog(view)
         val nameEditText = view.findViewById<TextInputEditText>(R.id.NameEditText)
-        val exitButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
         okButton.setOnClickListener {
             val name = nameEditText.text.toString()
@@ -237,7 +234,6 @@ class EventListFragment() : Fragment() {
             // close dialog
             dialog.dismiss()
         }
-        exitButton.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
 }

@@ -41,7 +41,6 @@ open class ConfigurePublicPeerActivity: TestPortActivity() {
     private lateinit var portStatusText: TextView
     private lateinit var upnpCheckbox: CheckBox
     private lateinit var okButton: MaterialButton
-    private lateinit var cancelButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +77,6 @@ open class ConfigurePublicPeerActivity: TestPortActivity() {
         upnpCheckbox.setTextColor(colorStateList)
 
         okButton = dialogView.findViewById(R.id.OkButton)
-        cancelButton = dialogView.findViewById(R.id.CancelButton)
         portStatus.setOnClickListener {
             portStatus.setImageResource(R.drawable.ic_status_testing)
             // test port manually
@@ -120,8 +118,7 @@ open class ConfigurePublicPeerActivity: TestPortActivity() {
             }
             portTest(port)
         }
-        cancelButton.setOnClickListener {
-            // skip public peer connection
+        publicPeerAgreementDialog.setOnCancelListener {
             publicPeerAgreementDialog.dismiss()
             finish()
         }

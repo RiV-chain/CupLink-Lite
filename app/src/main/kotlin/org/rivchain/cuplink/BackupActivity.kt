@@ -115,12 +115,9 @@ class BackupActivity : BaseActivity() {
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_backup_password, null)
         val dialog = createBlurredPPTCDialog(view)
-        dialog.setCancelable(false)
-        dialog.setCanceledOnTouchOutside(false)
         val backupFilename = "cuplink-backup-${BuildConfig.VERSION_NAME}.json"
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.passwordEditTextView)
         val backupFilenameText = view.findViewById<TextView>(R.id.backupFilename)
-        val exitButton = view.findViewById<Button>(R.id.cancelButton)
         val okButton = view.findViewById<Button>(R.id.okButton)
         backupFilenameText.text = backupFilename
         okButton.setOnClickListener {
@@ -133,10 +130,6 @@ class BackupActivity : BaseActivity() {
             saveTemporalBackupPassword(password)
             dialog.dismiss()
         }
-        exitButton.setOnClickListener {
-            dialog.dismiss()
-        }
-
         dialog.show()
     }
 
@@ -144,13 +137,11 @@ class BackupActivity : BaseActivity() {
         val fileName = getFileNameFromUri(this, uri)
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_backup_password, null)
         val dialog = createBlurredPPTCDialog(view)
-        dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.passwordEditTextView)
         val title = view.findViewById<TextView>(R.id.enterPasswordTitle)
         title.text = getString(R.string.enter_password)
         val backupFilenameText = view.findViewById<TextView>(R.id.backupFilename)
-        val exitButton = view.findViewById<Button>(R.id.cancelButton)
         val okButton = view.findViewById<Button>(R.id.okButton)
         backupFilenameText.text = fileName
         okButton.setOnClickListener {
@@ -158,11 +149,6 @@ class BackupActivity : BaseActivity() {
             importDatabase(uri, password)
             dialog.dismiss()
         }
-        exitButton.setOnClickListener {
-            // shutdown app
-            dialog.dismiss()
-        }
-
         dialog.show()
     }
 
@@ -249,7 +235,6 @@ class BackupActivity : BaseActivity() {
         val contactsCheckbox = dialogView.findViewById<MaterialCheckBox>(R.id.contacts)
         val callsCheckbox = dialogView.findViewById<MaterialCheckBox>(R.id.calls)
         val settingsCheckbox = dialogView.findViewById<MaterialCheckBox>(R.id.settings)
-        val cancelButton = dialogView.findViewById<MaterialButton>(R.id.CancelButton)
         val okButton = dialogView.findViewById<MaterialButton>(R.id.OkButton)
 
         titleTextView.text = getString(R.string.dialog_title_import_backup)
@@ -274,10 +259,6 @@ class BackupActivity : BaseActivity() {
         settingsCheckbox.setTextColor(colorStateList)
 
         val dialog = createBlurredPPTCDialog(dialogView)
-
-        cancelButton.setOnClickListener {
-            dialog.dismiss()
-        }
 
         okButton.setOnClickListener {
             if (!contactsCheckbox.isChecked &&
@@ -304,7 +285,6 @@ class BackupActivity : BaseActivity() {
             restartService()
         }
 
-        dialog.setCancelable(false) // prevent key shortcut to cancel dialog
         dialog.show()
     }
 

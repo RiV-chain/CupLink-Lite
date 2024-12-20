@@ -300,21 +300,18 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
             val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_yes_no, null)
             val dialog = this.createBlurredPPTCDialog(view)
             dialog.setCancelable(false)
-            dialog.setCanceledOnTouchOutside(false)
             val titleText = view.findViewById<TextView>(R.id.title)
             titleText.text = getString(R.string.setup_address)
             val messageText = view.findViewById<TextView>(R.id.message)
             messageText.text = getString(R.string.setup_no_address_found)
-            val noButton = view.findViewById<Button>(R.id.no)
             val yesButton = view.findViewById<Button>(R.id.yes)
-            noButton.text = getString(R.string.button_skip)
             yesButton.text = getString(R.string.button_ok)
             yesButton.setOnClickListener {
                 showMissingAddressDialog()
                 dialog.cancel()
             }
-            noButton.setOnClickListener {
-                dialog.cancel()
+            dialog.setOnCancelListener {
+                dialog.dismiss()
                 // continue with out address configuration
                 continueInit()
             }
@@ -379,11 +376,9 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_enter_database_password, null)
         val dialog = createBlurredPPTCDialog(view)
-        dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
 
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.passwordEditTextView)
-        val exitButton = view.findViewById<Button>(R.id.cancelButton)
         val okButton = view.findViewById<Button>(R.id.okButton)
         okButton.setOnClickListener {
             val password = passwordEditText.text.toString()
@@ -398,8 +393,7 @@ class StartActivity// to avoid "class has no zero argument constructor" on some 
                 continueInit()
             }
         }
-        exitButton.setOnClickListener {
-            // shutdown app
+        dialog.setOnCancelListener {
             dialog.dismiss()
             finishAffinity()
         }

@@ -4,10 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/padding_10"
-    android:paddingStart="@dimen/padding_20"
-    android:paddingEnd="@dimen/padding_20"
-    android:paddingBottom="@dimen/padding_20"
+    android:padding="@dimen/padding_30"
     android:background="@drawable/dialog_pptc_rounded_corner">
 
     <TextView
@@ -16,9 +13,11 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
         android:paddingBottom="5dp"
-        android:textSize="@dimen/name_text_size"
         android:text="@string/connect_as_public_peer"
+        android:textAlignment="center"
         android:textAllCaps="false"
+        android:textSize="@dimen/name_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -133,24 +132,10 @@
         app:layout_constraintTop_toBottomOf="@+id/upnpCheckBox" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/CancelButton"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="@dimen/padding_10"
-        android:background="@drawable/next_button_background"
-        android:fontFamily="@font/lato_bold"
-        android:text="@string/button_cancel"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/button_test_size"
-        app:backgroundTint="@null"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noticeInfoText" />
-
-    <com.google.android.material.button.MaterialButton
         android:id="@+id/OkButton"
-        android:layout_width="@dimen/button_width"
+        android:layout_width="0dp"
         android:layout_height="@dimen/button_height"
+        android:layout_margin="@dimen/padding_20"
         android:background="@drawable/next_button_background"
         android:fontFamily="@font/lato_bold"
         android:text="@string/button_ok"
@@ -158,9 +143,8 @@
         android:textColor="@color/white"
         android:textSize="@dimen/button_test_size"
         app:backgroundTint="@null"
-        android:enabled="false"
-        app:layout_constraintBottom_toBottomOf="@+id/CancelButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/CancelButton" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noticeInfoText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

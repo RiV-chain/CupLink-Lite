@@ -1,6 +1,7 @@
 package org.rivchain.cuplink.rivmesh
 
 import android.content.ComponentName
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -14,13 +15,13 @@ import org.rivchain.cuplink.BuildConfig
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.util.Utils.readResourceFile
 
+
 open class AutoTestPublicPeerActivity: TestPortActivity() {
 
     private var port = 0
     private lateinit var publicPeerAgreementDialog: AlertDialog
     private lateinit var agreeCheckbox: MaterialCheckBox
     private lateinit var okButton: MaterialButton
-    private lateinit var cancelButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,6 @@ open class AutoTestPublicPeerActivity: TestPortActivity() {
 
         // Create the AlertDialog
         publicPeerAgreementDialog = createBlurredPPTCDialog(dialogView)
-        publicPeerAgreementDialog.setCancelable(false)
         val msg = dialogView.findViewById<TextView>(R.id.guideInfoText)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             msg.text = Html.fromHtml(readResourceFile(this, R.raw.public_peer), Html.FROM_HTML_MODE_COMPACT)
@@ -49,13 +49,11 @@ open class AutoTestPublicPeerActivity: TestPortActivity() {
         }
         agreeCheckbox = dialogView.findViewById(R.id.checkbox)
         okButton = dialogView.findViewById(R.id.OkButton)
-        cancelButton = dialogView.findViewById(R.id.CancelButton)
         okButton.setOnClickListener {
             // confirm public peer creation
             connectAsPublicPeer(port)
         }
-        cancelButton.setOnClickListener {
-            // skip public peer connection
+        publicPeerAgreementDialog.setOnCancelListener {
             publicPeerAgreementDialog.dismiss()
             finish()
         }

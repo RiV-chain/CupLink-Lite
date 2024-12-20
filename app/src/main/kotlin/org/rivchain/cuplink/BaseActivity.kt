@@ -136,6 +136,8 @@ open class BaseActivity : AppCompatActivity() {
 
     private fun createBlurredDialog(builder: AlertDialog.Builder): AlertDialog {
         val dialog = builder.create()
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(false)
         val window = dialog.window
         window?.setBackgroundDrawable(mWindowBackgroundDrawable)
         if (buildIsAtLeastS()) {
@@ -184,7 +186,6 @@ open class BaseActivity : AppCompatActivity() {
         messageText.text = message
         // Create the AlertDialog
         val dialog = createBlurredMessageDialog(dialogView)
-        dialog.setCancelable(true)
         dialog.setCanceledOnTouchOutside(true)
         // Show the dialog
         dialog.show()

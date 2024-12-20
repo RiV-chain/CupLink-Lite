@@ -4,10 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingStart="@dimen/padding_80"
-    android:paddingEnd="@dimen/padding_80"
-    android:paddingTop="@dimen/padding_20"
-    android:paddingBottom="@dimen/padding_20">
+    android:padding="@dimen/padding_30"
+    android:background="@drawable/dialog_pptc_rounded_corner">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/current_stage"

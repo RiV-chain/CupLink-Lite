@@ -89,20 +89,15 @@ class SettingsActivity : BaseActivity() {
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_yes_no, null)
         val dialog = this.createBlurredPPTCDialog(view)
-        dialog.setCancelable(true)
         val titleText = view.findViewById<TextView>(R.id.title)
         titleText.text = getString(R.string.clear_history)
         val messageText = view.findViewById<TextView>(R.id.message)
         messageText.text = getString(R.string.remove_all_events)
-        val noButton = view.findViewById<Button>(R.id.no)
         val yesButton = view.findViewById<Button>(R.id.yes)
         yesButton.setOnClickListener {
             this.clearEvents()
             DatabaseCache.save()
             Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
-            dialog.cancel()
-        }
-        noButton.setOnClickListener {
             dialog.cancel()
         }
         dialog.show()
@@ -113,19 +108,14 @@ class SettingsActivity : BaseActivity() {
 
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_yes_no, null)
         val dialog = this.createBlurredPPTCDialog(view)
-        dialog.setCancelable(true)
         val titleText = view.findViewById<TextView>(R.id.title)
         titleText.text = getString(R.string.exit_app)
         val messageText = view.findViewById<TextView>(R.id.message)
         messageText.text = getString(R.string.exit_app_message)
-        val noButton = view.findViewById<Button>(R.id.no)
         val yesButton = view.findViewById<Button>(R.id.yes)
         yesButton.setOnClickListener {
             MainService.stopPacketsStream(this)
             finishAffinity()
-        }
-        noButton.setOnClickListener {
-            dialog.cancel()
         }
         dialog.show()
     }
@@ -523,7 +513,6 @@ class SettingsActivity : BaseActivity() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null)
         val nameEditText = view.findViewById<TextInputEditText>(R.id.NameEditText)
         nameEditText.setText(settings.username, TextView.BufferType.EDITABLE)
-        val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
         val dialog: AlertDialog = createBlurredPPTCDialog(view)
         okButton.setOnClickListener {
@@ -538,9 +527,6 @@ class SettingsActivity : BaseActivity() {
                 Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
             }
         }
-        cancelButton.setOnClickListener {
-            dialog.dismiss()
-        }
         dialog.show()
     }
 
@@ -549,7 +535,6 @@ class SettingsActivity : BaseActivity() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_retries, null)
         val dialog = createBlurredPPTCDialog(view)
         val connectRetriesEditText = view.findViewById<TextView>(R.id.ConnectRetriesEditText)
-        val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
         connectRetriesEditText.text = "${settings.connectRetries}"
         okButton.setOnClickListener {
@@ -575,7 +560,6 @@ class SettingsActivity : BaseActivity() {
 
             dialog.cancel()
         }
-        cancelButton.setOnClickListener { dialog.cancel() }
         dialog.show()
     }
 
@@ -584,7 +568,6 @@ class SettingsActivity : BaseActivity() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_timeout, null)
         val dialog = createBlurredPPTCDialog(view)
         val connectTimeoutEditText = view.findViewById<TextView>(R.id.ConnectTimeoutEditText)
-        val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
         connectTimeoutEditText.text = "${settings.connectTimeout}"
         okButton.setOnClickListener {
@@ -610,7 +593,6 @@ class SettingsActivity : BaseActivity() {
 
             dialog.cancel()
         }
-        cancelButton.setOnClickListener { dialog.cancel() }
         dialog.show()
     }
 
@@ -618,9 +600,7 @@ class SettingsActivity : BaseActivity() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_database_password, null)
         val dialog = createBlurredPPTCDialog(view)
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.DatabasePasswordEditText)
-        val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
-
         passwordEditText.setText(DatabaseCache.databasePassword)
         okButton.setOnClickListener {
             val newPassword = passwordEditText.text.toString()
@@ -631,7 +611,6 @@ class SettingsActivity : BaseActivity() {
             initViews()
             dialog.cancel()
         }
-        cancelButton.setOnClickListener { dialog.cancel() }
         dialog.show()
     }
 
@@ -640,7 +619,6 @@ class SettingsActivity : BaseActivity() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_menu_password, null)
         val dialog = createBlurredPPTCDialog(view)
         val passwordEditText = view.findViewById<TextInputEditText>(R.id.MenuPasswordEditText)
-        val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
         passwordEditText.setText(menuPassword)
         okButton.setOnClickListener {
@@ -651,7 +629,6 @@ class SettingsActivity : BaseActivity() {
             initViews()
             dialog.cancel()
         }
-        cancelButton.setOnClickListener { dialog.cancel() }
         dialog.show()
     }
 

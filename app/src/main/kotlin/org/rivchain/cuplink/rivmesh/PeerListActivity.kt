@@ -73,7 +73,6 @@ class PeerListActivity : PingPeerListActivity() {
     private fun editPeerListUrl() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_edit_peer_list_url, null)
         val dialog = createBlurredPPTCDialog(view)
-        dialog.setCancelable(true)
         val saveButton = view.findViewById<Button>(R.id.save)
         val urlInput = view.findViewById<TextView>(R.id.urlInput)
         urlInput.text = peerListUrl
