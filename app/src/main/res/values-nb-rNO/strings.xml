@@ -187,4 +187,11 @@
     <string name="restore_backup">Restore backup</string>
     <string name="restore_description">Restore your CupLink identity with a backup password</string>
     <string name="export_backup">Export Backup</string>
+    <string name="privacy_and_security">Privacy and Security</string>
+    <string name="privacy_security"><![CDATA[Privacy & Security]]></string>
+    <string name="sound_notifications">Sound Notifications</string>
+    <string name="media">Media</string>
+    <string name="network">Network</string>
+    <string name="system">System</string>
+    <string name="quality">Quality</string>
 </resources>

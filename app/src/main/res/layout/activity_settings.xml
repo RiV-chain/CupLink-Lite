@@ -132,872 +132,196 @@
                     app:layout_constraintTop_toBottomOf="@+id/menu"
                     android:layout_marginTop="@dimen/padding_20"/>
 
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/settingsNickname"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/nicknameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_20"
+                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/headerBasic"
-                    app:subtitleFontFamily="@font/poppins_regular"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:titleText="Nickname"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"/>
+                    app:layout_constraintTop_toBottomOf="@+id/headerBasic">
 
-                <TextView
-                    android:id="@+id/settingsNightModes"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/nickname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorTransparent"
+                        android:fontFamily="@font/poppins_regular"
+                        app:iconPadding="10dp"
+                        android:paddingStart="17dp"
+                        android:paddingEnd="17dp"
+                        android:text="..."
+                        android:textAlignment="viewStart"
+                        android:textAllCaps="false"
+                        android:textColor="@drawable/selector_text_color"
+                        android:textSize="@dimen/title_text_size"
+                        app:icon="@drawable/selector_account"
+                        app:iconTint="@null"
+                        app:layout_constraintEnd_toStartOf="@+id/nicknameIcon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <ImageButton
+                        android:id="@+id/nicknameIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_edit"
+                        android:background="@color/colorTransparent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/nickname"
+                        app:layout_constraintTop_toTopOf="@+id/nickname"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/toggleButtonPrivacy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/privacy_security"
+                    android:textAlignment="viewStart"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/nicknameLayout"
+                    android:background="@color/colorTransparent"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="@string/settings_nightmode"
                     android:textSize="@dimen/title_text_size"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/settingsNickname"
-                    android:layout_marginTop="@dimen/padding_40"
-                    android:visibility="gone"/>
+                    android:textColor="@drawable/selector_text_color"
+                    app:icon="@drawable/selector_privacy"
+                    app:iconTint="@null"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/spinnerNightModes"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:id="@+id/fragmentContainer1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/toggleButtonPrivacy"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/soundNotifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="viewStart"
+                    android:text="@string/sound_notifications"
+                    android:layout_marginTop="@dimen/padding_10"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragmentContainer1"
+                    android:background="@color/colorTransparent"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    android:textAlignment="viewEnd"
-                    app:layout_constraintEnd_toEndOf="@id/settingsNightModes"
-                    app:layout_constraintTop_toTopOf="@id/settingsNightModes"
-                    app:layout_constraintBottom_toBottomOf="@id/settingsNightModes"
-                    android:visibility="gone"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/blockUnknown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:titleText="@string/settings_block_unknown"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:subtitleText="Automatically block unwanted calls"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintEnd_toStartOf="@id/blockUnknownSwitch"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinnerNightModes"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/blockUnknownSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/settings_block_unknown"
-                    android:minWidth="48dp"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintBottom_toBottomOf="@id/blockUnknown"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/blockUnknown" />
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/editPeers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/peers"
-                    app:subtitleText="Connect and communicate directly with other users in a peer-to-peer (P2P) manner, without requiring a centralized server."
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/blockUnknown"/>
-
-                <TextView
-                    android:id="@+id/configuredPeers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    app:layout_constraintBottom_toBottomOf="@id/editPeers"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/editPeers"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/startOnBootup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_start_on_bootup"
-                    app:subtitleText="App starts automatically with the device"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editPeers"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/startOnBootupSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="48dp"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/startOnBootup"
-                    app:layout_constraintBottom_toBottomOf="@id/startOnBootup"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/searchMulticastPeers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/search_multicast_peers"
-                    app:subtitleText="Easily discover and connect with nearby multicast peers"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/startOnBootupSwitch"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/searchMulticastPeersSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="48dp"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/searchMulticastPeers"
-                    app:layout_constraintBottom_toBottomOf="@id/searchMulticastPeers"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/discoverableOverMulticast"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/discoverable_over_multicast"
-                    app:subtitleText="Make your device discoverable to others on the network"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/searchMulticastPeersSwitch"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/discoverableOverMulticastSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="48dp"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/discoverableOverMulticast"
-                    app:layout_constraintBottom_toBottomOf="@id/discoverableOverMulticast"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/ignoreBatteryOptimizations"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/ignore_battery_optimizations"
-                    app:subtitleText="Allows the app to run in the background without battery restrictions"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/discoverableOverMulticastSwitch"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/ignoreBatteryOptimizationsSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="48dp"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/ignoreBatteryOptimizations"
-                    app:layout_constraintBottom_toBottomOf="@id/ignoreBatteryOptimizations"/>
-
-                <TextView
-                    android:id="@+id/settingsModes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/settings_settings_mode"
                     android:textSize="@dimen/title_text_size"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ignoreBatteryOptimizations"
-                    android:layout_marginTop="@dimen/padding_20"/>
+                    android:textColor="@drawable/selector_text_color"
+                    app:icon="@drawable/selector_sound"
+                    app:iconTint="@null"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/spinnerSettingsModes"
-                    android:layout_width="wrap_content"
+                <FrameLayout
+                    android:id="@+id/fragmentContainer2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/soundNotifications"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/media"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="viewStart"
+                    android:text="@string/media"
+                    android:layout_marginTop="@dimen/padding_10"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragmentContainer2"
+                    android:background="@color/colorTransparent"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    android:textAlignment="viewEnd"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/settingsModes"
-                    app:layout_constraintBottom_toBottomOf="@id/settingsModes"/>
+                    android:textSize="@dimen/title_text_size"
+                    android:textColor="@drawable/selector_text_color"
+                    app:icon="@drawable/selector_media"
+                    app:iconTint="@null"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/advancedSettingsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/padding_20"
-                android:layout_marginEnd="@dimen/padding_20"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/basicSettingsLayout"
-                android:visibility="gone">
-
-                <View
-                    android:id="@+id/headerAdvanced"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/selectedColor"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/padding_20"
-                    android:layout_marginBottom="@dimen/padding_20"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/automaticStatusUpdates"
+                <FrameLayout
+                    android:id="@+id/fragmentContainer3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_automatic_status_updates"
-                    app:subtitleText="Keep your contacts list up-to-date automatically"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/headerAdvanced"/>
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/media"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/automaticStatusUpdatesSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/automaticStatusUpdates"
-                    app:layout_constraintBottom_toBottomOf="@id/automaticStatusUpdates"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/publicPeerLayout"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/network"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_connect_as_public_peer"
-                    app:subtitleText="Join the network as a public peer for broader connectivity"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
+                    android:text="@string/network"
+                    android:textAlignment="viewStart"
+                    android:layout_marginTop="@dimen/padding_10"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/automaticStatusUpdates"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/publicPeerLayoutSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/publicPeerLayout"
-                    app:layout_constraintBottom_toBottomOf="@id/publicPeerLayout"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/enableMicrophoneByDefault"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_enable_microphone_by_default"
-                    app:subtitleText="Microphone is ready to go when making or receiving a call"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/publicPeerLayout"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/enableMicrophoneByDefaultSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/enableMicrophoneByDefault"
-                    app:layout_constraintBottom_toBottomOf="@id/enableMicrophoneByDefault"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/enableCameraByDefault"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_enable_camera_by_default"
-                    app:subtitleText="Camera is automatically ready for video calls"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/enableMicrophoneByDefaultSwitch"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/enableCameraByDefaultSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/enableCameraByDefault"
-                    app:layout_constraintBottom_toBottomOf="@id/enableCameraByDefault"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/selectFrontCameraByDefault"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_select_front_camera_by_default"
-                    app:subtitleText="Automatically use the front camera for video calls"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/enableCameraByDefault"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/selectFrontCameraByDefaultSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/selectFrontCameraByDefault"
-                    app:layout_constraintBottom_toBottomOf="@id/selectFrontCameraByDefault"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/videoDegradationModeText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_video_degradation_mode"
-                    app:subtitleText="Adjust video quality to ensure smooth calls under varying network conditions"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/selectFrontCameraByDefault"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/spinnerVideoDegradationModes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/fragmentContainer3"
+                    android:background="@color/colorTransparent"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    android:textAlignment="viewEnd"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/videoDegradationModeText"
-                    app:layout_constraintBottom_toBottomOf="@id/videoDegradationModeText"/>
+                    android:textSize="@dimen/title_text_size"
+                    android:textColor="@drawable/selector_text_color"
+                    app:icon="@drawable/selector_network"
+                    app:iconTint="@null"/>
 
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/cameraResolutionText"
+                <FrameLayout
+                    android:id="@+id/fragmentContainer4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_camera_resolution"
-                    app:subtitleText="Set a default video resolution for calls to balance quality and performance"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/videoDegradationModeText"/>
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/network"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/spinnerCameraResolution"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/system"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/system"
+                    android:textAlignment="viewStart"
+                    android:layout_marginTop="@dimen/padding_10"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragmentContainer4"
+                    android:background="@color/colorTransparent"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    android:textAlignment="viewEnd"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/cameraResolutionText"
-                    app:layout_constraintBottom_toBottomOf="@id/cameraResolutionText"/>
+                    android:textSize="@dimen/title_text_size"
+                    android:textColor="@drawable/selector_text_color"
+                    app:icon="@drawable/selector_system"
+                    app:iconTint="@null"/>
 
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/cameraFramerateText"
+                <FrameLayout
+                    android:id="@+id/fragmentContainer5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_camera_framerate"
-                    app:subtitleText="Customize the framerate for a smoother video experience"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cameraResolutionText"/>
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/system"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/spinnerCameraFramerate"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/quality"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/quality"
+                    android:textAlignment="viewStart"
+                    android:layout_marginTop="@dimen/padding_10"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragmentContainer5"
+                    android:background="@color/colorTransparent"
+                    android:textAllCaps="false"
                     android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    android:textAlignment="viewEnd"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/cameraFramerateText"
-                    app:layout_constraintBottom_toBottomOf="@id/cameraFramerateText"/>
+                    android:textSize="@dimen/title_text_size"
+                    android:textColor="@drawable/selector_text_color"
+                    app:icon="@drawable/selector_quality"
+                    app:iconTint="@null"/>
 
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/exclusiveCallMode"
+                <FrameLayout
+                    android:id="@+id/fragmentContainer6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_exclusive_call_mode"
-                    app:subtitleText="Block any other incoming calls from other apps except GSM network"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cameraFramerateText"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/exclusiveCallModeSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/exclusiveCallMode"
-                    app:layout_constraintBottom_toBottomOf="@id/exclusiveCallMode"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/showUsernameAsLogo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_show_username_as_logo"
-                    app:subtitleText="Personalize your profile by displaying your username as the logo"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/exclusiveCallMode"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/showUsernameAsLogoSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/showUsernameAsLogo"
-                    app:layout_constraintBottom_toBottomOf="@id/showUsernameAsLogo"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/pushToTalk"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_push_to_talk"
-                    app:subtitleText="Press to activate the microphone during a call"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/showUsernameAsLogo"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/pushToTalkSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/pushToTalk"
-                    app:layout_constraintBottom_toBottomOf="@id/pushToTalk"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/addressLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_addresses"
-                    app:subtitleText="Use speakerphone mode for hands-free calls"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pushToTalkSwitch"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/textSpeakerphoneModes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_speakerphone_mode"
-                    app:subtitleText="Use speakerphone mode for hands-free calls"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/addressLayout"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/spinnerSpeakerphoneModes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    android:textAlignment="viewEnd"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/textSpeakerphoneModes"
-                    app:layout_constraintBottom_toBottomOf="@id/textSpeakerphoneModes"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/databasePasswordLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_database_password"
-                    app:subtitleText="Secure the app with a password on startup"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinnerSpeakerphoneModes"/>
-
-                <TextView
-                    android:id="@+id/databasePasswordTv"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/databasePasswordLayout"
-                    app:layout_constraintBottom_toBottomOf="@id/databasePasswordLayout"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/menuPasswordLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_menu_password"
-                    app:subtitleText="Protect access to the app's menu with a password"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/databasePasswordTv"/>
-
-                <TextView
-                    android:id="@+id/menuPasswordTv"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/menuPasswordLayout"
-                    app:layout_constraintBottom_toBottomOf="@id/menuPasswordLayout"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/disableProximitySensor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_disable_proximity_sensor"
-                    app:subtitleText="Prevent the screen from dimming during calls"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/menuPasswordTv"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/disableProximitySensorSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/disableProximitySensor"
-                    app:layout_constraintBottom_toBottomOf="@id/disableProximitySensor"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/expertSettingsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/padding_20"
-                android:layout_marginEnd="@dimen/padding_20"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/advancedSettingsLayout"
-                android:visibility="gone">
-
-                <View
-                    android:id="@+id/headerExpert"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/selectedColor"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="@dimen/padding_20"
-                    android:layout_marginBottom="@dimen/padding_20"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/autoAcceptCalls"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_auto_accept_calls"
-                    app:subtitleText="Automatically accept incoming calls for uninterrupted communication"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/headerExpert"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/autoAcceptCallsSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/autoAcceptCalls"
-                    app:layout_constraintBottom_toBottomOf="@id/autoAcceptCalls"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/disableCpuOveruseDetection"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_disable_cpu_overuse_detection"
-                    app:subtitleText="Manage CPU usage to maintain call performance"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/autoAcceptCallsSwitch"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/disableCpuOveruseDetectionSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/disableCpuOveruseDetection"
-                    app:layout_constraintBottom_toBottomOf="@id/disableCpuOveruseDetection"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/publicKeyLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_public_key"
-                    app:subtitleText="Your public encryption key for secure communication"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/disableCpuOveruseDetection"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/disableAudioProcessing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_disable_audio_processing"
-                    app:subtitleText="Disable audio processing for raw sound quality"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/publicKeyLayout"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/disableAudioProcessingSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/disableAudioProcessing"
-                    app:layout_constraintBottom_toBottomOf="@id/disableAudioProcessing"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/videoHardwareAcceleration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_video_hardware_acceleration"
-                    app:subtitleText="Enhance video performance with hardware acceleration"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/disableAudioProcessingSwitch"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/videoHardwareAccelerationSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/videoHardwareAcceleration"
-                    app:layout_constraintBottom_toBottomOf="@id/videoHardwareAcceleration"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/connectTimeoutLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_connect_timeout"
-                    app:subtitleText="Set how long the app waits before a connection times out"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/videoHardwareAccelerationSwitch"/>
-
-                <TextView
-                    android:id="@+id/connectTimeoutTv"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/connectTimeoutLayout"
-                    app:layout_constraintBottom_toBottomOf="@id/connectTimeoutLayout"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/connectRetriesLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_connect_retries"
-                    app:subtitleText="Set the number of retry attempts for establishing a connection"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/connectTimeoutTv"/>
-
-                <TextView
-                    android:id="@+id/connectRetriesTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:textSize="@dimen/options_text_size"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/connectRetriesLayout"
-                    app:layout_constraintBottom_toBottomOf="@id/connectRetriesLayout"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/useNeighborTable"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/settings_use_neighbor_table"
-                    app:subtitleText="Optimize network connectivity using ARP/ND"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/connectRetriesTv"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/useNeighborTableSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/SwitchTheme"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/useNeighborTable"
-                    app:layout_constraintBottom_toBottomOf="@id/useNeighborTable"/>
-
-                <org.rivchain.cuplink.renderer.DescriptiveTextView
-                    android:id="@+id/cameraOnWhenScreenLockedLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_80"
-                    app:titleText="@string/camera_on_when_screen_locked"
-                    app:subtitleText="Keep the camera on when the screen is locked"
-                    app:titleFontFamily="@font/poppins_regular"
-                    app:subtitleFontFamily="@font/poppins_light"
-                    app:titleTextSize="@dimen/title_text_size"
-                    app:subtitleTextSize="@dimen/subtitle_text_size"
-                    android:layout_marginTop="@dimen/padding_20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/useNeighborTable"/>
-
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/cameraOnWhenScreenLockedSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:minWidth="48dp"
-                    android:theme="@style/SwitchTheme"
-                    android:contentDescription="@string/camera_on_when_screen_locked"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/cameraOnWhenScreenLockedLabel"
-                    app:layout_constraintBottom_toBottomOf="@id/cameraOnWhenScreenLockedLabel"/>
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/quality"
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

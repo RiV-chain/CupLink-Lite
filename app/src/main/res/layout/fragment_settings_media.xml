@@ -1,0 +1,158 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/padding_20"
+    android:layout_marginBottom="@dimen/padding_20">
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/enableCameraByDefault"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_enable_camera_by_default"
+        app:subtitleText="Camera is automatically ready for video calls"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/enableCameraByDefaultSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/enableCameraByDefault"
+        app:layout_constraintBottom_toBottomOf="@id/enableCameraByDefault"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/cameraOnWhenScreenLockedLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/camera_on_when_screen_locked"
+        app:subtitleText="Keep the camera on when the screen is locked"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enableCameraByDefault"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/cameraOnWhenScreenLockedSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:theme="@style/SwitchTheme"
+        android:contentDescription="@string/camera_on_when_screen_locked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cameraOnWhenScreenLockedLabel"
+        app:layout_constraintBottom_toBottomOf="@id/cameraOnWhenScreenLockedLabel"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/cameraResolutionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_camera_resolution"
+        app:subtitleText="Set a default video resolution for calls to balance quality and performance"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraOnWhenScreenLockedLabel"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/spinnerCameraResolution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/options_text_size"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cameraResolutionText"
+        app:layout_constraintBottom_toBottomOf="@id/cameraResolutionText"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/cameraFramerateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_camera_framerate"
+        app:subtitleText="Customize the framerate for a smoother video experience"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraResolutionText"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/spinnerCameraFramerate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/options_text_size"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cameraFramerateText"
+        app:layout_constraintBottom_toBottomOf="@id/cameraFramerateText"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/disableAudioProcessing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_disable_audio_processing"
+        app:subtitleText="Disable audio processing for raw sound quality"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameraFramerateText"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/disableAudioProcessingSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/disableAudioProcessing"
+        app:layout_constraintBottom_toBottomOf="@id/disableAudioProcessing"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/videoHardwareAcceleration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_video_hardware_acceleration"
+        app:subtitleText="Enhance video performance with hardware acceleration"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/disableAudioProcessing"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/videoHardwareAccelerationSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/videoHardwareAcceleration"
+        app:layout_constraintBottom_toBottomOf="@id/videoHardwareAcceleration"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,114 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/padding_20"
+    android:layout_marginBottom="@dimen/padding_20">
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/startOnBootup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_start_on_bootup"
+        app:subtitleText="App starts automatically with the device"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/startOnBootupSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/startOnBootup"
+        app:layout_constraintBottom_toBottomOf="@id/startOnBootup"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/ignoreBatteryOptimizations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/ignore_battery_optimizations"
+        app:subtitleText="Allows the app to run in the background without battery restrictions"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startOnBootup"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/ignoreBatteryOptimizationsSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ignoreBatteryOptimizations"
+        app:layout_constraintBottom_toBottomOf="@id/ignoreBatteryOptimizations"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/connectTimeoutLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_connect_timeout"
+        app:subtitleText="Set how long the app waits before a connection times out"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ignoreBatteryOptimizations"/>
+
+    <TextView
+        android:id="@+id/connectTimeoutTv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/options_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/connectTimeoutLayout"
+        app:layout_constraintBottom_toBottomOf="@id/connectTimeoutLayout"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/connectRetriesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_connect_retries"
+        app:subtitleText="Set the number of retry attempts for establishing a connection"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connectTimeoutLayout"/>
+
+    <TextView
+        android:id="@+id/connectRetriesTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/options_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/connectRetriesLayout"
+        app:layout_constraintBottom_toBottomOf="@id/connectRetriesLayout"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

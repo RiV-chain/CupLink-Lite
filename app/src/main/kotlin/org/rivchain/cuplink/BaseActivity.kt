@@ -192,7 +192,7 @@ open class BaseActivity : AppCompatActivity() {
         return dialog
     }
 
-    protected open fun restartService(){
+    open fun restartService(){
         val dialog = showMessage("Loading...")
         // Restart service
         val intentStop = Intent(this, MainService::class.java)

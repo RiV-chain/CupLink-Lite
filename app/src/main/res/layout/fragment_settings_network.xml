@@ -1,0 +1,188 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/padding_20"
+    android:layout_marginBottom="@dimen/padding_20">
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/addressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_addresses"
+        app:subtitleText="Use speakerphone mode for hands-free calls"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/publicKeyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_public_key"
+        app:subtitleText="Your public encryption key for secure communication"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addressLayout"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/editPeers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/peers"
+        app:subtitleText="Connect and communicate directly with other users in a peer-to-peer (P2P) manner, without requiring a centralized server."
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/publicKeyLayout"/>
+
+    <TextView
+        android:id="@+id/configuredPeers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/options_text_size"
+        app:layout_constraintBottom_toBottomOf="@id/editPeers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/editPeers"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/searchMulticastPeers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/search_multicast_peers"
+        app:subtitleText="Easily discover and connect with nearby multicast peers"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editPeers"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/searchMulticastPeersSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchMulticastPeers"
+        app:layout_constraintBottom_toBottomOf="@id/searchMulticastPeers"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/discoverableOverMulticast"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/discoverable_over_multicast"
+        app:subtitleText="Make your device discoverable to others on the network"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchMulticastPeers"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/discoverableOverMulticastSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="48dp"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/discoverableOverMulticast"
+        app:layout_constraintBottom_toBottomOf="@id/discoverableOverMulticast"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/publicPeerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_connect_as_public_peer"
+        app:subtitleText="Join the network as a public peer for broader connectivity"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/discoverableOverMulticast"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/publicPeerLayoutSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/publicPeerLayout"
+        app:layout_constraintBottom_toBottomOf="@id/publicPeerLayout"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/automaticStatusUpdates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_automatic_status_updates"
+        app:subtitleText="Keep your contacts list up-to-date automatically"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/publicPeerLayout"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/automaticStatusUpdatesSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/automaticStatusUpdates"
+        app:layout_constraintBottom_toBottomOf="@id/automaticStatusUpdates"/>
+
+    <org.rivchain.cuplink.renderer.DescriptiveTextView
+        android:id="@+id/useNeighborTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_80"
+        app:titleText="@string/settings_use_neighbor_table"
+        app:subtitleText="Optimize network connectivity using ARP/ND"
+        app:titleFontFamily="@font/poppins_regular"
+        app:subtitleFontFamily="@font/poppins_light"
+        app:titleTextSize="@dimen/title_text_size"
+        app:subtitleTextSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="@dimen/padding_20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/automaticStatusUpdates"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/useNeighborTableSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/SwitchTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/useNeighborTable"
+        app:layout_constraintBottom_toBottomOf="@id/useNeighborTable"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
