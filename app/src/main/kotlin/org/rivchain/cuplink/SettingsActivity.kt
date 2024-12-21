@@ -1,53 +1,26 @@
 package org.rivchain.cuplink
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.CompoundButton
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textview.MaterialTextView
-import org.json.JSONArray
 import org.rivchain.cuplink.DatabaseCache.Companion.database
 import org.rivchain.cuplink.renderer.DescriptiveTextView
-import org.rivchain.cuplink.rivmesh.ConfigurePublicPeerActivity
-import org.rivchain.cuplink.rivmesh.PeerListActivity
-import org.rivchain.cuplink.rivmesh.PingPeerListActivity.Companion.PEER_LIST
-import org.rivchain.cuplink.rivmesh.models.PeerInfo
-import org.rivchain.cuplink.rivmesh.util.Utils.serializePeerInfoSet2StringList
 import org.rivchain.cuplink.util.Log
-import org.rivchain.cuplink.util.ServiceUtil
 import org.rivchain.cuplink.util.Utils
-import java.lang.Integer.parseInt
 
 class SettingsActivity : BaseActivity() {
 
-    private var requestListenLauncher: ActivityResultLauncher<Intent>? = null
-    private var requestPeersLauncher: ActivityResultLauncher<Intent>? = null
-
-    private var currentPeers = setOf<PeerInfo>()
-
-    companion object {
-        // not stored in the database
-        private var settingsMode = "basic"
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -66,21 +39,6 @@ class SettingsActivity : BaseActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        requestPeersLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-                if (result.resultCode == RESULT_OK) {
-                    //nothing todo
-                }
-            }
-        requestListenLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-                findViewById<SwitchMaterial>(R.id.publicPeerLayoutSwitch).isChecked = result.resultCode == RESULT_OK
-                val publicPeerUrl = findViewById<DescriptiveTextView>(R.id.publicPeerLayout)
-                publicPeerUrl.subtitleTextView.text = jsonArrayToString(database.mesh.getListen())
-                // refresh settings
-                DatabaseCache.save()
-                restartService()
-            }
         initViews()
     }
 
@@ -120,6 +78,30 @@ class SettingsActivity : BaseActivity() {
         dialog.show()
     }
 
+    private fun toggleFragmentVisibility(fragment: Fragment, containerId: Int, container: FrameLayout) : Boolean{
+        val transaction = supportFragmentManager.beginTransaction()
+
+        transaction.setCustomAnimations(
+            R.anim.fragment_fade_in,  // Enter animation
+            R.anim.fragment_fade_out, // Exit animation
+            R.anim.fragment_fade_in,  // Pop enter animation (when returning)
+            R.anim.fragment_fade_out  // Pop exit animation (when leaving)
+        )
+        if (container.visibility == View.VISIBLE) {
+            transaction
+                .remove(fragment)
+                .commit()
+            container.visibility = View.GONE
+            return false
+        } else {
+            transaction
+                .replace(containerId, fragment)
+                .commit()
+            container.visibility = View.VISIBLE
+            return true
+        }
+    }
+
     private fun initViews() {
 
         val settings = database.settings
@@ -143,371 +125,69 @@ class SettingsActivity : BaseActivity() {
                 showConfirmExitDialog()
             }
 
-        findViewById<DescriptiveTextView>(R.id.settingsNickname)
-            .subtitleTextView.text = settings.username.ifEmpty { getString(R.string.no_value) }
-        findViewById<View>(R.id.settingsNickname)
-            .setOnClickListener { showChangeUsernameDialog() }
+        val privacyAndSecurityFragment = PrivacyAndSecurityFragment()
+        val soundNotificationsFragment = SoundNotificationsFragment()
+        val mediaFragment = MediaFragment()
+        val networkFragment = NetworkFragment()
+        val systemFragment = SystemFragment()
+        val qualityFragment = QualityFragment()
 
-        findViewById<DescriptiveTextView>(R.id.addressLayout)
-            .subtitleTextView.text = if (settings.addresses.isEmpty()) getString(R.string.no_value) else settings.addresses.joinToString()
-        findViewById<View>(R.id.addressLayout)
-            .setOnClickListener {
-                startActivity(Intent(this@SettingsActivity, AddressManagementActivity::class.java))
-            }
 
-        val peersNumber = findViewById<TextView>(R.id.configuredPeers)
-        peersNumber.text = DatabaseCache.database.mesh.getPeers().length().toString()
-        peersNumber.setOnClickListener {
-            val intent = Intent(this@SettingsActivity, PeerListActivity::class.java)
-            intent.putStringArrayListExtra(PEER_LIST, serializePeerInfoSet2StringList(currentPeers))
-            requestPeersLauncher!!.launch(intent)
+        val toggleButtonPrivacy: Button = findViewById(R.id.toggleButtonPrivacy)
+        val fragmentContainer1: FrameLayout = findViewById(R.id.fragmentContainer1)
+        toggleButtonPrivacy.setOnClickListener { view ->
+            val isVisible = toggleFragmentVisibility(privacyAndSecurityFragment, R.id.fragmentContainer1, fragmentContainer1)
+            view.isSelected = isVisible
         }
 
-        val databasePassword = DatabaseCache.databasePassword
-        findViewById<TextView>(R.id.databasePasswordTv)
-            .text = if (databasePassword.isEmpty()) getString(R.string.no_value) else "*".repeat(databasePassword.length)
-        findViewById<View>(R.id.databasePasswordLayout)
-            .setOnClickListener { showDatabasePasswordDialog() }
-
-        findViewById<DescriptiveTextView>(R.id.publicKeyLayout)
-            .subtitleTextView.text = Utils.byteArrayToHexString(settings.publicKey)
-        findViewById<View>(R.id.publicKeyLayout)
-            .setOnClickListener { Toast.makeText(this@SettingsActivity, R.string.setting_read_only, Toast.LENGTH_SHORT).show() }
-
-        val publicPeerUrl = findViewById<DescriptiveTextView>(R.id.publicPeerLayout)
-        val url = jsonArrayToString(database.mesh.getListen())
-        if(url.isNotEmpty()) {
-            publicPeerUrl.subtitleTextView.text = url
+        val soundNotifications: Button = findViewById(R.id.soundNotifications)
+        val fragmentContainer2: FrameLayout = findViewById(R.id.fragmentContainer2)
+        soundNotifications.setOnClickListener { view ->
+            val isVisible = toggleFragmentVisibility(soundNotificationsFragment, R.id.fragmentContainer2, fragmentContainer2)
+            view.isSelected = isVisible
         }
 
-        findViewById<SwitchMaterial>(R.id.blockUnknownSwitch).apply {
-            isChecked = settings.blockUnknown
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.blockUnknown = isChecked
-                DatabaseCache.save()
-            }
+        val media: Button = findViewById(R.id.media)
+        val fragmentContainer3: FrameLayout = findViewById(R.id.fragmentContainer3)
+        media.setOnClickListener { view ->
+            val isVisible = toggleFragmentVisibility(mediaFragment, R.id.fragmentContainer3, fragmentContainer3)
+            view.isSelected = isVisible
         }
 
-        setupRadioDialog(settings.nightMode,
-            R.id.settingsNightModes,
-            R.id.spinnerNightModes,
-            R.array.nightModeLabels,
-            R.array.nightModeValues,
-            object : SpinnerItemSelected {
-                override fun call(newValue: String?) {
-                    if (newValue != null) {
-                        settings.nightMode = newValue
-                        DatabaseCache.save()
-                        setDefaultNightMode(newValue)
-                        applyNightMode()
-                        startActivity(Intent(this@SettingsActivity, SettingsActivity::class.java))
-                        finish()
-                    }
-                }
-            })
-
-        setupRadioDialog(settings.speakerphoneMode,
-            R.id.textSpeakerphoneModes,
-            R.id.spinnerSpeakerphoneModes,
-            R.array.speakerphoneModeLabels,
-            R.array.speakerphoneModeValues,
-            object : SpinnerItemSelected {
-                override fun call(newValue: String?) {
-                    if (newValue != null) {
-                        settings.speakerphoneMode = newValue
-                        DatabaseCache.save()
-                    }
-                }
-            })
-
-        findViewById<TextView>(R.id.connectRetriesTv)
-            .text = "${settings.connectRetries}"
-        findViewById<View>(R.id.connectRetriesLayout)
-            .setOnClickListener { showChangeConnectRetriesDialog() }
-
-        findViewById<TextView>(R.id.connectTimeoutTv)
-            .text = "${settings.connectTimeout}"
-        findViewById<View>(R.id.connectTimeoutLayout)
-            .setOnClickListener { showChangeConnectTimeoutDialog() }
-
-        findViewById<SwitchMaterial>(R.id.exclusiveCallModeSwitch).apply {
-            isChecked = settings.promptOutgoingCalls
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.promptOutgoingCalls = isChecked
-                DatabaseCache.save()
-            }
+        val network: Button = findViewById(R.id.network)
+        val fragmentContainer4: FrameLayout = findViewById(R.id.fragmentContainer4)
+        network.setOnClickListener { view ->
+            val isVisible = toggleFragmentVisibility(networkFragment, R.id.fragmentContainer4, fragmentContainer4)
+            view.isSelected = isVisible
         }
 
-        /*
-        findViewById<SwitchMaterial>(R.id.disableCallHistorySwitch).apply {
-            isChecked = settings.disableCallHistory
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.disableCallHistory = isChecked
-                if (isChecked) {
-                    binder.clearEvents()
-                }
-                Load.saveDatabase()
-            }
-        }*/
-
-        findViewById<SwitchMaterial>(R.id.startOnBootupSwitch).apply {
-            isChecked = settings.startOnBootup
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.startOnBootup = isChecked
-                BootUpReceiver.setEnabled(this@SettingsActivity, isChecked) // apply setting
-                DatabaseCache.save()
-            }
+        val system: Button = findViewById(R.id.system)
+        val fragmentContainer5: FrameLayout = findViewById(R.id.fragmentContainer5)
+        system.setOnClickListener { view ->
+            val isVisible = toggleFragmentVisibility(systemFragment, R.id.fragmentContainer5, fragmentContainer5)
+            view.isSelected = isVisible
         }
 
-        findViewById<SwitchMaterial>(R.id.searchMulticastPeersSwitch).apply {
-            isChecked = database.mesh.multicastListen
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                database.mesh.multicastListen = isChecked
-                DatabaseCache.save()
-                restartService()
-            }
+        val quality: Button = findViewById(R.id.quality)
+        val fragmentContainer6: FrameLayout = findViewById(R.id.fragmentContainer6)
+        quality.setOnClickListener { view ->
+            val isVisible = toggleFragmentVisibility(qualityFragment, R.id.fragmentContainer6, fragmentContainer6)
+            view.isSelected = isVisible
         }
 
-        findViewById<SwitchMaterial>(R.id.discoverableOverMulticastSwitch).apply {
-            isChecked = database.mesh.multicastBeacon
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                database.mesh.multicastBeacon = isChecked
-                DatabaseCache.save()
-                restartService()
+
+        findViewById<Button>(R.id.nickname)
+            .text = settings.username.ifEmpty { getString(R.string.no_value) }
+        findViewById<View>(R.id.nickname)
+            .setOnClickListener { buttom ->
+                showChangeUsernameDialog(buttom)
             }
-        }
-
-        findViewById<SwitchMaterial>(R.id.pushToTalkSwitch).apply {
-            isChecked = settings.pushToTalk
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.pushToTalk = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.disableProximitySensorSwitch).apply {
-            isChecked = settings.disableProximitySensor
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.disableProximitySensor = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        setupRadioDialog(settings.videoDegradationMode,
-            R.id.videoDegradationModeText,
-            R.id.spinnerVideoDegradationModes,
-            R.array.videoDegradationModeLabels,
-            R.array.videoDegradationModeValues,
-            object : SpinnerItemSelected {
-                override fun call(newValue: String?) {
-                    if (newValue != null) {
-                        settings.videoDegradationMode = newValue
-                        applyVideoDegradationMode(newValue)
-                    }
-                }
-            })
-
-        setupRadioDialog(settings.cameraResolution,
-            R.id.cameraResolutionText,
-            R.id.spinnerCameraResolution,
-            R.array.cameraResolutionLabels,
-            R.array.cameraResolutionValues,
-            object : SpinnerItemSelected {
-                override fun call(newValue: String?) {
-                    if (newValue != null) {
-                        settings.cameraResolution = newValue
-                    }
-                }
-            })
-
-        setupRadioDialog(settings.cameraFramerate,
-            R.id.cameraFramerateText,
-            R.id.spinnerCameraFramerate,
-            R.array.cameraFramerateLabels,
-            R.array.cameraFramerateValues,
-            object : SpinnerItemSelected {
-                override fun call(newValue: String?) {
-                    if (newValue != null) {
-                        settings.cameraFramerate = newValue
-                    }
-                }
-            })
-
-        setupRadioDialog(settingsMode,
-            R.id.settingsModes,
-            R.id.spinnerSettingsModes,
-            R.array.settingsModeLabels,
-            R.array.settingsModeValues,
-            object : SpinnerItemSelected {
-                override fun call(newValue: String?) {
-                    if (newValue != null) {
-                        settingsMode = newValue
-                        applySettingsMode(newValue)
-                    }
-                }
-            })
-
-        findViewById<SwitchMaterial>(R.id.useNeighborTableSwitch).apply {
-            isChecked = settings.useNeighborTable
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.useNeighborTable = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.videoHardwareAccelerationSwitch).apply {
-            isChecked = settings.videoHardwareAcceleration
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.videoHardwareAcceleration = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.disableAudioProcessingSwitch).apply {
-            isChecked = settings.disableAudioProcessing
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.disableAudioProcessing = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.showUsernameAsLogoSwitch).apply {
-            isChecked = settings.showUsernameAsLogo
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.showUsernameAsLogo = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.publicPeerLayoutSwitch).apply {
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                if (isChecked) {
-                    val intent =
-                        Intent(this@SettingsActivity, ConfigurePublicPeerActivity::class.java)
-                    requestListenLauncher!!.launch(intent)
-                } else {
-                    database.mesh.setListen(setOf())
-                    val disabledColor = Color.parseColor("#d3d3d3")
-                    publicPeerUrl.subtitleTextView.setTextColor(disabledColor)
-                    DatabaseCache.save()
-                    restartService()
-                }
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.enableMicrophoneByDefaultSwitch).apply {
-            isChecked = settings.enableMicrophoneByDefault
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.enableMicrophoneByDefault = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.enableCameraByDefaultSwitch).apply {
-            isChecked = settings.enableCameraByDefault
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.enableCameraByDefault = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.selectFrontCameraByDefaultSwitch).apply {
-            isChecked = settings.selectFrontCameraByDefault
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.selectFrontCameraByDefault = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.disableCpuOveruseDetectionSwitch).apply {
-            isChecked = settings.disableCpuOveruseDetection
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.disableCpuOveruseDetection = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.autoAcceptCallsSwitch).apply {
-            isChecked = settings.autoAcceptCalls
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                if(Build.VERSION.SDK_INT >= 23 && !Settings.canDrawOverlays(this@SettingsActivity) && isChecked) {
-                    val intent = Intent(
-                        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:$packageName")
-                    )
-                    requestDrawOverlaysPermissionLauncher.launch(intent)
-                } else {
-                    settings.autoAcceptCalls = isChecked
-                    DatabaseCache.save()
-                }
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.automaticStatusUpdatesSwitch).apply {
-            isChecked = settings.automaticStatusUpdates
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.automaticStatusUpdates = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.cameraOnWhenScreenLockedSwitch).apply {
-            isChecked = settings.cameraOnWhenScreenLocked
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.cameraOnWhenScreenLocked = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        findViewById<SwitchMaterial>(R.id.ignoreBatteryOptimizationsSwitch).apply {
-            isChecked = settings.ignoreBatteryOptimizations
-            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-                settings.ignoreBatteryOptimizations = isChecked
-                DatabaseCache.save()
-            }
-        }
-
-        val menuPassword = settings.menuPassword
-        findViewById<TextView>(R.id.menuPasswordTv)
-            .text = if (menuPassword.isEmpty()) getString(R.string.no_value) else "*".repeat(menuPassword.length)
-        findViewById<View>(R.id.menuPasswordLayout)
-            .setOnClickListener { showMenuPasswordDialog() }
-
-        applySettingsMode(settingsMode)
-        applyVideoDegradationMode(settings.videoDegradationMode)
 
         findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
-
     }
 
-    fun jsonArrayToString(listen: JSONArray): String {
-        val stringBuilder = StringBuilder()
-
-        for (i in 0 until listen.length()) {
-            if (i > 0) {
-                stringBuilder.append(", ")
-            }
-            stringBuilder.append(listen.get(i))
-        }
-
-        return stringBuilder.toString()
-    }
-
-    private var requestDrawOverlaysPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode != Activity.RESULT_OK) {
-            if (Build.VERSION.SDK_INT >= 23) {
-                if (!Settings.canDrawOverlays(this)) {
-                    Toast.makeText(this, R.string.overlay_permission_missing, Toast.LENGTH_LONG).show()
-                }
-            }
-        } else {
-            DatabaseCache.database.settings.autoAcceptCalls = true
-            DatabaseCache.save()
-        }
-    }
-
-    private fun showChangeUsernameDialog() {
+    private fun showChangeUsernameDialog(button: View) {
+        button.isSelected = true
         Log.d(this, "showChangeUsernameDialog()")
         val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null)
@@ -527,107 +207,9 @@ class SettingsActivity : BaseActivity() {
                 Toast.makeText(this, R.string.invalid_name, Toast.LENGTH_SHORT).show()
             }
         }
-        dialog.show()
-    }
-
-    private fun showChangeConnectRetriesDialog() {
-        val settings = DatabaseCache.database.settings
-        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_retries, null)
-        val dialog = createBlurredPPTCDialog(view)
-        val connectRetriesEditText = view.findViewById<TextView>(R.id.ConnectRetriesEditText)
-        val okButton = view.findViewById<Button>(R.id.OkButton)
-        connectRetriesEditText.text = "${settings.connectRetries}"
-        okButton.setOnClickListener {
-            val minValue = 0
-            val maxValue = 4
-            var connectRetries = -1
-            val text = connectRetriesEditText.text.toString()
-            try {
-                connectRetries = parseInt(text)
-            } catch (e: Exception) {
-                // ignore
-            }
-
-            if (connectRetries in minValue..maxValue) {
-                settings.connectRetries = connectRetries
-                DatabaseCache.save()
-                initViews()
-                Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
-            } else {
-                val message = String.format(getString(R.string.invalid_number), minValue, maxValue)
-                Toast.makeText(this@SettingsActivity, message, Toast.LENGTH_SHORT).show()
-            }
-
+        dialog.setOnCancelListener {
             dialog.cancel()
-        }
-        dialog.show()
-    }
-
-    private fun showChangeConnectTimeoutDialog() {
-        val settings = DatabaseCache.database.settings
-        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_connect_timeout, null)
-        val dialog = createBlurredPPTCDialog(view)
-        val connectTimeoutEditText = view.findViewById<TextView>(R.id.ConnectTimeoutEditText)
-        val okButton = view.findViewById<Button>(R.id.OkButton)
-        connectTimeoutEditText.text = "${settings.connectTimeout}"
-        okButton.setOnClickListener {
-            val minValue = 20
-            val maxValue = 4000
-            var connectTimeout = -1
-            val text = connectTimeoutEditText.text.toString()
-            try {
-                connectTimeout = parseInt(text)
-            } catch (e: Exception) {
-                // ignore
-            }
-
-            if (connectTimeout in minValue..maxValue) {
-                settings.connectTimeout = connectTimeout
-                DatabaseCache.save()
-                initViews()
-                Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
-            } else {
-                val message = String.format(getString(R.string.invalid_number), minValue, maxValue)
-                Toast.makeText(this@SettingsActivity, message, Toast.LENGTH_SHORT).show()
-            }
-
-            dialog.cancel()
-        }
-        dialog.show()
-    }
-
-    private fun showDatabasePasswordDialog() {
-        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_database_password, null)
-        val dialog = createBlurredPPTCDialog(view)
-        val passwordEditText = view.findViewById<TextInputEditText>(R.id.DatabasePasswordEditText)
-        val okButton = view.findViewById<Button>(R.id.OkButton)
-        passwordEditText.setText(DatabaseCache.databasePassword)
-        okButton.setOnClickListener {
-            val newPassword = passwordEditText.text.toString()
-            DatabaseCache.databasePassword = newPassword
-            DatabaseCache.save()
-            DatabaseCache.dbEncrypted = newPassword != ""
-            Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
-            initViews()
-            dialog.cancel()
-        }
-        dialog.show()
-    }
-
-    private fun showMenuPasswordDialog() {
-        val menuPassword = DatabaseCache.database.settings.menuPassword
-        val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_menu_password, null)
-        val dialog = createBlurredPPTCDialog(view)
-        val passwordEditText = view.findViewById<TextInputEditText>(R.id.MenuPasswordEditText)
-        val okButton = view.findViewById<Button>(R.id.OkButton)
-        passwordEditText.setText(menuPassword)
-        okButton.setOnClickListener {
-            val newPassword = passwordEditText.text.toString()
-            DatabaseCache.database.settings.menuPassword = newPassword
-            DatabaseCache.save()
-            Toast.makeText(this@SettingsActivity, R.string.done, Toast.LENGTH_SHORT).show()
-            initViews()
-            dialog.cancel()
+            button.isSelected = false
         }
         dialog.show()
     }
@@ -635,147 +217,5 @@ class SettingsActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         initViews()
-    }
-
-    // grey out resolution/framerate spinners that are not considered by certain
-    // degradation modes. We still allow those two values to be changed though.
-    private fun applyVideoDegradationMode(degradation: String) {
-        val videoDegradationModeText = findViewById<DescriptiveTextView>(R.id.videoDegradationModeText)
-        val cameraResolutionText = findViewById<DescriptiveTextView>(R.id.cameraResolutionText)
-        val cameraFramerateText = findViewById<DescriptiveTextView>(R.id.cameraFramerateText)
-        val enabledColor = videoDegradationModeText.titleTextView.currentTextColor
-        val disabledColor = Color.parseColor("#d3d3d3")
-
-        when (degradation) {
-            "Balanced" -> {
-                cameraResolutionText.titleTextView.setTextColor(disabledColor)
-                cameraFramerateText.titleTextView.setTextColor(disabledColor)
-            }
-            "Maintain resolution" -> {
-                cameraResolutionText.titleTextView.setTextColor(enabledColor)
-                cameraFramerateText.titleTextView.setTextColor(disabledColor)
-            }
-            "Maintain framerate" -> {
-                cameraResolutionText.titleTextView.setTextColor(disabledColor)
-                cameraFramerateText.titleTextView.setTextColor(enabledColor)
-            }
-            "Disabled" -> {
-                cameraResolutionText.titleTextView.setTextColor(enabledColor)
-                cameraFramerateText.titleTextView.setTextColor(enabledColor)
-            }
-            else -> {
-                Log.w(this, "applyVideoDegradationMode() unhandled degradation=$degradation")
-            }
-        }
-    }
-
-    private fun applySettingsMode(settingsMode: String) {
-        val basicSettingsLayout = findViewById<View>(R.id.basicSettingsLayout)
-        val advancedSettingsLayout = findViewById<View>(R.id.advancedSettingsLayout)
-        val expertSettingsLayout = findViewById<View>(R.id.expertSettingsLayout)
-
-        when (settingsMode) {
-            "Basic" -> {
-                basicSettingsLayout.visibility = View.VISIBLE
-                advancedSettingsLayout.visibility = View.GONE
-                expertSettingsLayout.visibility = View.GONE
-            }
-            "Advanced" -> {
-                basicSettingsLayout.visibility = View.VISIBLE
-                advancedSettingsLayout.visibility = View.VISIBLE
-                expertSettingsLayout.visibility = View.GONE
-            }
-            "Expert" -> {
-                basicSettingsLayout.visibility = View.VISIBLE
-                advancedSettingsLayout.visibility = View.VISIBLE
-                expertSettingsLayout.visibility = View.VISIBLE
-            }
-            else -> Log.e(this, "Invalid settings mode: $settingsMode")
-        }
-    }
-
-    private fun getIgnoreBatteryOptimizations(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val pMgr = ServiceUtil.getPowerManager(this)
-            return pMgr.isIgnoringBatteryOptimizations(this.packageName)
-        }
-        return false
-    }
-
-    private interface SpinnerItemSelected {
-        fun call(newValue: String?)
-    }
-
-    private fun setupRadioDialog(
-        currentValue: String,
-        titleTextViewId: Int,
-        inputTextViewId: Int,
-        arrayId: Int,
-        arrayValuesId: Int,
-        callback: SpinnerItemSelected
-    ) {
-        val arrayValues = resources.getStringArray(arrayValuesId)
-        val arrayLabels = resources.getStringArray(arrayId)
-
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_select_one_radio, null)
-        val radioGroup = dialogView.findViewById<RadioGroup>(R.id.radioGroupNightModes)
-        val titleTextView = dialogView.findViewById<TextView>(R.id.selectDialogTitle)
-        val textViewId = findViewById<View>(titleTextViewId)
-        if(textViewId is TextView){
-            titleTextView.text = textViewId.text
-        }
-        if(textViewId is DescriptiveTextView){
-            titleTextView.text = textViewId.titleTextView.text
-        }
-        val autoCompleteTextView = findViewById<MaterialTextView>(inputTextViewId)
-        autoCompleteTextView.text = currentValue
-
-        arrayLabels.forEachIndexed { index, label ->
-            val radioButton = RadioButton(this).apply {
-                text = label
-                id = index
-                layoutParams = RadioGroup.LayoutParams(
-                    RadioGroup.LayoutParams.MATCH_PARENT,
-                    RadioGroup.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    bottomMargin = resources.getDimensionPixelSize(R.dimen.radio_button_margin_bottom)
-                }
-
-                if (arrayValues[index] == currentValue) {
-                    isChecked = true
-                    setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.light_light_grey))
-                } else {
-                    setTextColor(ContextCompat.getColor(this@SettingsActivity, R.color.light_grey))
-                }
-            }
-            radioGroup.addView(radioButton)
-        }
-
-        val dialog = createBlurredPPTCDialog(dialogView)
-
-        radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            if (checkedId >= 0 && checkedId < arrayValues.size) {
-                val selectedValue = arrayValues[checkedId]
-                callback.call(selectedValue)
-                autoCompleteTextView.text = selectedValue
-                dialog.dismiss()
-            }
-        }
-
-        dialog.setOnDismissListener {
-            val selectedId = radioGroup.checkedRadioButtonId
-            if (selectedId >= 0 && selectedId < arrayValues.size) {
-                val selectedValue = arrayValues[selectedId]
-                callback.call(selectedValue)
-                autoCompleteTextView.text = selectedValue
-            }
-        }
-
-        textViewId.setOnClickListener {
-            dialog.show()
-        }
-        autoCompleteTextView.setOnClickListener {
-            dialog.show()
-        }
     }
 }
