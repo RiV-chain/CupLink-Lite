@@ -123,22 +123,17 @@
                         app:drawableTopCompat="@drawable/ic_power"/>
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/headerBasic"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/selectedColor"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/menu"
-                    android:layout_marginTop="@dimen/padding_20"/>
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/nicknameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_20"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/headerBasic">
+                    app:layout_constraintTop_toBottomOf="@+id/menu"
+                    android:background="@drawable/next_button_background">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/nickname"
@@ -152,10 +147,10 @@
                         android:text="..."
                         android:textAlignment="viewStart"
                         android:textAllCaps="false"
-                        android:textColor="@drawable/selector_text_color"
+                        android:textColor="@color/selectedColor"
                         android:textSize="@dimen/title_text_size"
-                        app:icon="@drawable/selector_account"
-                        app:iconTint="@null"
+                        app:icon="@drawable/ic_account"
+                        app:iconTint="@color/selectedColor"
                         app:layout_constraintEnd_toStartOf="@+id/nicknameIcon"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintStart_toEndOf="parent"
@@ -165,6 +160,7 @@
                         android:id="@+id/nicknameIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_10"
                         android:src="@drawable/ic_edit"
                         android:background="@color/colorTransparent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -179,6 +175,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/privacy_security"
+                    android:layout_marginTop="@dimen/padding_10"
                     android:textAlignment="viewStart"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nicknameLayout"

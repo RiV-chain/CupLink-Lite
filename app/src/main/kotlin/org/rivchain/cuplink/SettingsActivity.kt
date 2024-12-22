@@ -178,16 +178,16 @@ class SettingsActivity : BaseActivity() {
 
         findViewById<Button>(R.id.nickname)
             .text = settings.username.ifEmpty { getString(R.string.no_value) }
-        findViewById<View>(R.id.nickname)
-            .setOnClickListener { buttom ->
-                showChangeUsernameDialog(buttom)
+        findViewById<View>(R.id.nicknameIcon)
+            .setOnClickListener {
+                showChangeUsernameDialog()
             }
 
         findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
     }
 
-    private fun showChangeUsernameDialog(button: View) {
-        button.isSelected = true
+    private fun showChangeUsernameDialog() {
+        findViewById<Button>(R.id.nickname).isSelected = true
         Log.d(this, "showChangeUsernameDialog()")
         val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null)
@@ -209,7 +209,7 @@ class SettingsActivity : BaseActivity() {
         }
         dialog.setOnCancelListener {
             dialog.cancel()
-            button.isSelected = false
+            findViewById<Button>(R.id.nickname).isSelected = false
         }
         dialog.show()
     }

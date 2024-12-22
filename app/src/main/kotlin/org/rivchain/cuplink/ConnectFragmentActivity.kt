@@ -100,6 +100,7 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
         pause()
         val et = findViewById<TextInputLayout>(R.id.EditLayout)
         if (et.visibility == View.VISIBLE) {
+            findViewById<View>(R.id.manualInput).isSelected = false
             et.visibility = View.INVISIBLE
             // do add a contact
             val contact = findViewById<TextInputEditText>(R.id.editTextInput)
@@ -120,6 +121,7 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
             et.visibility = View.VISIBLE
             // Change the fabManualInput icon
             // Wait for an input data
+            findViewById<View>(R.id.manualInput).isSelected = true
         }
     }
 
