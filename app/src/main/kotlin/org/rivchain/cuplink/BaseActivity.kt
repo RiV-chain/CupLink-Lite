@@ -161,7 +161,7 @@ open class BaseActivity : AppCompatActivity() {
         return createBlurredDialog(b)
     }
 
-    fun createBlurredMessageDialog(view: View): AlertDialog {
+    private fun createBlurredMessageDialog(view: View): AlertDialog {
         val b = AlertDialog.Builder(this, R.style.MessageDialog)
             .setView(view) // Set the custom view to the dialog
         mWindowBackgroundDrawable = AppCompatResources.getDrawable(this, R.drawable.dialog_message_rounded_corner)
