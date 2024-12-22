@@ -281,7 +281,7 @@
 
         <activity
             android:name=".AboutActivity"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".SettingsActivity"
             android:configChanges="uiMode"/>
 
         <activity
@@ -290,7 +290,7 @@
 
         <activity
             android:name=".BackupActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".SettingsActivity" />
 
         <activity
             android:name=".AddressManagementActivity"
