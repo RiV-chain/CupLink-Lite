@@ -9,9 +9,11 @@ import java.net.Inet6Address
 
 internal object RlpUtils {
 
-    private val URL_REGEX = """(ftp://)cuplink.net/c/([a-zA-Z0-9]+$)""".toRegex()
+    private val URL_REGEX = """(ftp|https)://cuplink\.net/c/([a-zA-Z0-9]+)$""".toRegex()
 
-    private val BASE_URL = """ftp://cuplink.net/c/"""
+    private val BASE_URL_FTP = """ftp://cuplink.net/c/"""
+
+    private val BASE_URL_HTTPS = """https://cuplink.net/c/"""
 
     @JvmStatic
     fun parseLink(url: String): Contact? {
@@ -65,7 +67,7 @@ internal object RlpUtils {
             RLPElement.fromEncoded(RLPCodec.encode(contact.name)),
             RLPElement.fromEncoded(RLPCodec.encode(contact.publicKey)),
             RLPElement.fromEncoded(RLPCodec.encode(a)))
-        return BASE_URL + Utils.byteArrayToHexString(RLPList.fromElements(list).encoded)
+        return BASE_URL_HTTPS + Utils.byteArrayToHexString(RLPList.fromElements(list).encoded)
     }
 
 }
