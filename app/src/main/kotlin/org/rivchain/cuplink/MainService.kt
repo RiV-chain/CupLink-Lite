@@ -21,7 +21,6 @@ import org.rivchain.cuplink.call.PacketWriter
 import org.rivchain.cuplink.call.RTCPeerConnection
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.rivmesh.AppStateReceiver
-import org.rivchain.cuplink.rivmesh.NetworkStateCallback
 import org.rivchain.cuplink.rivmesh.STATE_CONNECTED
 import org.rivchain.cuplink.rivmesh.STATE_DISABLED
 import org.rivchain.cuplink.rivmesh.STATE_ENABLED
@@ -70,8 +69,7 @@ class MainService : VpnService() {
 
     override fun onCreate() {
         super.onCreate()
-        val callback = NetworkStateCallback(this)
-        callback.register()
+        NetworkStateManager.register(this)
     }
 
     private fun createCommSocket(contact: Contact): Socket? {
@@ -109,6 +107,7 @@ class MainService : VpnService() {
 
     override fun onDestroy() {
         Log.d(this, "onDestroy()")
+        NetworkStateManager.unregister()
         if(!DatabaseCache.isDecrypted()){
             return
         }
