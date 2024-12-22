@@ -73,7 +73,7 @@
             android:layout_marginTop="@dimen/padding_5"
             android:layout_marginStart="65dp"
             android:layout_marginEnd="15dp"
-            android:background="@drawable/edit_text_rounded_corner"
+            android:background="@drawable/next_button_background"
             android:textColorHint="@color/light_grey"
             app:boxBackgroundMode="none"
             app:layout_constraintEnd_toStartOf="@+id/manualInput"
@@ -109,8 +109,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/fabShare"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/fabShare"
-            app:srcCompat="@android:drawable/stat_notify_more"
-            app:tint="@color/white"
+            app:srcCompat="@drawable/selector_manual_input"
+            app:backgroundTint="@color/colorTransparent"
             android:background="@color/zxing_transparent"
             android:contentDescription="@string/add_contact_link_or_json" />
 
