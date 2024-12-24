@@ -835,7 +835,7 @@ class RTCCall : RTCPeerConnection {
                                 Log.d(this, "Disconnect timer expired, reporting call end.")
                                 reportStateChange(CallState.ENDED)
                             }
-                            handler.postDelayed(disconnectTimer!!, 5000)
+                            handler.postDelayed(disconnectTimer!!, 15000)
                         }
                         IceConnectionState.FAILED -> reportStateChange(CallState.ERROR_COMMUNICATION)
                         IceConnectionState.CONNECTED -> {

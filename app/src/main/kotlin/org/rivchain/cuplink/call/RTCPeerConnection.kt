@@ -42,7 +42,7 @@ abstract class RTCPeerConnection(
 ) {
     protected var state = CallState.WAITING
     var callActivity: RTCCall.CallContext? = null
-    private val executor = Executors.newFixedThreadPool(5)
+    private val executor = Executors.newCachedThreadPool()
     private var mediaPlayer: MediaPlayer? = null
     var callStatusHandler: CallStatusHandler? = null
 
@@ -121,6 +121,7 @@ abstract class RTCPeerConnection(
             stopTone()
         }
 
+        service.unregisterReceiver(screenStateReceiver)
         // wait for tasks to finish
         executor.shutdown()
         executor.awaitTermination(4L, TimeUnit.SECONDS)
