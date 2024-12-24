@@ -332,7 +332,7 @@ open class RTCBluetoothManager(contextArg: Context, audioManagerArg: RTCAudioMan
      * higher. It might be required to initiates a virtual voice call since many devices do not
      * accept SCO audio without a "call".
      */
-    fun startScoAudio() {
+    private fun startScoAudio() {
         Utils.checkIsOnMainThread()
         Log.d(this, "startScoAudio() BT state=$bluetoothState, "
                     + "attempts: $scoConnectionAttempts, "
