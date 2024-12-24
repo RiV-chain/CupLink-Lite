@@ -183,6 +183,8 @@ class RTCCall : RTCPeerConnection {
                 }
             } catch (e: InterruptedException) {
                 e.printStackTrace()
+            } catch (e: RuntimeException) {
+                e.printStackTrace()
             }
             Log.d(this, "setCameraEnabled() executor end")
         }
