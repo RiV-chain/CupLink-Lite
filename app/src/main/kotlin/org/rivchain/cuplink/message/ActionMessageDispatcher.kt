@@ -55,7 +55,7 @@ class ActionMessageDispatcher(
                     ownPublicKey,
                     ownSecretKey
                 ) ?: throw IllegalStateException("Encryption failed")
-
+                socketLock.lock()
                 val packetWriter = PacketWriter(socket)
                 packetWriter.writeMessage(encryptedMessage)
                 Log.d(this,  "sendMessage() - Message sent: $message")
@@ -63,14 +63,17 @@ class ActionMessageDispatcher(
             } catch (e: Exception) {
                 Log.e(this,  "sendMessage() - Error sending message: $e")
                 closeSocket()
-                return false
+            } finally {
+                socketLock.unlock()
             }
+            return false
         }
     }
 
     fun closeSocket() {
         socketLock.withLock {
             try {
+                socketLock.lock()
                 if (!socket.isClosed) {
                     socket.close()
                     Log.d(this,  "closeSocket() - Socket closed successfully")
@@ -79,14 +82,14 @@ class ActionMessageDispatcher(
                 }
             } catch (e: Exception) {
                 Log.e(this,  "closeSocket() - Error closing socket: $e")
+            } finally {
+                socketLock.unlock()
             }
         }
     }
 
     private fun isSocketOpen(): Boolean {
-        socketLock.withLock {
-            return !socket.isClosed && socket.isConnected
-        }
+        return !socket.isClosed && socket.isConnected
     }
 
     fun stop() {

@@ -400,7 +400,7 @@ class RTCCall : RTCPeerConnection {
                             createOffer()
                             // reportStateChange(CallState.ENDED)
                         }
-                        IceConnectionState.FAILED -> reportStateChange(CallState.ERROR_COMMUNICATION)
+                        //IceConnectionState.FAILED -> reportStateChange(CallState.ERROR_COMMUNICATION)
                         IceConnectionState.CONNECTED -> reportStateChange(CallState.CONNECTED)
                         else -> return
                     }
@@ -837,7 +837,7 @@ class RTCCall : RTCPeerConnection {
                             }
                             handler.postDelayed(disconnectTimer!!, 15000)
                         }
-                        IceConnectionState.FAILED -> reportStateChange(CallState.ERROR_COMMUNICATION)
+                        //IceConnectionState.FAILED -> reportStateChange(CallState.ERROR_COMMUNICATION)
                         IceConnectionState.CONNECTED -> {
                             disconnectTimer?.let {
                                 Log.d(this, "Connection re-established, canceling disconnect timer.")
