@@ -1,6 +1,10 @@
 package org.rivchain.cuplink.call
 
 import android.Manifest
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.AppOpsManager
 import android.app.PendingIntent
@@ -12,6 +16,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -79,6 +84,7 @@ import org.webrtc.SurfaceViewRenderer
 import java.net.InetSocketAddress
 import java.util.Date
 
+
 class CallActivity : BaseActivity(), RTCCall.CallContext {
 
     private var service: MainService? = null
@@ -126,7 +132,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     private lateinit var captureFramerate: Button
     private lateinit var resolutionSlider: VerticalSeekBar
     private lateinit var framerateSlider: VerticalSeekBar
-    private lateinit var backgroundView: ImageView
+    private lateinit var backgroundView: FrameLayout
     private lateinit var settingsView: ConstraintLayout
     private lateinit var captureQualityController: CaptureQualityController
     private lateinit var visualizerView: VisualizerView
@@ -308,6 +314,20 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                 arrayOf(Manifest.permission.READ_PHONE_STATE),
                 READ_PHONE_STATE_PERMISSION_REQUEST_CODE
             )
+        }
+
+        val background = backgroundView.background
+
+        val drawable = background as Drawable
+        ObjectAnimator.ofInt(drawable, "alpha", 150, 255).apply {
+            duration = 5000 // Set the duration of the animation
+            repeatCount = ObjectAnimator.INFINITE // Make the animation repeat forever
+            repeatMode = ValueAnimator.REVERSE
+            addUpdateListener {
+                // Update the alpha of the Drawable directly during the animation
+                drawable.alpha = animatedValue as Int
+            }
+            start()
         }
     }
 
