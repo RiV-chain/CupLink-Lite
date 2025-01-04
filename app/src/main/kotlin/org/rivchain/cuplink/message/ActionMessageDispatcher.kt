@@ -47,7 +47,7 @@ class ActionMessageDispatcher(
                     return false
                 }
             }
-
+            Log.d(this,  "sendMessage() - Message sent: plain size ${message.toString().length}")
             try {
                 val encryptedMessage = Crypto.encryptMessage(
                     message.toString(),
@@ -59,6 +59,7 @@ class ActionMessageDispatcher(
                 val packetWriter = PacketWriter(socket)
                 packetWriter.writeMessage(encryptedMessage)
                 Log.d(this,  "sendMessage() - Message sent: $message")
+                Log.d(this,  "sendMessage() - Message sent: encrypted size ${encryptedMessage.size}")
                 return true
             } catch (e: Exception) {
                 Log.e(this,  "sendMessage() - Error sending message: $e")
