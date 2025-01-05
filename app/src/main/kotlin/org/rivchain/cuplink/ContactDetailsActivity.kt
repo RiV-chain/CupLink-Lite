@@ -162,7 +162,6 @@ class ContactDetailsActivity : BaseActivity() {
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_contact_change_public_key, null)
         val dialog = createBlurredPPTCDialog(view)
         val publicKeyInput = view.findViewById<TextInputEditText>(R.id.PublicKeyEditText)
-        val cancelButton = view.findViewById<Button>(R.id.CancelButton)
         val okButton = view.findViewById<Button>(R.id.OkButton)
 
         publicKeyInput.setText(contactPublicKeyEdit.text, TextView.BufferType.EDITABLE)
@@ -181,11 +180,6 @@ class ContactDetailsActivity : BaseActivity() {
                 dialog.dismiss()
             }
         }
-
-        cancelButton.setOnClickListener {
-            dialog.dismiss()
-        }
-
         dialog.show()
     }
 
