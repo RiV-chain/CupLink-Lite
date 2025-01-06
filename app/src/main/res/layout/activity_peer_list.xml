@@ -32,19 +32,203 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_peer_list" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/colorBackground">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        app:borderWidth="0dp"
-        app:elevation="6dp"
-        app:fabSize="normal"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:tint="@color/white"
-        android:layout_marginBottom="75dp"/>
+        <org.rivchain.cuplink.renderer.DescriptiveTextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_20"
+            android:layout_marginStart="@dimen/padding_20"
+            android:layout_marginEnd="@dimen/padding_20"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:subtitleFontFamily="@font/poppins_light"
+            app:titleFontFamily="@font/poppins_regular"
+            app:titleText="Manage Your Public Peers"
+            app:subtitleText="Public Peers are decentralized nodes that securely route your video and audio calls without relaying on centralized servers. They ensure secure, private and communication. CupLink even lets you add your own Public Peers database."
+            app:titleTextSize="@dimen/title_text_size"
+            app:subtitleTextSize="@dimen/subtitle_text_size"/>
+
+        <View
+            android:id="@+id/headerBasic"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/selectedColor"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding_20"
+            android:layout_marginStart="@dimen/padding_20"
+            android:layout_marginEnd="@dimen/padding_20"/>
+
+        <org.rivchain.cuplink.renderer.DescriptiveTextView
+            android:id="@+id/automaticPeersSelection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/padding_80"
+            android:layout_marginStart="@dimen/padding_20"
+            app:titleText="@string/automatic_peers_selection"
+            app:subtitleText="@string/automatic_peers_selection_description"
+            app:titleFontFamily="@font/poppins_regular"
+            app:subtitleFontFamily="@font/poppins_light"
+            app:titleTextSize="@dimen/title_text_size"
+            app:subtitleTextSize="@dimen/subtitle_text_size"
+            android:layout_marginTop="@dimen/padding_20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headerBasic"/>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/automaticPeersSelectionSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/SwitchTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/automaticPeersSelection"
+            app:layout_constraintBottom_toBottomOf="@id/automaticPeersSelection"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/peersSelectionSettings"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/padding_20"
+            android:layout_marginEnd="@dimen/padding_20"
+            app:layout_constraintTop_toBottomOf="@+id/automaticPeersSelection"
+            app:layout_constraintBottom_toTopOf="@+id/footerShadow">
+
+            <org.rivchain.cuplink.renderer.DescriptiveTextView
+                android:id="@+id/peers_database"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_30"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:subtitleFontFamily="@font/poppins_light"
+                app:titleFontFamily="@font/poppins_regular"
+                app:titleText="Manage Your Public Peers"
+                app:subtitleText="Your peers will be synced with the link below"
+                app:titleTextSize="@dimen/title_text_size"
+                app:subtitleTextSize="@dimen/subtitle_text_size"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/database_link_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_20"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/peers_database"
+                app:layout_constraintBottom_toTopOf="@+id/peerList"
+                android:background="@drawable/next_button_background">
+
+                <ImageButton
+                    android:id="@+id/networkIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTransparent"
+                    android:src="@drawable/selector_network"
+                    android:layout_marginStart="@dimen/padding_20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/edit"
+                    app:layout_constraintTop_toTopOf="@+id/edit"
+                    app:tint="@color/selectedColor" />
+
+                <TextView
+                    android:id="@+id/edit"
+                    android:layout_width="0dp"
+                    android:layout_height="55dp"
+                    android:background="@color/colorTransparent"
+                    android:fontFamily="@font/poppins_regular"
+                    android:paddingStart="@dimen/padding_50"
+                    android:paddingEnd="@dimen/padding_20"
+                    android:text="..."
+                    android:gravity="center_vertical"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:textAllCaps="false"
+                    android:textColor="@color/selectedColor"
+                    android:textSize="@dimen/subtitle_text_size"
+                    app:layout_constraintEnd_toStartOf="@+id/editIcon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/editIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="17dp"
+                    android:src="@drawable/ic_edit"
+                    android:background="@color/colorTransparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/edit"
+                    app:layout_constraintTop_toTopOf="@+id/edit"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ListView
+                android:id="@+id/peerList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:divider="@color/light_grey"
+                android:layout_marginTop="@dimen/padding_20"
+                android:layout_marginBottom="@dimen/padding_30"
+                app:layout_constraintTop_toBottomOf="@+id/database_link_edit"
+                app:layout_constraintBottom_toTopOf="@+id/addPeer"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addPeer"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/padding_20"
+                android:background="@drawable/next_button_background"
+                android:text="@string/add_more_peers"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@null"
+                android:textSize="@dimen/button_test_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/footerShadow"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:background="@drawable/footer_background"
+            app:layout_constraintBottom_toTopOf="@id/footerLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Footer Layout -->
+        <RelativeLayout
+            android:id="@+id/footerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTransparent"
+            android:layout_marginBottom="@dimen/padding_50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/splashText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_30"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/light_light_grey"
+                android:textSize="@dimen/subtitle_text_size"
+                android:fontFamily="@font/poppins_regular"/>
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
