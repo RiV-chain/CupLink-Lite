@@ -37,7 +37,7 @@ class NetworkFragment: Fragment(R.layout.fragment_settings_network) {
         requestPeersLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == RESULT_OK) {
-                    //nothing todo
+                    (activity as BaseActivity).restartService()
                 }
             }
         requestListenLauncher =

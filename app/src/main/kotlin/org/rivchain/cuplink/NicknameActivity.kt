@@ -46,7 +46,7 @@ class NicknameActivity : AppCompatActivity() {
         backgroundView = findViewById(R.id.background_view)
         parent = findViewById(R.id.container)
         splashText = findViewById(R.id.splashText)
-        nicknameEditText = findViewById(R.id.nickname)
+        nicknameEditText = findViewById(R.id.edit)
         nicknameEditText.filters = arrayOf(getEditTextFilter())
         nextButton = findViewById(R.id.next)
         nextButton.setOnClickListener {

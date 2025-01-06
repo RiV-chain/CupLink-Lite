@@ -53,7 +53,7 @@
             app:layout_constraintTop_toBottomOf="@+id/background_view" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nickname"
+            android:id="@+id/edit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/padding_40"

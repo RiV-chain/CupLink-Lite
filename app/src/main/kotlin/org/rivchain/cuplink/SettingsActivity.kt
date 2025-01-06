@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.CompoundButton
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.DatabaseCache.Companion.database
-import org.rivchain.cuplink.renderer.DescriptiveTextView
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils
 
@@ -176,9 +173,9 @@ class SettingsActivity : BaseActivity() {
         }
 
 
-        findViewById<Button>(R.id.nickname)
+        findViewById<Button>(R.id.edit)
             .text = settings.username.ifEmpty { getString(R.string.no_value) }
-        findViewById<View>(R.id.nicknameIcon)
+        findViewById<View>(R.id.editIcon)
             .setOnClickListener {
                 showChangeUsernameDialog()
             }
@@ -187,7 +184,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun showChangeUsernameDialog() {
-        findViewById<Button>(R.id.nickname).isSelected = true
+        findViewById<Button>(R.id.edit).isSelected = true
         Log.d(this, "showChangeUsernameDialog()")
         val settings = DatabaseCache.database.settings
         val view: View = LayoutInflater.from(this).inflate(R.layout.dialog_change_name, null)
@@ -209,7 +206,7 @@ class SettingsActivity : BaseActivity() {
         }
         dialog.setOnCancelListener {
             dialog.cancel()
-            findViewById<Button>(R.id.nickname).isSelected = false
+            findViewById<Button>(R.id.edit).isSelected = false
         }
         dialog.show()
     }

@@ -1,20 +1,20 @@
 package org.rivchain.cuplink.rivmesh
 
-import android.content.Context
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.webkit.URLUtil
 import android.widget.Button
+import android.widget.CompoundButton
 import android.widget.ListView
 import android.widget.PopupWindow
 import android.widget.TextView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.hbb20.CountryCodePicker
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -22,12 +22,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.rivchain.cuplink.BuildConfig
+import org.rivchain.cuplink.DatabaseCache
 import org.rivchain.cuplink.R
-import org.rivchain.cuplink.SettingsActivity
 import org.rivchain.cuplink.rivmesh.models.PeerInfo
 import org.rivchain.cuplink.rivmesh.util.Utils.ping
 import java.net.InetAddress
 import java.util.Locale
+import org.rivchain.cuplink.DatabaseCache.Companion.database
 
 class PeerListActivity : PingPeerListActivity() {
 
@@ -60,14 +61,73 @@ class PeerListActivity : PingPeerListActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_peer_list)
-        setSupportActionBar(findViewById(R.id.toolbar))
         super.onCreate(savedInstanceState)
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { _ ->
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
+        val settings = database.settings
+
+        val peerSelectionSettings = findViewById<ConstraintLayout>(R.id.peersSelectionSettings)
+        val automaticPeersSelectionSwitch = findViewById<SwitchMaterial>(R.id.automaticPeersSelectionSwitch)
+
+        automaticPeersSelectionSwitch.apply {
+            isChecked = settings.automaticPeersSelection
+            setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+                settings.automaticPeersSelection = isChecked
+                DatabaseCache.save()
+                peerSelectionSettings.visibility = if (automaticPeersSelectionSwitch.isChecked) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+            }
+        }
+        peerSelectionSettings.visibility = if (automaticPeersSelectionSwitch.isChecked) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        findViewById<Button>(R.id.addPeer).setOnClickListener { _ ->
             addNewPeer()
         }
 
+        findViewById<TextView>(R.id.edit).text = peerListUrl
+
+        findViewById<View>(R.id.edit).setOnClickListener { _ ->
+            editPeerListUrl()
+        }
+
+        findViewById<View>(R.id.editIcon).setOnClickListener { _ ->
+            editPeerListUrl()
+        }
+
         findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        super.onBackPressedDispatcher.onBackPressed()
+        savePeers()
+    }
+
+    private fun savePeers(){
+        cancelPeerListPing()
+        val selectedPeers = adapter.getSelectedPeers()
+        if(selectedPeers.isNotEmpty()) {
+            saveSelectedPeers(selectedPeers)
+            setResult(RESULT_OK)
+        }
     }
 
     private fun editPeerListUrl() {
@@ -209,32 +269,9 @@ class PeerListActivity : PingPeerListActivity() {
         return popupWindow
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_save_peers, menu)
-        val item = menu.findItem(R.id.saveItem) as MenuItem
-        item.setActionView(R.layout.menu_save)
-        val saveButton = item
-            .actionView?.findViewById<Button>(R.id.saveButton)
-        saveButton?.setOnClickListener {
-            saveButton.isClickable = false
-            cancelPeerListPing()
-            val result = Intent(this, SettingsActivity::class.java)
-            val adapter = findViewById<ListView>(R.id.peerList).adapter as SelectPeerInfoListAdapter
-
-            val selectedPeers = adapter.getSelectedPeers()
-            saveSelectedPeers(selectedPeers)
-            restartService()
-        }
-
-        val editUrl = menu.findItem(R.id.editUrlItem) as MenuItem
-        editUrl.setActionView(R.layout.menu_edit_url)
-        val editUrlButton = editUrl
-            .actionView?.findViewById<Button>(R.id.editUrlButton)
-        editUrlButton?.setOnClickListener {
-            editPeerListUrl()
-        }
-        return true
+    override fun onPause() {
+        super.onPause()
+        savePeers()
     }
 
     override fun onServiceRestart() {

@@ -175,4 +175,7 @@
     <string name="network">Network</string>
     <string name="system">System</string>
     <string name="quality">Quality</string>
+    <string name="add_more_peers">Add More Public Peers</string>
+    <string name="automatic_peers_selection">Automatic Peers Selection</string>
+    <string name="automatic_peers_selection_description">Keep your peers list up-to-date automatically</string>
 </resources>

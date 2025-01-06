@@ -136,7 +136,7 @@
                     android:background="@drawable/next_button_background">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/nickname"
+                        android:id="@+id/edit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="@color/colorTransparent"
@@ -151,13 +151,13 @@
                         android:textSize="@dimen/title_text_size"
                         app:icon="@drawable/ic_account"
                         app:iconTint="@color/selectedColor"
-                        app:layout_constraintEnd_toStartOf="@+id/nicknameIcon"
+                        app:layout_constraintEnd_toStartOf="@+id/editIcon"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintStart_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
 
                     <ImageButton
-                        android:id="@+id/nicknameIcon"
+                        android:id="@+id/editIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/padding_10"
@@ -165,8 +165,8 @@
                         android:background="@color/colorTransparent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/nickname"
-                        app:layout_constraintTop_toTopOf="@+id/nickname"/>
+                        app:layout_constraintStart_toEndOf="@+id/edit"
+                        app:layout_constraintTop_toTopOf="@+id/edit"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

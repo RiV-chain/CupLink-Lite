@@ -365,6 +365,11 @@ class Database {
                 newFrom = "0.6.13.33"
             }
 
+            if (newFrom == "0.6.13.33") {
+                settings.put("automatic_peers_selection", true)
+                newFrom = "0.6.13.76"
+            }
+
             alignSettings(settings)
 
             db.put("version", newFrom)

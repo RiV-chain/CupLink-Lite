@@ -18,7 +18,7 @@ class DatabaseCache {
 
         lateinit var database: Database
 
-        fun load(): Database {
+        private fun load(): Database {
             if (File(databasePath).exists()) {
                 // Open an existing database
                 val db = readInternalFile(databasePath)
