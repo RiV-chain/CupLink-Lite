@@ -33,7 +33,7 @@ class QualityFragment: Fragment(R.layout.fragment_settings_quality) {
                 override fun call(newValue: String?) {
                     if (newValue != null) {
                         settings.videoDegradationMode = newValue
-                        applyVideoDegradationMode(view, newValue)
+                        //applyVideoDegradationMode(view, newValue)
                     }
                 }
             })
