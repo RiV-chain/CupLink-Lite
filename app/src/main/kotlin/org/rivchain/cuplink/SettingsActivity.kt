@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.DatabaseCache.Companion.database
 import org.rivchain.cuplink.util.Log
@@ -75,53 +76,77 @@ class SettingsActivity : BaseActivity() {
         dialog.show()
     }
 
-    private fun toggleFragmentVisibility(fragment: Fragment, containerId: Int, container: FrameLayout) : Boolean{
+    private fun toggleFragment(
+        fragment: Fragment,
+        containerId: Int,
+        fragmentContainers: List<FrameLayout>,
+        buttons: List<View>,
+        clickedButton: View
+    ) {
         val transaction = supportFragmentManager.beginTransaction()
 
+        // Set custom animations for fragment transitions
         transaction.setCustomAnimations(
             R.anim.fragment_fade_in,  // Enter animation
             R.anim.fragment_fade_out, // Exit animation
-            R.anim.fragment_fade_in,  // Pop enter animation (when returning)
-            R.anim.fragment_fade_out  // Pop exit animation (when leaving)
+            R.anim.fragment_fade_in,  // Pop enter animation
+            R.anim.fragment_fade_out  // Pop exit animation
         )
-        if (container.visibility == View.VISIBLE) {
-            transaction
-                .remove(fragment)
-                .commit()
-            container.visibility = View.GONE
-            return false
+
+        // Find the current container and fragment
+        val targetContainer = fragmentContainers.find { it.id == containerId }
+        val currentFragment = supportFragmentManager.findFragmentById(containerId)
+
+        if (targetContainer?.visibility == View.VISIBLE) {
+            // If the target fragment is already visible, hide it
+            targetContainer.visibility = View.GONE
+            currentFragment?.let { transaction.hide(it) }
+            clickedButton.isSelected = false
         } else {
-            transaction
-                .replace(containerId, fragment)
-                .commit()
-            container.visibility = View.VISIBLE
-            return true
+            // Otherwise, hide all fragments and unselect all buttons
+            fragmentContainers.forEach { container ->
+                container.visibility = View.GONE
+                supportFragmentManager.findFragmentById(container.id)?.let {
+                    transaction.hide(it)
+                }
+            }
+            buttons.forEach { it.isSelected = false }
+
+            // Show the selected fragment
+            if (currentFragment != null) {
+                transaction.show(currentFragment)
+            } else {
+                transaction.replace(containerId, fragment)
+            }
+
+            targetContainer?.visibility = View.VISIBLE
+            clickedButton.isSelected = true
         }
+
+        transaction.commit()
     }
 
     private fun initViews() {
-
         val settings = database.settings
 
-        findViewById<View>(R.id.about)
-            .setOnClickListener {
-                startActivity(Intent(this, AboutActivity::class.java))
-            }
-
-        findViewById<View>(R.id.backup)
-            .setOnClickListener {
-                startActivity(Intent(this, BackupActivity::class.java))
-            }
-        findViewById<View>(R.id.clearHistory)
-            .setOnClickListener {
-                showClearEventsDialog()
+        // Navigate to external activities
+        findViewById<View>(R.id.about).setOnClickListener {
+            startActivity(Intent(this, AboutActivity::class.java))
         }
 
-        findViewById<View>(R.id.exit)
-            .setOnClickListener {
-                showConfirmExitDialog()
-            }
+        findViewById<View>(R.id.backup).setOnClickListener {
+            startActivity(Intent(this, BackupActivity::class.java))
+        }
 
+        findViewById<View>(R.id.clearHistory).setOnClickListener {
+            showClearEventsDialog()
+        }
+
+        findViewById<View>(R.id.exit).setOnClickListener {
+            showConfirmExitDialog()
+        }
+
+        // Fragments
         val privacyAndSecurityFragment = PrivacyAndSecurityFragment()
         val soundNotificationsFragment = SoundNotificationsFragment()
         val mediaFragment = MediaFragment()
@@ -129,56 +154,91 @@ class SettingsActivity : BaseActivity() {
         val systemFragment = SystemFragment()
         val qualityFragment = QualityFragment()
 
+        // Fragment containers and buttons
+        val fragmentContainers = listOf(
+            findViewById<FrameLayout>(R.id.fragmentContainer1),
+            findViewById<FrameLayout>(R.id.fragmentContainer2),
+            findViewById<FrameLayout>(R.id.fragmentContainer3),
+            findViewById<FrameLayout>(R.id.fragmentContainer4),
+            findViewById<FrameLayout>(R.id.fragmentContainer5),
+            findViewById<FrameLayout>(R.id.fragmentContainer6)
+        )
 
-        val toggleButtonPrivacy: Button = findViewById(R.id.toggleButtonPrivacy)
-        val fragmentContainer1: FrameLayout = findViewById(R.id.fragmentContainer1)
-        toggleButtonPrivacy.setOnClickListener { view ->
-            val isVisible = toggleFragmentVisibility(privacyAndSecurityFragment, R.id.fragmentContainer1, fragmentContainer1)
-            view.isSelected = isVisible
+        val buttons = listOf(
+            findViewById<View>(R.id.toggleButtonPrivacy),
+            findViewById<View>(R.id.soundNotifications),
+            findViewById<View>(R.id.media),
+            findViewById<View>(R.id.network),
+            findViewById<View>(R.id.system),
+            findViewById<View>(R.id.quality)
+        )
+
+        // Button click listeners
+        findViewById<Button>(R.id.toggleButtonPrivacy).setOnClickListener {
+            toggleFragment(
+                privacyAndSecurityFragment,
+                R.id.fragmentContainer1,
+                fragmentContainers,
+                buttons,
+                it
+            )
         }
 
-        val soundNotifications: Button = findViewById(R.id.soundNotifications)
-        val fragmentContainer2: FrameLayout = findViewById(R.id.fragmentContainer2)
-        soundNotifications.setOnClickListener { view ->
-            val isVisible = toggleFragmentVisibility(soundNotificationsFragment, R.id.fragmentContainer2, fragmentContainer2)
-            view.isSelected = isVisible
+        findViewById<Button>(R.id.soundNotifications).setOnClickListener {
+            toggleFragment(
+                soundNotificationsFragment,
+                R.id.fragmentContainer2,
+                fragmentContainers,
+                buttons,
+                it
+            )
         }
 
-        val media: Button = findViewById(R.id.media)
-        val fragmentContainer3: FrameLayout = findViewById(R.id.fragmentContainer3)
-        media.setOnClickListener { view ->
-            val isVisible = toggleFragmentVisibility(mediaFragment, R.id.fragmentContainer3, fragmentContainer3)
-            view.isSelected = isVisible
+        findViewById<Button>(R.id.media).setOnClickListener {
+            toggleFragment(
+                mediaFragment,
+                R.id.fragmentContainer3,
+                fragmentContainers,
+                buttons,
+                it
+            )
         }
 
-        val network: Button = findViewById(R.id.network)
-        val fragmentContainer4: FrameLayout = findViewById(R.id.fragmentContainer4)
-        network.setOnClickListener { view ->
-            val isVisible = toggleFragmentVisibility(networkFragment, R.id.fragmentContainer4, fragmentContainer4)
-            view.isSelected = isVisible
+        findViewById<Button>(R.id.network).setOnClickListener {
+            toggleFragment(
+                networkFragment,
+                R.id.fragmentContainer4,
+                fragmentContainers,
+                buttons,
+                it
+            )
         }
 
-        val system: Button = findViewById(R.id.system)
-        val fragmentContainer5: FrameLayout = findViewById(R.id.fragmentContainer5)
-        system.setOnClickListener { view ->
-            val isVisible = toggleFragmentVisibility(systemFragment, R.id.fragmentContainer5, fragmentContainer5)
-            view.isSelected = isVisible
+        findViewById<Button>(R.id.system).setOnClickListener {
+            toggleFragment(
+                systemFragment,
+                R.id.fragmentContainer5,
+                fragmentContainers,
+                buttons,
+                it
+            )
         }
 
-        val quality: Button = findViewById(R.id.quality)
-        val fragmentContainer6: FrameLayout = findViewById(R.id.fragmentContainer6)
-        quality.setOnClickListener { view ->
-            val isVisible = toggleFragmentVisibility(qualityFragment, R.id.fragmentContainer6, fragmentContainer6)
-            view.isSelected = isVisible
+        findViewById<Button>(R.id.quality).setOnClickListener {
+            toggleFragment(
+                qualityFragment,
+                R.id.fragmentContainer6,
+                fragmentContainers,
+                buttons,
+                it
+            )
         }
 
-
-        findViewById<Button>(R.id.edit)
-            .text = settings.username.ifEmpty { getString(R.string.no_value) }
-        findViewById<View>(R.id.editIcon)
-            .setOnClickListener {
-                showChangeUsernameDialog()
-            }
+        // Update UI with user settings
+        findViewById<Button>(R.id.edit).text = settings.username.ifEmpty { getString(R.string.no_value) }
+        findViewById<View>(R.id.editIcon).setOnClickListener {
+            showChangeUsernameDialog()
+        }
 
         findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME}"
     }

@@ -171,9 +171,9 @@ abstract class RTCPeerConnection(
 
         dispatcher.receiveOfferResponse()
 
-        dispatcher.storeLastAddress()
-
         dispatcher.confirmConnected()
+
+        dispatcher.storeLastAddress()
 
         Log.d(this, "createOutgoingCallInternal() close socket")
         dispatcher.stop()
