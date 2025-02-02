@@ -53,7 +53,7 @@ class AboutActivity : BaseActivity() {
             openWebsite(R.string.telegram_website)
         }
 
-        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2024 RiV Chain Ltd"
+        findViewById<TextView>(R.id.splashText).text = "CupLink v${BuildConfig.VERSION_NAME} © 2025 RiV Chain Ltd"
     }
 
     private fun openWebsite(id: Int){
