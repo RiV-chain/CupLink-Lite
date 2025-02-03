@@ -11,22 +11,24 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ExpandableListView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.textfield.TextInputEditText
-import org.rivchain.cuplink.adapter.EventListAdapter
+import org.rivchain.cuplink.adapter.EventExpandableListAdapter
 import org.rivchain.cuplink.call.CallActivity
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils
 
+
 class EventListFragment() : Fragment() {
 
     private lateinit var activity: BaseActivity
-    private lateinit var eventListAdapter: EventListAdapter
-    private lateinit var eventListView: ListView
+    private lateinit var eventListAdapter: EventExpandableListAdapter
+    private lateinit var eventListView: ExpandableListView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,10 +39,10 @@ class EventListFragment() : Fragment() {
         eventListView = view.findViewById(R.id.eventList)
         activity = requireActivity() as BaseActivity
 
-        eventListAdapter = EventListAdapter(activity, R.layout.item_event, emptyList(), emptyList())
-        eventListView.adapter = eventListAdapter
-        eventListView.onItemClickListener = onEventClickListener
-        eventListView.onItemLongClickListener = onEventLongClickListener
+        eventListAdapter = EventExpandableListAdapter(activity, emptyList(), emptyList())
+        eventListView.setAdapter(eventListAdapter)
+        eventListView.setOnChildClickListener(onEventClickListener)
+        eventListView.setOnItemLongClickListener(onEventLongClickListener)
 
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(refreshEventListReceiver, IntentFilter("refresh_event_list"))
@@ -50,10 +52,10 @@ class EventListFragment() : Fragment() {
         return view
     }
 
-    private val onEventClickListener = AdapterView.OnItemClickListener { _, _, i, _ ->
-        Log.d(this, "onItemClick")
+    private val onEventClickListener = ExpandableListView.OnChildClickListener { _, _, groupPosition, childPosition, _ ->
+        Log.d(this, "onChildClick")
 
-        val eventGroup = eventListAdapter.getItem(i)
+        val eventGroup = eventListAdapter.getChild(groupPosition, childPosition)
         // get last event that has an address
         val latestEvent = eventGroup.lastOrNull { it.address != null } ?: eventGroup.last()
 
@@ -71,70 +73,87 @@ class EventListFragment() : Fragment() {
             intent.putExtra("EXTRA_CONTACT", contact)
             startActivity(intent)
         }
+
+        true
     }
 
-    private val onEventLongClickListener = AdapterView.OnItemLongClickListener { _, _, i, _ ->
+    private val onEventLongClickListener = AdapterView.OnItemLongClickListener { _, _, i, id ->
         Log.d(this, "onItemLongClick")
 
-        val eventGroup = eventListAdapter.getItem(i)
-        val latestEvent = eventGroup.last()
-        val res = resources
-        val add = res.getString(R.string.contact_menu_add)
-        val delete = res.getString(R.string.contact_menu_delete)
-        val block = res.getString(R.string.contact_menu_block)
-        val unblock = res.getString(R.string.contact_menu_unblock)
-        val contact = DatabaseCache.database.contacts.getContactByPublicKey(latestEvent.publicKey)
+        if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            val groupPosition = ExpandableListView.getPackedPositionGroup(id)
+            val childPosition = ExpandableListView.getPackedPositionChild(id)
 
-        // Create a list of options
-        val options = mutableListOf<String>()
+            // You now have everything that you would as if this was an OnChildClickListener()
+            // Add your logic here.
 
-        // Allow to add unknown caller
-        if (contact == null) {
-            options.add(add)
-        }
+            // Return true as we are handling the event.
+            val eventGroup = eventListAdapter.getChild(groupPosition, childPosition)
+            val latestEvent = eventGroup.last()
+            val res = resources
+            val add = res.getString(R.string.contact_menu_add)
+            val delete = res.getString(R.string.contact_menu_delete)
+            val block = res.getString(R.string.contact_menu_block)
+            val unblock = res.getString(R.string.contact_menu_unblock)
+            val contact = DatabaseCache.database.contacts.getContactByPublicKey(latestEvent.publicKey)
 
-        if (contact != null) {
-            if (contact.blocked) {
-                options.add(unblock)
-            } else {
-                options.add(block)
+            // Create a list of options
+            val options = mutableListOf<String>()
+
+            // Allow to add unknown caller
+            if (contact == null) {
+                options.add(add)
             }
-        }
 
-        options.add(delete)
-
-        // Inflate the dialog layout
-        val inflater = LayoutInflater.from(activity)
-        val dialogView = inflater.inflate(R.layout.dialog_select_one_listview_item, null)
-        val listViewEventOptions: ListView = dialogView.findViewById(R.id.listView)
-
-        // Create an ArrayAdapter
-        val adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, options)
-        listViewEventOptions.adapter = adapter
-
-        // Create and show the dialog
-        val dialog = activity.createBlurredPPTCDialog(dialogView)
-        listViewEventOptions.setOnItemClickListener { _, _, position, _ ->
-            val selectedOption = options[position]
-            when (selectedOption) {
-                add -> {
-                    showAddDialog(eventGroup)
-                }
-                block -> {
-                    setBlocked(latestEvent, true)
-                }
-                unblock -> {
-                    setBlocked(latestEvent, false)
-                }
-                delete -> {
-                    deleteEventGroup(eventGroup)
+            if (contact != null) {
+                if (contact.blocked) {
+                    options.add(unblock)
+                } else {
+                    options.add(block)
                 }
             }
-            dialog.dismiss()
+
+            options.add(delete)
+
+            // Inflate the dialog layout
+            val inflater = LayoutInflater.from(activity)
+            val dialogView = inflater.inflate(R.layout.dialog_select_one_listview_item, null)
+            val listViewEventOptions: ListView = dialogView.findViewById(R.id.listView)
+
+            // Create an ArrayAdapter
+            val adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, options)
+            listViewEventOptions.adapter = adapter
+
+            // Create and show the dialog
+            val dialog = activity.createBlurredPPTCDialog(dialogView)
+            listViewEventOptions.setOnItemClickListener { _, _, position, _ ->
+                val selectedOption = options[position]
+                when (selectedOption) {
+                    add -> {
+                        showAddDialog(eventGroup)
+                    }
+
+                    block -> {
+                        setBlocked(latestEvent, true)
+                    }
+
+                    unblock -> {
+                        setBlocked(latestEvent, false)
+                    }
+
+                    delete -> {
+                        deleteEventGroup(eventGroup)
+                    }
+                }
+                dialog.dismiss()
+            }
+
+            dialog.show()
+
+            return@OnItemLongClickListener true
         }
 
-        dialog.show()
-        true
+        return@OnItemLongClickListener false
     }
 
     private val refreshEventListReceiver = object : BroadcastReceiver() {
@@ -168,7 +187,8 @@ class EventListFragment() : Fragment() {
 
             eventListAdapter.update(events, contacts)
             eventListAdapter.notifyDataSetChanged()
-            eventListView.adapter = eventListAdapter
+            eventListView.setAdapter(eventListAdapter)
+            for (i in 0 until eventListAdapter.getGroupCount()) eventListView.expandGroup(i)
         }
     }
 
