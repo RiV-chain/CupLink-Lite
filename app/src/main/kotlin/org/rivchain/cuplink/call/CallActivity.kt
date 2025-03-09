@@ -1,8 +1,6 @@
 package org.rivchain.cuplink.call
 
 import android.Manifest
-import android.animation.AnimatorInflater
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -1456,7 +1454,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun enterPictureInPictureMode(launchedByUser: Boolean) {
 
         if (!ViewUtil.supportsPictureInPicture(this)) {
