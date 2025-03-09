@@ -137,18 +137,19 @@ class RTCAudioManager(private val context: Context) {
         savedIsMicrophoneMute = audioManager.isMicrophoneMute
         bluetoothManager.start()
 
+        // Desired volume set to 50% of the maximum volume.
+        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)
+        val desiredVolume = (maxVolume * 0.5).toInt()
+
         // Create an AudioManager.OnAudioFocusChangeListener instance.
         audioFocusChangeListener = object : AudioManager.OnAudioFocusChangeListener {
-            // Called on the listener to notify if the audio focus for this listener has been changed.
-            // The `focusChange` value indicates whether the focus was gained, whether the focus was lost,
-            // and whether that loss is transient, or whether the new focus holder will hold it for an
-            // unknown amount of time.
-            // TODO: possibly extend support of handling audio-focus changes. Only contains
-            // logging for now.
             override fun onAudioFocusChange(focusChange: Int) {
                 val typeOfChange = when (focusChange) {
-                    AudioManager.AUDIOFOCUS_GAIN -> "AUDIOFOCUS_GAIN"
-                    AudioManager.AUDIOFOCUS_GAIN_TRANSIENT -> "AUDIOFOCUS_GAIN_TRANSIENT"
+                    AudioManager.AUDIOFOCUS_GAIN, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT -> {
+                        // Reset volume to desired level when audio focus is gained.
+                        audioManager.setStreamVolume(AudioManager.STREAM_RING, desiredVolume, 0)
+                        "AUDIOFOCUS_GAIN"
+                    }
                     AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE -> "AUDIOFOCUS_GAIN_TRANSIENT_EXCLUSIVE"
                     AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK -> "AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK"
                     AudioManager.AUDIOFOCUS_LOSS -> "AUDIOFOCUS_LOSS"
@@ -168,7 +169,7 @@ class RTCAudioManager(private val context: Context) {
             Log.w(this, "start() Audio focus request failed")
         }
 
-        // Start by setting MODE_IN_COMMUNICATION as default audio mode. It is
+        // Start by setting MODE_IN_COMMUNICATION as the default audio mode. It is
         // required to be in this mode when playout and/or recording starts for
         // best possible VoIP performance.
         audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
