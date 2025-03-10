@@ -19,6 +19,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.PowerManager
 import android.os.PowerManager.WakeLock
 import android.os.SystemClock
@@ -171,6 +172,8 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_call)
+
+        CallManager.setCallActivity(this)
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
@@ -901,7 +904,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         declineButton.setOnClickListener(declineListener)
     }
 
-    private fun initIncomingCall() {
+    fun initIncomingCall() {
         initServiceConnection()
 
         // decline before call starts
@@ -918,10 +921,10 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
         acceptButton.setOnClickListener(acceptListener)
         declineButton.setOnClickListener(declineListener)
-
-        acceptButton.visibility = VISIBLE
-        declineButton.visibility = VISIBLE
-
+        Handler(Looper.getMainLooper()).post {
+            acceptButton.visibility = VISIBLE
+            declineButton.visibility = VISIBLE
+        }
         bindService(Intent(this, MainService::class.java), connection, 0)
     }
 
@@ -987,11 +990,11 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     @SuppressLint("ClickableViewAccessibility")
     private fun continueCallSetup() {
         Log.d(this, "continueCallSetup()"
-            + " lifecycle.currentState: ${lifecycle.currentState}"
-            + ", init.action: ${intent.action}"
-            + ", lifecycle.currentState: ${this.lifecycle.currentState}"
-            + ", audio permissions: ${Utils.hasPermission(this, Manifest.permission.RECORD_AUDIO)}"
-            + ", video permissions: ${Utils.hasPermission(this, Manifest.permission.CAMERA)}"
+                + " lifecycle.currentState: ${lifecycle.currentState}"
+                + ", init.action: ${intent.action}"
+                + ", lifecycle.currentState: ${this.lifecycle.currentState}"
+                + ", audio permissions: ${Utils.hasPermission(this, Manifest.permission.RECORD_AUDIO)}"
+                + ", video permissions: ${Utils.hasPermission(this, Manifest.permission.CAMERA)}"
         )
 
         val settings = DatabaseCache.database.settings
@@ -1136,9 +1139,9 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         val settings = DatabaseCache.database.settings
 
         Log.d(this, "initCall() settings"
-            + " microphone ${currentCall.getMicrophoneEnabled()} => ${settings.enableMicrophoneByDefault}"
-            + ", camera ${currentCall.getCameraEnabled()} => ${settings.enableCameraByDefault}"
-            + ", front camera ${currentCall.getFrontCameraEnabled()} => ${settings.selectFrontCameraByDefault}")
+                + " microphone ${currentCall.getMicrophoneEnabled()} => ${settings.enableMicrophoneByDefault}"
+                + ", camera ${currentCall.getCameraEnabled()} => ${settings.enableCameraByDefault}"
+                + ", front camera ${currentCall.getFrontCameraEnabled()} => ${settings.selectFrontCameraByDefault}")
 
         rtcAudioManager.setEventListener(object : RTCAudioManager.AudioManagerEvents {
             private fun getAudioDeviceName(device: RTCAudioManager.AudioDevice): String {
@@ -1267,22 +1270,22 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     }
 
     private val allowBluetoothConnectForResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-        isGranted -> if (isGranted) {
-            rtcAudioManager.startBluetooth()
-        } else {
-            // do not turn on microphone
-            showTextMessage(getString(R.string.missing_bluetooth_permission))
-        }
+            isGranted -> if (isGranted) {
+        rtcAudioManager.startBluetooth()
+    } else {
+        // do not turn on microphone
+        showTextMessage(getString(R.string.missing_bluetooth_permission))
+    }
         Log.d(this, "allowBluetoothConnectForResult() isGranted=$isGranted")
     }
 
     private val enabledMicrophoneForResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-        isGranted -> if (isGranted) {
-            switchMicrophoneEnabled()
-        } else {
-            // do not turn on microphone
-            showTextMessage(getString(R.string.missing_microphone_permission))
-        }
+            isGranted -> if (isGranted) {
+        switchMicrophoneEnabled()
+    } else {
+        // do not turn on microphone
+        showTextMessage(getString(R.string.missing_microphone_permission))
+    }
     }
 
     private fun switchMicrophoneEnabled() {
@@ -1304,12 +1307,12 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
     }
 
     private val enabledCameraForResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-        isGranted -> if (isGranted) {
-            switchCameraEnabled()
-        } else {
-            // do not turn on camera
-            showTextMessage(getString(R.string.missing_camera_permission))
-        }
+            isGranted -> if (isGranted) {
+        switchCameraEnabled()
+    } else {
+        // do not turn on camera
+        showTextMessage(getString(R.string.missing_camera_permission))
+    }
     }
 
     private fun switchCameraEnabled() {
@@ -1333,6 +1336,7 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
         Log.d(this, "onDestroy()")
         try {
             isCallInProgress = false
+            CallManager.clearCallActivity()
             if(this::currentCall.isInitialized ){
                 currentCall.callStatusHandler?.stopCallStatusListening()
                 currentCall.cleanup()

@@ -339,14 +339,12 @@ class MainActivity : BaseActivity() {
         handleDeeplinkIntent(intent)
     }
 
-
     private fun handleDeeplinkIntent(intent: Intent) {
         val data = intent.data
         if (data != null) {
             AddContactActivity.handlePotentialCupLinkContactUrl(this, data.toString())
         }
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         try {
