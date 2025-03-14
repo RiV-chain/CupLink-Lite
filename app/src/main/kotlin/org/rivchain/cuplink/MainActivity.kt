@@ -24,9 +24,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.textfield.TextInputEditText
+import org.rivchain.cuplink.call.CallActivity
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
 import org.rivchain.cuplink.util.PowerManager
+import androidx.core.view.get
 
 class MainActivity : BaseActivity() {
 
@@ -178,14 +180,22 @@ class MainActivity : BaseActivity() {
 
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        if (viewPager.currentItem == 0) {
-            // If already on the first page, exit the activity
-            super.onBackPressedDispatcher.onBackPressed()
-            finish()
+
+        if (CallActivity.isCallInProgress) {
+            // Redirect to CallActivity if a call is active
+            val intent = Intent(this, CallActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            startActivity(intent)
         } else {
-            // If not on the first page, navigate to the first page
-            viewPager.setCurrentItem(0, true) // true to animate the transition
-            bottomNavigationView.menu.getItem(0).isChecked = true // Sync BottomNavigationView
+            if (viewPager.currentItem == 0) {
+                // If already on the first page, exit the activity
+                super.onBackPressedDispatcher.onBackPressed()
+                finish()
+            } else {
+                // If not on the first page, navigate to the first page
+                viewPager.setCurrentItem(0, true) // true to animate the transition
+                bottomNavigationView.menu[0].isChecked = true // Sync BottomNavigationView
+            }
         }
     }
 
