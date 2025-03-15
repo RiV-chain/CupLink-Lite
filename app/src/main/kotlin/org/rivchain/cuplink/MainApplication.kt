@@ -10,9 +10,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.service.quicksettings.TileService
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import org.acra.config.dialog
 import org.acra.config.httpSender
 import org.acra.data.StringFormat
@@ -27,7 +30,7 @@ import org.rivchain.cuplink.util.Log
 
 const val PREF_KEY_ENABLED = "enabled"
 const val MAIN_CHANNEL_ID = "CupLink Service"
-class MainApplication : Application(), AppStateReceiver.StateReceiver {
+class MainApplication : Application(), AppStateReceiver.StateReceiver, LifecycleObserver {
 
     private var currentState: State = State.Disabled
 
@@ -68,6 +71,7 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver {
 
     override fun onCreate() {
         super.onCreate()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleObserver(this))
         val receiver = AppStateReceiver(this)
         receiver.register(this)
         // Prevent UnsatisfiedLinkError
@@ -100,10 +104,8 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStateChange(state: State) {
         if (state != currentState) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val componentName = ComponentName(this, MeshTileService::class.java)
-                TileService.requestListeningState(this, componentName)
-            }
+            val componentName = ComponentName(this, MeshTileService::class.java)
+            TileService.requestListeningState(this, componentName)
 
             if (state != State.Disabled) {
                 val notification = createServiceNotification(this, state)
@@ -186,5 +188,18 @@ private fun createNotificationChannels(context: Context) {
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+}
+
+class AppLifecycleObserver(private val context: Context) : DefaultLifecycleObserver {
+
+    override fun onStart(owner: LifecycleOwner) {
+        super.onStart(owner)
+        if (CallActivity.isCallInProgress) {
+            val intent = Intent(context, CallActivity::class.java).apply {
+                flags =  Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            }
+            context.startActivity(intent)
+        }
     }
 }
