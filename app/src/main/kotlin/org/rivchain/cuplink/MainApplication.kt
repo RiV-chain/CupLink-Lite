@@ -71,6 +71,7 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver, Lifecycle
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleObserver(this))
         val receiver = AppStateReceiver(this)
         receiver.register(this)
@@ -115,6 +116,17 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver, Lifecycle
             }
 
             currentState = state
+        }
+    }
+
+    companion object {
+        @Volatile
+        private var instance: MainApplication? = null
+
+        @JvmStatic
+        fun getAppContext(): Context {
+            return instance?.applicationContext
+                ?: throw IllegalStateException("Application instance is null!")
         }
     }
 }
