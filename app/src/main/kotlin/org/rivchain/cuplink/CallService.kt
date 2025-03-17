@@ -57,9 +57,20 @@ class CallService : Service() {
 
     private fun startRinging() {
         Log.d(this, "startRinging()")
-        val ringerMode = ServiceUtil.getAudioManager(this).ringerMode
+
+        val audioManager = ServiceUtil.getAudioManager(this)
+        val ringerMode = audioManager.ringerMode
         if (ringerMode == AudioManager.RINGER_MODE_SILENT) {
             return
+        }
+
+        // Set the volume explicitly to avoid gradual increase
+        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)
+        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING)
+
+        // Only set the volume if it's not already at max
+        if (currentVolume < maxVolume) {
+            audioManager.setStreamVolume(AudioManager.STREAM_RING, maxVolume, 0)
         }
 
         val pattern = longArrayOf(1500, 800, 800, 800)
