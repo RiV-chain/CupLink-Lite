@@ -57,10 +57,16 @@ class ContactListFragment() : Fragment() {
             if (contact.addresses.isEmpty()) {
                 Toast.makeText(activity, R.string.contact_has_no_address_warning, Toast.LENGTH_SHORT).show()
             } else {
-                Log.d(this, "start CallActivity")
                 val intent = Intent(activity, CallActivity::class.java)
-                intent.action = "ACTION_OUTGOING_CALL"
-                intent.putExtra("EXTRA_CONTACT", contact)
+                if (CallActivity.isCallInProgress) {
+                    Log.d(this, "bring CallActivity to front")
+                    // Redirect to CallActivity if a call is active
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                } else {
+                    Log.d(this, "start CallActivity")
+                    intent.action = "ACTION_OUTGOING_CALL"
+                    intent.putExtra("EXTRA_CONTACT", contact)
+                }
                 startActivity(intent)
             }
     }

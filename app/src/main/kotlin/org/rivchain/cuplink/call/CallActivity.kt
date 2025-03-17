@@ -83,10 +83,10 @@ import org.webrtc.SurfaceViewRenderer
 import java.net.InetSocketAddress
 import java.util.Date
 
-
-class CallActivity : BaseActivity(), RTCCall.CallContext {
+class CallActivity() : BaseActivity(), RTCCall.CallContext {
 
     private var service: MainService? = null
+    private var callStatusServiceIntent: Intent? = null
     private lateinit var connection: ServiceConnection
     private lateinit var currentCall: RTCCall
     private lateinit var eglBase: EglBase
@@ -349,11 +349,11 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
 
 
     private fun startCallStatusService() {
-        val intent = Intent(this, CallStatusService::class.java)
+        callStatusServiceIntent = Intent(this, CallStatusService::class.java)
             .putExtra(
                 CallService.SERVICE_CONTACT_KEY,
                 contact)
-        startService(intent)
+        startService(callStatusServiceIntent)
     }
 
     private val MICROPHONE_PERMISSION_REQUEST_CODE = 101
@@ -1347,7 +1347,9 @@ class CallActivity : BaseActivity(), RTCCall.CallContext {
                     microphoneUsageMonitor.stopMonitoring()
                 }
             }
-            stopService(Intent(this, CallStatusService::class.java))
+            if(callStatusServiceIntent != null) {
+                stopService(callStatusServiceIntent)
+            }
             proximitySensor.stop()
             if (callEventType != Event.Type.UNKNOWN) {
                 val event = Event(contact.publicKey, contact.lastWorkingAddress, callEventType, Date())
