@@ -317,10 +317,9 @@ class CaptureQualityController(private val callActivity: CallActivity) {
 
     fun getSelectedFramerate(): Int {
         if (framerateSliderInitialized) {
-            val format = getSelectedFormat()
-            val min = format.framerate.min
-            val max = format.framerate.max
-            return (min + framerateSliderFraction * (max - min)).toInt() / 1000
+            val min = 5
+            val max = 55
+            return (min + framerateSliderFraction * (max - min)).toInt()
         } else {
             // default
             return defaultFramerate
