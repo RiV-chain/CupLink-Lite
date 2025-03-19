@@ -134,11 +134,7 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver, Lifecycle
 fun createServiceNotification(context: Context, state: State): Notification {
     createNotificationChannels(context)
 
-    val intent = if (CallActivity.isCallInProgress) {
-        Intent(context, CallActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT }
-    } else {
-        Intent(context, MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT }
-    }
+    val intent = Intent(context, MainActivity::class.java).apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT }
     var flags = PendingIntent.FLAG_UPDATE_CURRENT
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE

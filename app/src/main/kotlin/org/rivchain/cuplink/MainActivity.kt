@@ -184,7 +184,7 @@ class MainActivity : BaseActivity() {
         if (CallActivity.isCallInProgress) {
             // Redirect to CallActivity if a call is active
             val intent = Intent(this, CallActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
             startActivity(intent)
         } else {
             if (viewPager.currentItem == 0) {
