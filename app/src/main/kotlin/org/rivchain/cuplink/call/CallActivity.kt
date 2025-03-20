@@ -1169,11 +1169,11 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
                 val nameOld = getAudioDeviceName(oldDevice)
                 val nameNew = getAudioDeviceName(newDevice)
                 if (rtcAudioManager.getSpeakerphoneMode() == RTCAudioManager.SpeakerphoneMode.AUTO) {
-                    showTextMessage(
+                    Log.d(this,
                         String.format(getString(R.string.audio_device_auto), nameNew)
                     )
                 } else {
-                    showTextMessage(
+                    Log.d(this,
                         String.format(getString(R.string.audio_device_fixed), nameNew)
                     )
                 }
