@@ -9,14 +9,14 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.size
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.NetworkUtils
 import java.text.DateFormat
-import java.util.*
+import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.math.abs
 
 internal class EventExpandableListAdapter(
@@ -40,7 +40,7 @@ internal class EventExpandableListAdapter(
 
     override fun getGroup(groupPosition: Int): String = groupedEvents[groupPosition].first
 
-    override fun getChild(groupPosition: Int, childPosition: Int): List<Event> = groupedEvents[groupPosition].second[childPosition]
+    override fun getChild(groupPosition: Int, childPosition: Int): Event = groupedEvents[groupPosition].second[childPosition]
 
     override fun getGroupId(groupPosition: Int): Long = groupPosition.toLong()
 
@@ -58,11 +58,9 @@ internal class EventExpandableListAdapter(
     override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_event, parent, false)
         val event = getChild(groupPosition, childPosition)
-        // show list in reverse, latest element first
-        val latestEvent = event.last()
 
         // find name
-        val name = contacts.find { it.publicKey.contentEquals(latestEvent.publicKey) }?.name
+        val name = contacts.find { it.publicKey.contentEquals(event.publicKey) }?.name
 
         val nameTv = view.findViewById<TextView>(R.id.call_name)
         if (name.isNullOrEmpty()) {
@@ -71,49 +69,15 @@ internal class EventExpandableListAdapter(
             nameTv.text = name
         }
 
-        // time how long ago the latest event happened
+        // display event date and time
         val dateTV = view.findViewById<TextView>(R.id.call_date)
-        val now = System.currentTimeMillis()
-        if (abs(now - latestEvent.date.time) < DateUtils.HOUR_IN_MILLIS) {
-            dateTV.text = DateUtils.getRelativeTimeSpanString(latestEvent.date.time, now, DateUtils.MINUTE_IN_MILLIS)
-        } else if (DateUtils.isToday(latestEvent.date.time)) {
-            val tf = DateFormat.getTimeInstance(DateFormat.SHORT)
-            dateTV.text = tf.format(latestEvent.date)
-        } else {
-            val df = DateFormat.getDateInstance(DateFormat.SHORT)
-            dateTV.text = df.format(latestEvent.date)
-        }
+        val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        dateTV.text = dateTimeFormatter.format(event.date)
 
         // add one icon for each event type add one extra for the last event
         val iconsView = view.findViewById<LinearLayout>(R.id.call_icons)
-        val iconSet = mutableSetOf<Event.Type>()
         iconsView.removeAllViews()
-        for (e in event) {
-            if (!iconSet.contains(e.type) || e === latestEvent) {
-                appendIcon(iconsView, e.type)
-                iconSet.add(e.type)
-            }
-        }
-
-        val addressTV = view.findViewById<TextView>(R.id.call_address)
-        val address = event.lastOrNull { it.address != null } ?.address
-
-        val addressString = NetworkUtils.inetSocketAddressToString(address)
-        if (addressString != null) {
-            addressTV.text = addressString
-        } else {
-            addressTV.text = ""
-        }
-
-        // show counter if not all calls have an icon
-        val eventCount = event.size
-        val iconCount = iconsView.size
-        val counterTV = view.findViewById<TextView>(R.id.call_counter)
-        if (eventCount > iconCount) {
-            counterTV.text = "(${eventCount})"
-        } else {
-            counterTV.text = ""
-        }
+        appendIcon(iconsView, event.type)
 
         return view
     }
@@ -143,11 +107,11 @@ internal class EventExpandableListAdapter(
     companion object {
 
         // group consecutive events of a single contact
-        fun groupAndCompactEvents(events: List<Event>): List<Pair<String, List<List<Event>>>> {
+        fun groupAndCompactEvents(events: List<Event>): List<Pair<String, List<Event>>> {
             val groupedEvents = mutableMapOf(
-                "Today" to mutableListOf<List<Event>>(),
-                "Yesterday" to mutableListOf<List<Event>>(),
-                "Older" to mutableListOf<List<Event>>()
+                "Today" to mutableListOf<Event>(),
+                "Yesterday" to mutableListOf<Event>(),
+                "Older" to mutableListOf<Event>()
             )
             val now = System.currentTimeMillis()
             val todayStart = now - (now % DateUtils.DAY_IN_MILLIS)
@@ -167,12 +131,17 @@ internal class EventExpandableListAdapter(
 
                 if (lastEvent == null || lastEventList == null || !lastEvent.publicKey.contentEquals(event.publicKey) || lastCategory != category) {
                     lastEventList = mutableListOf(event)
-                    groupedEvents[category]?.add(lastEventList)
+                    groupedEvents[category]?.addAll(lastEventList)
                 } else {
                     lastEventList.add(event)
                 }
                 lastEvent = event
                 lastCategory = category
+            }
+
+            // Sort each group by descending date
+            groupedEvents.forEach { (_, eventList) ->
+                eventList.sortByDescending { it.date.time }
             }
 
             return groupedEvents.entries.map { it.key to it.value }
