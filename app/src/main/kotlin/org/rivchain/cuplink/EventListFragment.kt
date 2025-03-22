@@ -55,9 +55,7 @@ class EventListFragment() : Fragment() {
     private val onEventClickListener = ExpandableListView.OnChildClickListener { _, _, groupPosition, childPosition, _ ->
         Log.d(this, "onChildClick")
 
-        val eventGroup = eventListAdapter.getChild(groupPosition, childPosition)
-        // get last event that has an address
-        val latestEvent = eventGroup.lastOrNull { it.address != null } ?: eventGroup.last()
+        val latestEvent = eventListAdapter.getChild(groupPosition, childPosition)
 
         val contact = DatabaseCache.database.contacts.getContactByPublicKey(latestEvent.publicKey)
             ?: latestEvent.createUnknownContact("")
@@ -93,8 +91,7 @@ class EventListFragment() : Fragment() {
             // Add your logic here.
 
             // Return true as we are handling the event.
-            val eventGroup = eventListAdapter.getChild(groupPosition, childPosition)
-            val latestEvent = eventGroup.last()
+            val latestEvent = eventListAdapter.getChild(groupPosition, childPosition)
             val res = resources
             val add = res.getString(R.string.contact_menu_add)
             val delete = res.getString(R.string.contact_menu_delete)
@@ -135,7 +132,7 @@ class EventListFragment() : Fragment() {
                 val selectedOption = options[position]
                 when (selectedOption) {
                     add -> {
-                        showAddDialog(eventGroup)
+                        showAddDialog(latestEvent)
                     }
 
                     block -> {
@@ -147,7 +144,7 @@ class EventListFragment() : Fragment() {
                     }
 
                     delete -> {
-                        deleteEventGroup(eventGroup)
+                        deleteEventGroup(latestEvent)
                     }
                 }
                 dialog.dismiss()
@@ -224,17 +221,16 @@ class EventListFragment() : Fragment() {
         NotificationUtils.refreshEvents(this.activity)
     }
 
-    private fun deleteEventGroup(eventGroup: List<Event>) {
+    private fun deleteEventGroup(latestEvent: Event) {
         Log.d(this, "removeEventGroup()")
-        activity.deleteEvents(eventGroup.map { it.date })
+        activity.deleteEvents(listOf(latestEvent.date))
     }
 
     // only available for unknown contacts
-    private fun showAddDialog(eventGroup: List<Event>) {
+    private fun showAddDialog(latestEvent: Event) {
         Log.d(this, "showAddDialog")
         val activity = requireActivity() as MainActivity
         // prefer latest event that has an address
-        val latestEvent = eventGroup.lastOrNull { it.address != null } ?: eventGroup.last()
         val view: View = LayoutInflater.from(activity).inflate(R.layout.dialog_add_contact, null)
         val dialog = activity.createBlurredPPTCDialog(view)
         val nameEditText = view.findViewById<TextInputEditText>(R.id.NameEditText)
