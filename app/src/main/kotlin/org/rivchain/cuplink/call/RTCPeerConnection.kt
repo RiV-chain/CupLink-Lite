@@ -648,12 +648,11 @@ abstract class RTCPeerConnection(
                         decline()
                         return
                     }
-
+                    pw.writeMessage(ringing)
                     if (CallActivity.isCallInProgress) {
                         //remoteAddress == outgoing call address
                         if(outgoingRTCCall != null && (outgoingRTCCall as RTCPeerConnection).contact.publicKey.contentEquals(otherPublicKey)){
                             //handle race condition for calls
-                            pw.writeMessage(ringing)
                             if(compareByteArraysAsNumbers(otherPublicKey, settings.publicKey)){
                                 //send ringing
                                 incomingRTCCall?.cleanup() // just in case
@@ -661,15 +660,13 @@ abstract class RTCPeerConnection(
                                 //send accept call
                                 CallManager.getCallActivity()!!.initIncomingCall()
                             }
-                            return
                         } else {
                             Log.d(this, "handleIncomingMessageInternal() call in progress => busy")
                             busy()
-                            return
                         }
+                        return
                     }
 
-                    pw.writeMessage(ringing)
                     incomingRTCCall?.cleanup() // just in case
                     incomingRTCCall = RTCCall(service, contact, socket, offer)
                     try {

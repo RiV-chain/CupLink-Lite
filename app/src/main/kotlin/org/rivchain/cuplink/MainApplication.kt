@@ -119,6 +119,13 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver, Lifecycle
         }
     }
 
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if (level == TRIM_MEMORY_COMPLETE) {
+            Log.d(this, "App is about to be killed")
+        }
+    }
+
     companion object {
         @Volatile
         private var instance: MainApplication? = null
@@ -156,6 +163,8 @@ fun createServiceNotification(context: Context, state: State): Notification {
         .setSmallIcon(R.drawable.cup_link_small)
         .setContentIntent(pendingIntent)
         .setPriority(NotificationCompat.PRIORITY_MIN)
+        .setSilent(true)
+        .setDefaults(NotificationCompat.DEFAULT_VIBRATE)
         .build()
 }
 
