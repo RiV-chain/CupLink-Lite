@@ -53,7 +53,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
 import org.rivchain.cuplink.BaseActivity
 import org.rivchain.cuplink.CallService
 import org.rivchain.cuplink.CallStatusService
@@ -66,6 +65,7 @@ import org.rivchain.cuplink.call.RTCPeerConnection.CallState
 import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.model.Event
 import org.rivchain.cuplink.renderer.TextureViewRenderer
+import org.rivchain.cuplink.renderer.VerticalSlider
 import org.rivchain.cuplink.renderer.VisualizerView
 import org.rivchain.cuplink.rivmesh.AppStateReceiver
 import org.rivchain.cuplink.rivmesh.STATE_CALLING
@@ -110,7 +110,6 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
     private lateinit var callStatus: TextView
     private lateinit var callDuration: Chronometer
     private lateinit var callStats: TextView
-    private lateinit var callAddress: TextView
     private lateinit var callName: TextView
     private lateinit var notificationText: TextView
 
@@ -129,8 +128,9 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
     private lateinit var capturePanel: View
     private lateinit var captureResolution: ImageView
     private lateinit var captureFramerate: Button
-    private lateinit var resolutionSlider: VerticalSeekBar
-    private lateinit var framerateSlider: VerticalSeekBar
+    private lateinit var resolutionSlider: VerticalSlider
+    private lateinit var framerateSlider: VerticalSlider
+    private lateinit var menu: ConstraintLayout
     private lateinit var backgroundView: FrameLayout
     private lateinit var settingsView: ConstraintLayout
     private lateinit var captureQualityController: CaptureQualityController
@@ -204,6 +204,7 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
         captureFramerate = findViewById(R.id.captureFramerate)
         resolutionSlider = findViewById(R.id.captureResolutionSlider)
         framerateSlider = findViewById(R.id.captureFramerateSlider)
+        menu = findViewById(R.id.menu)
 
         // Background
         backgroundView = findViewById(R.id.background_view)
@@ -646,9 +647,11 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
                 if (callWasStarted) {
                     callStatus.visibility = GONE
                     callDuration.visibility = VISIBLE
+                    menu.visibility = VISIBLE
                 } else {
                     callStatus.visibility = VISIBLE
                     callDuration.visibility = GONE
+                    menu.visibility = GONE
                 }
                 setVideoPreferencesButtonsEnabled(isLocalVideoAvailable)
             }
@@ -659,6 +662,7 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
                 callName.visibility = INVISIBLE
                 callStatus.visibility = GONE
                 callDuration.visibility = GONE
+                menu.visibility = GONE
                 setVideoPreferencesButtonsEnabled(false)
             }
         }
@@ -666,24 +670,13 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
 
     private fun setVideoPreferencesButtonsEnabled(enable: Boolean) {
         Log.d(this, "setVideoPreferencesButtonsEnabled() enable=$enable")
+        val hiddenControlsContainer = findViewById<View>(R.id.hiddenControlsContainer)
+        val buttonsContainer = findViewById<View>(R.id.buttonsContainer)
+        hiddenControlsContainer.visibility = GONE
         if (enable) {
-            captureResolution.visibility = VISIBLE
-            captureFramerate.visibility = VISIBLE
-            if (captureResolution.tag == "on") {
-                resolutionSlider.visibility = VISIBLE
-            } else {
-                resolutionSlider.visibility = INVISIBLE
-            }
-            if (captureFramerate.tag == "on") {
-                framerateSlider.visibility = VISIBLE
-            } else {
-                framerateSlider.visibility = INVISIBLE
-            }
+            buttonsContainer.visibility = VISIBLE
         } else {
-            captureResolution.visibility = INVISIBLE
-            captureFramerate.visibility = INVISIBLE
-            resolutionSlider.visibility = INVISIBLE
-            framerateSlider.visibility = INVISIBLE
+            buttonsContainer.visibility = GONE
         }
     }
 

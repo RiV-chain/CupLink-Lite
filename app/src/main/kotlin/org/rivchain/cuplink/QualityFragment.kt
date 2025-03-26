@@ -23,20 +23,6 @@ class QualityFragment: Fragment(R.layout.fragment_settings_quality) {
 
         val settings = database.settings
 
-        setupRadioDialog(view,
-            settings.videoDegradationMode,
-            R.id.videoDegradationModeText,
-            R.id.spinnerVideoDegradationModes,
-            R.array.videoDegradationModeLabels,
-            R.array.videoDegradationModeValues,
-            object : SpinnerItemSelected {
-                override fun call(newValue: String?) {
-                    if (newValue != null) {
-                        settings.videoDegradationMode = newValue
-                        //applyVideoDegradationMode(view, newValue)
-                    }
-                }
-            })
         view.findViewById<SwitchMaterial>(R.id.disableProximitySensorSwitch).apply {
             isChecked = settings.disableProximitySensor
             setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
@@ -127,38 +113,6 @@ class QualityFragment: Fragment(R.layout.fragment_settings_quality) {
         }
         autoCompleteTextView.setOnClickListener {
             dialog.show()
-        }
-    }
-
-    // grey out resolution/framerate spinners that are not considered by certain
-    // degradation modes. We still allow those two values to be changed though.
-    private fun applyVideoDegradationMode(view: View, degradation: String) {
-        val videoDegradationModeText = view.findViewById<DescriptiveTextView>(R.id.videoDegradationModeText)
-        val cameraResolutionText = view.findViewById<DescriptiveTextView>(R.id.cameraResolutionText)
-        val cameraFramerateText = view.findViewById<DescriptiveTextView>(R.id.cameraFramerateText)
-        val enabledColor = videoDegradationModeText.titleTextView.currentTextColor
-        val disabledColor = Color.parseColor("#d3d3d3")
-
-        when (degradation) {
-            "Balanced" -> {
-                cameraResolutionText.titleTextView.setTextColor(disabledColor)
-                cameraFramerateText.titleTextView.setTextColor(disabledColor)
-            }
-            "Maintain resolution" -> {
-                cameraResolutionText.titleTextView.setTextColor(enabledColor)
-                cameraFramerateText.titleTextView.setTextColor(disabledColor)
-            }
-            "Maintain framerate" -> {
-                cameraResolutionText.titleTextView.setTextColor(disabledColor)
-                cameraFramerateText.titleTextView.setTextColor(enabledColor)
-            }
-            "Disabled" -> {
-                cameraResolutionText.titleTextView.setTextColor(enabledColor)
-                cameraFramerateText.titleTextView.setTextColor(enabledColor)
-            }
-            else -> {
-                Log.w(this, "applyVideoDegradationMode() unhandled degradation=$degradation")
-            }
         }
     }
 }
