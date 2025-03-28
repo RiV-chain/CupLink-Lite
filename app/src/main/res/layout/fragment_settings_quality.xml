@@ -7,31 +7,6 @@
     android:layout_marginBottom="@dimen/padding_20">
 
     <org.rivchain.cuplink.renderer.DescriptiveTextView
-        android:id="@+id/videoDegradationModeText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/padding_80"
-        app:titleText="@string/settings_video_degradation_mode"
-        app:subtitleText="Adjust video quality to ensure smooth calls under varying network conditions"
-        app:titleFontFamily="@font/poppins_regular"
-        app:subtitleFontFamily="@font/poppins_light"
-        app:titleTextSize="@dimen/title_text_size"
-        app:subtitleTextSize="@dimen/subtitle_text_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/spinnerVideoDegradationModes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
-        android:textSize="@dimen/options_text_size"
-        android:textAlignment="viewEnd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/videoDegradationModeText"
-        app:layout_constraintBottom_toBottomOf="@id/videoDegradationModeText"/>
-
-    <org.rivchain.cuplink.renderer.DescriptiveTextView
         android:id="@+id/disableProximitySensor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,9 +17,8 @@
         app:subtitleFontFamily="@font/poppins_light"
         app:titleTextSize="@dimen/title_text_size"
         app:subtitleTextSize="@dimen/subtitle_text_size"
-        android:layout_marginTop="@dimen/padding_20"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/videoDegradationModeText"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/disableProximitySensorSwitch"

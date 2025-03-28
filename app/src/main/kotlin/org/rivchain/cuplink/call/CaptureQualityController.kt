@@ -2,20 +2,16 @@ package org.rivchain.cuplink.call
 
 import android.os.Handler
 import android.os.Looper
-import android.view.View
+import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.SeekBar
-import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.Spinner
 import android.widget.TextView
-import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+import androidx.constraintlayout.widget.ConstraintLayout
 import org.rivchain.cuplink.R
 import org.rivchain.cuplink.model.Settings
+import org.rivchain.cuplink.renderer.VerticalSlider
 import org.rivchain.cuplink.util.Log
 import org.webrtc.CameraEnumerationAndroid.CaptureFormat
 
@@ -24,23 +20,23 @@ import org.webrtc.CameraEnumerationAndroid.CaptureFormat
  * Control capture format based on a seekbar listeners.
  */
 class CaptureQualityController(private val callActivity: CallActivity) {
-    private val captureResolution = callActivity.findViewById<ImageButton>(R.id.captureResolution)
-    private val captureFramerate = callActivity.findViewById<Button>(R.id.captureFramerate)
-    private val resolutionSlider = callActivity.findViewById<VerticalSeekBar>(R.id.captureResolutionSlider)
-    private val framerateSlider = callActivity.findViewById<VerticalSeekBar>(R.id.captureFramerateSlider)
-
-    private val degradationSpinner = callActivity.findViewById<Spinner>(R.id.degradationSpinner)
+    private val resolutionSlider = callActivity.findViewById<VerticalSlider>(R.id.captureResolutionSlider)
+    private val framerateSlider = callActivity.findViewById<VerticalSlider>(R.id.captureFramerateSlider)
+    private val moreImageButton = callActivity.findViewById<ImageButton>(R.id.more)
     private val formatText = callActivity.findViewById<TextView>(R.id.captureFormatText)
     private val framerateText = callActivity.findViewById<TextView>(R.id.captureFramerateText)
+    private val hiddenControlsContainer = callActivity.findViewById<ConstraintLayout>(R.id.hiddenControlsContainer)
+    private val buttonsContainer = callActivity.findViewById<ConstraintLayout>(R.id.buttonsContainer)
+
 
     private val degradationValues =
-            degradationSpinner.resources.getStringArray(R.array.videoDegradationModeValues)
+        moreImageButton.resources.getStringArray(R.array.videoDegradationModeValues)
     private val resolutionNames = mapOf(
         "160x120" to "QQVGA", "240x160" to "HQVGA", "320x240" to "QVGA", "400x240" to "WQVGA",
         "480x320" to "HVGA", "640x360" to "nHD", "640x480" to "VGA", "768x480" to "WVGA",
         "854x480" to "FWVGA", "800x600" to "SVGA", "960x540" to "qHD", "960x640" to "DVGA",
         "1024x576" to "WSVGA", "1024x600" to "WVSGA", "1280x720" to "HD", "1280x1024" to "SXGA",
-        "1920x1080" to "Full HD", "1920x1440" to "Full HD 4:3", "2560x1440" to "QHD", "3840x2160" to "UHD"
+        "1920x1080" to "FHD", "1920x1440" to "FHD3:4", "2560x1440" to "QHD", "3840x2160" to "UHD"
     )
     private var cameraName = ""
     private val defaultFormats = listOf(
@@ -50,8 +46,7 @@ class CaptureQualityController(private val callActivity: CallActivity) {
         CaptureFormat(1920, 1080, 0, 60000), CaptureFormat(3840, 2160, 0, 60000),
         CaptureFormat(7680, 4320, 0, 60000)
     )
-    private var degradationSpinnerValue = ""
-    private var degradationSpinnerInitialized = false
+
     private var resolutionSliderFraction = 0.5
     private var resolutionSliderInitialized = false
     private var framerateSliderFraction = 0.5
@@ -61,7 +56,6 @@ class CaptureQualityController(private val callActivity: CallActivity) {
     private var defaultHeight = 0
     private var defaultWidth = 0
     private var defaultFramerate = 0
-    private var defaultDegradation = ""
 
     // Create a handler
     val handler = Handler(Looper.getMainLooper())
@@ -78,66 +72,22 @@ class CaptureQualityController(private val callActivity: CallActivity) {
 
     init {
 
-        // setup spinner
-        val spinnerAdapter = ArrayAdapter.createFromResource(
-            degradationSpinner.context,
-            R.array.videoDegradationModeLabels,
-            R.layout.spinner_item_settings
-        )
-        spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item_settings)
-
-        degradationSpinner.adapter = spinnerAdapter
-
-        //This listener invoked only by a captureResolution or captureFramerate buttons
-        degradationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            var check = 0
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                if (check++ > 0) {
-                    degradationSpinnerValue = degradationValues[pos]
-                    degradationSpinnerInitialized = true
-                    updateView()
-                    changeCameraFormat()
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // ignore
+        // Here are captureResolution and captureFramerate toggle button listener
+        moreImageButton.setOnClickListener {
+            if (buttonsContainer.visibility == GONE ){
+                buttonsContainer.visibility = VISIBLE
+                hiddenControlsContainer.visibility = GONE
+                moreImageButton.setImageResource(R.drawable.ic_more_on)
+            } else
+            if (buttonsContainer.visibility == VISIBLE){
+                buttonsContainer.visibility = GONE
+                hiddenControlsContainer.visibility = VISIBLE
+                moreImageButton.setImageResource(R.drawable.ic_more_off)
             }
         }
 
-        // Here are captureResolution and captureFramerate buttons listeners
-        captureResolution.setOnClickListener {
-            if (resolutionSlider.visibility == INVISIBLE && framerateSlider.visibility == INVISIBLE){
-                degradationSpinner.setSelection(1)
-            } else
-            if (resolutionSlider.visibility == INVISIBLE && framerateSlider.visibility == VISIBLE){
-                degradationSpinner.setSelection(3)
-            } else
-            if (resolutionSlider.visibility == VISIBLE && framerateSlider.visibility == INVISIBLE){
-                degradationSpinner.setSelection(0)
-            } else
-            if (resolutionSlider.visibility == VISIBLE && framerateSlider.visibility == VISIBLE){
-                degradationSpinner.setSelection(2)
-            }
-        }
-
-        captureFramerate.setOnClickListener {
-            if (resolutionSlider.visibility == INVISIBLE && framerateSlider.visibility == INVISIBLE){
-                degradationSpinner.setSelection(2)
-            } else
-            if (resolutionSlider.visibility == VISIBLE && framerateSlider.visibility == INVISIBLE){
-                degradationSpinner.setSelection(3)
-            } else
-            if (resolutionSlider.visibility == INVISIBLE && framerateSlider.visibility == VISIBLE){
-                degradationSpinner.setSelection(0)
-            } else
-            if (resolutionSlider.visibility == VISIBLE && framerateSlider.visibility == VISIBLE){
-                degradationSpinner.setSelection(1)
-            }
-        }
-
-        resolutionSlider.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+        resolutionSlider.setOnSeekBarChangeListener(object : VerticalSlider.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: VerticalSlider, progress: Int, fromUser: Boolean) {
                 resolutionSliderFraction = (progress.toDouble() / 100.0)
                 resolutionSliderInitialized = true
                 updateView()
@@ -149,15 +99,15 @@ class CaptureQualityController(private val callActivity: CallActivity) {
                 handler.postDelayed(hideFormatText, 1000)
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
+            override fun onStartTrackingTouch(seekBar: VerticalSlider) {}
+            override fun onStopTrackingTouch(seekBar: VerticalSlider) {
                 updateView()
                 changeCameraFormat()
             }
         })
 
-        framerateSlider.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+        framerateSlider.setOnSeekBarChangeListener(object : VerticalSlider.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: VerticalSlider, progress: Int, fromUser: Boolean) {
                 framerateSliderFraction = (progress.toDouble() / 100.0)
                 framerateSliderInitialized = true
                 updateView()
@@ -169,8 +119,8 @@ class CaptureQualityController(private val callActivity: CallActivity) {
                 handler.postDelayed(hideFramerateText, 1000)
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
+            override fun onStartTrackingTouch(seekBar: VerticalSlider) {}
+            override fun onStopTrackingTouch(seekBar: VerticalSlider) {
                 updateView()
                 changeCameraFormat()
             }
@@ -182,8 +132,6 @@ class CaptureQualityController(private val callActivity: CallActivity) {
             + "videoDegradationMode=${settings.videoDegradationMode}, "
             + "cameraFramerate=${settings.cameraFramerate}, "
             + "cameraResolution=${settings.cameraResolution}")
-
-        defaultDegradation = settings.videoDegradationMode
 
         // parse framerate setting
         if (settings.cameraFramerate == "auto") {
@@ -215,10 +163,9 @@ class CaptureQualityController(private val callActivity: CallActivity) {
     private fun changeCameraFormat() {
         Log.d(this, "changeCameraFormat()")
 
-        val degradation = getSelectedDegradation()
         val format =  getSelectedFormat()
         val framerate = getSelectedFramerate()
-
+        val degradation = getSelectedDegradation()
         if(CallActivity.isCallInProgress) {
             callActivity
                 .getCurrentCall()
@@ -239,69 +186,39 @@ class CaptureQualityController(private val callActivity: CallActivity) {
     private fun updateView() {
         Log.d(this, "updateView()")
 
-        val degradation = getSelectedDegradation()
-        degradationSpinner.setSelection(degradationValues.indexOf(degradation))
-
-        when (degradation) {
-            "Maintain\nresolution" -> {
-                captureResolution.tag = "on"
-                captureFramerate.tag = "off"
-                resolutionSlider.visibility = VISIBLE
-                framerateSlider.visibility = INVISIBLE
-
-            }
-            "Maintain\nframerate" -> {
-                captureResolution.tag = "off"
-                captureFramerate.tag = "on"
-                resolutionSlider.visibility = INVISIBLE
-                framerateSlider.visibility = VISIBLE
-            }
-            "Balanced" -> {
-                captureResolution.tag = "off"
-                captureFramerate.tag = "off"
-                resolutionSlider.visibility = INVISIBLE
-                framerateSlider.visibility = INVISIBLE
-            }
-            "Disabled" -> {
-                captureResolution.tag = "on"
-                captureFramerate.tag = "on"
-                resolutionSlider.visibility = VISIBLE
-                framerateSlider.visibility = VISIBLE
-            }
-            else -> {
-                Log.w(this, "updateView() unhandled degradation=$degradation")
-                return
-            }
-        }
-
         // "<name> <resolution>@<framerate>"
         var formatTextLabel = ""
         if (resolutionSlider.visibility == VISIBLE) {
             val format =  getSelectedFormat()
             val resolution = "${format.width}x${format.height}"
+            Log.d(this, "resolution: $resolution")
             if (resolution in resolutionNames) {
-                formatTextLabel += "${resolutionNames[resolution]} "
+                formatTextLabel = "${resolutionNames[resolution]} "
+            } else {
+                formatTextLabel = "..."
             }
-            formatTextLabel += resolution
         }
         formatText.text = formatTextLabel
 
         var framerateTextLabel = ""
         if (framerateSlider.visibility == VISIBLE) {
             val framerate = getSelectedFramerate()
-            framerateTextLabel += "$framerate fps"
+            framerateTextLabel += "$framerate"
         }
         framerateText.text = framerateTextLabel
     }
 
     fun getSelectedDegradation(): String {
-        if (degradationSpinnerInitialized) {
-            Log.d(this, "getSelectedDegradation: from slider: $degradationSpinnerValue")
-            return degradationSpinnerValue
+
+        if (framerateSlider.visibility == VISIBLE && resolutionSlider.visibility == VISIBLE) {
+            val degradationValue = degradationValues[3]
+            Log.d(this, "getSelectedDegradation: from slider: $degradationValue")
+            return degradationValue
         } else {
             // default
-            Log.d(this, "getSelectedDegradation: by default: $defaultDegradation")
-            return defaultDegradation
+            val degradationValue = degradationValues[0]
+            Log.d(this, "getSelectedDegradation: by default: $degradationValue")
+            return degradationValue
         }
     }
 
@@ -329,10 +246,8 @@ class CaptureQualityController(private val callActivity: CallActivity) {
     fun onCameraChange(newCameraName: String, isFrontFacing: Boolean, newFormats: List<CaptureFormat>) {
         Log.d(this, "onCameraChange() newCameraName=$newCameraName")
 
-        degradationSpinnerInitialized = false
         resolutionSliderInitialized = false
         framerateSliderInitialized = false
-        //availableCaptureFormatsInitialized = false
 
         // newCameraName is rather bad
         cameraName = callActivity.getString(if (isFrontFacing) {
@@ -340,17 +255,6 @@ class CaptureQualityController(private val callActivity: CallActivity) {
         } else {
             R.string.camera_back
         })
-/*
-        if (newFormats.isNotEmpty()) {
-            availableCaptureFormatsInitialized = true
-            availableCaptureFormats = newFormats
-        } else {
-            availableCaptureFormats = defaultFormats
-        }
-*/
-
-        // slide of sorted resolutions
-        // availableCaptureFormats.sortedWith(compareFormats)
 
         updateView()
     }
