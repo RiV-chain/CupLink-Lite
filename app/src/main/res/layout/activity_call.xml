@@ -260,7 +260,7 @@
                 android:layout_marginEnd="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:visibility="gone">
+                >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/buttonsContainer"
@@ -326,15 +326,16 @@
                         <TextView
                             android:id="@+id/captureFramerateText"
                             android:layout_width="40dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/tooltip_background"
+                            android:layout_height="30dp"
+                            android:background="@drawable/ic_framerate"
                             android:text=""
-                            android:textAlignment="center"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="14sp"
+                            android:gravity="center"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
                             app:layout_constraintEnd_toEndOf="@id/captureFramerateSlider"
                             app:layout_constraintStart_toStartOf="@id/captureFramerateSlider"
-                            app:layout_constraintBottom_toTopOf="@id/captureFramerateSlider" />
+                            app:layout_constraintBottom_toTopOf="@id/captureFramerateSlider"/>
 
                         <org.rivchain.cuplink.renderer.VerticalSlider
                             android:id="@+id/captureFramerateSlider"
@@ -350,12 +351,13 @@
                         <TextView
                             android:id="@+id/captureFormatText"
                             android:layout_width="40dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/tooltip_background"
+                            android:layout_height="30dp"
+                            android:background="@drawable/ic_resolution"
                             android:text=""
-                            android:textAlignment="center"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="14sp"
+                            android:gravity="center"
+                            android:fontFamily="@font/poppins_light"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
                             app:layout_constraintEnd_toEndOf="@id/captureResolutionSlider"
                             app:layout_constraintStart_toStartOf="@id/captureResolutionSlider"
                             app:layout_constraintBottom_toTopOf="@+id/captureResolutionSlider" />

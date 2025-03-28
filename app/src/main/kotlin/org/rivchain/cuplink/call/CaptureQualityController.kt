@@ -32,11 +32,11 @@ class CaptureQualityController(private val callActivity: CallActivity) {
     private val degradationValues =
         moreImageButton.resources.getStringArray(R.array.videoDegradationModeValues)
     private val resolutionNames = mapOf(
-        "160x120" to "QQVGA", "240x160" to "HQVGA", "320x240" to "QVGA", "400x240" to "WQVGA",
-        "480x320" to "HVGA", "640x360" to "nHD", "640x480" to "VGA", "768x480" to "WVGA",
-        "854x480" to "FWVGA", "800x600" to "SVGA", "960x540" to "qHD", "960x640" to "DVGA",
-        "1024x576" to "WSVGA", "1024x600" to "WVSGA", "1280x720" to "HD", "1280x1024" to "SXGA",
-        "1920x1080" to "FHD", "1920x1440" to "FHD3:4", "2560x1440" to "QHD", "3840x2160" to "UHD"
+        "160x120" to "SD", "240x160" to "SD", "320x240" to "SD", "400x240" to "SD",
+        "480x320" to "SD", "640x360" to "SD", "640x480" to "SD", "768x480" to "SD",
+        "854x480" to "VGA", "800x600" to "VGA", "960x540" to "VGA", "960x640" to "VGA",
+        "1024x576" to "VGA", "1024x600" to "SGA", "1280x720" to "HD", "1280x1024" to "XGA",
+        "1920x1080" to "FHD", "1920x1440" to "FHD", "2560x1440" to "2k", "3840x2160" to "4k"
     )
     private var cameraName = ""
     private val defaultFormats = listOf(
