@@ -172,7 +172,7 @@ class ContactDetailsActivity : BaseActivity() {
             )
 
             if (newPublicKey == null || (newPublicKey.size != Sodium.crypto_sign_publickeybytes())) {
-                Toast.makeText(this, R.string.contact_public_key_invalid, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.contact_deeplink_invalid, Toast.LENGTH_SHORT).show()
             } else if (DatabaseCache.database.contacts.getContactByPublicKey(newPublicKey) != null) {
                 Toast.makeText(this, R.string.contact_public_key_already_exists, Toast.LENGTH_LONG).show()
             } else {

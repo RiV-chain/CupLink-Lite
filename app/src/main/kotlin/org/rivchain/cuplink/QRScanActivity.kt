@@ -13,6 +13,7 @@ import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import org.json.JSONException
+import org.rivchain.cuplink.util.RlpUtils
 import org.rivchain.cuplink.util.Utils
 
 class QRScanActivity : AddContactActivity(), BarcodeCallback {
@@ -28,7 +29,8 @@ class QRScanActivity : AddContactActivity(), BarcodeCallback {
         // qr show button
         findViewById<View>(R.id.fabScan).setOnClickListener {
             val intent = Intent(this, QRShowActivity::class.java)
-            intent.putExtra("EXTRA_CONTACT_PUBLICKEY", DatabaseCache.database.settings.publicKey)
+            val deepLink = RlpUtils.generateLink(DatabaseCache.database.settings.getOwnContact())
+            intent.putExtra("EXTRA_CONTACT_DEEPLINK", deepLink)
             startActivity(intent)
             finish()
         }

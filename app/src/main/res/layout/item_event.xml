@@ -1,66 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:layout_alignParentStart="true" >
+    android:layout_marginBottom="10dp">
+
+    <TextView
+        android:id="@+id/call_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:fontFamily="@font/poppins_light"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/call_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:textSize="@dimen/subtitle_text_size"
+        app:layout_constraintStart_toEndOf="@id/call_name"
+        app:layout_constraintTop_toTopOf="@id/call_name"
+        app:layout_constraintBottom_toBottomOf="@id/call_name"/>
+
+    <TextView
+        android:id="@+id/call_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
+        android:textSize="@dimen/subtitle_text_size"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/call_icons"
+        app:layout_constraintTop_toBottomOf="@id/call_name" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/call_icons"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/call_name"
+        app:layout_constraintBottom_toBottomOf="@id/call_date"/>
+
+    <TextView
+        android:id="@+id/call_address"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/poppins_light"
+        android:textSize="11sp"
+        app:layout_constraintStart_toEndOf="@id/call_date"
+        app:layout_constraintTop_toTopOf="@id/call_date" />
 
-        <TextView
-            android:id="@+id/call_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:fontFamily="@font/poppins_light"/>
+    <ImageButton
+        android:id="@+id/share_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:src="@drawable/ic_share"
+        app:layout_constraintEnd_toStartOf="@id/qr_button"
+        app:layout_constraintTop_toTopOf="@id/call_name"
+        app:layout_constraintBottom_toBottomOf="@id/call_name"
+        android:focusable="false"
+        android:clickable="false"/>
 
-        <LinearLayout
-            android:id="@+id/call_icons"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginStart="5dp"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-                <!-- icons added programmatically -->
-        </LinearLayout>
+    <ImageButton
+        android:id="@+id/qr_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:src="@drawable/ic_qr_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/call_name"
+        app:layout_constraintBottom_toBottomOf="@id/call_name"
+        android:focusable="false"
+        android:clickable="false"/>
 
-        <TextView
-            android:id="@+id/call_counter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
-            android:textSize="@dimen/subtitle_text_size" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/call_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_light"
-            android:textSize="@dimen/subtitle_text_size" />
-
-        <TextView
-            android:id="@+id/call_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/poppins_light"
-            android:textSize="11sp" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

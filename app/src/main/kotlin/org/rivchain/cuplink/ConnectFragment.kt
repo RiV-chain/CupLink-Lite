@@ -25,7 +25,7 @@ class ConnectFragment : Fragment() {
         activity = requireActivity() as MainActivity
 
         if (arguments == null || arguments?.get("EXTRA_CONTACT_PUBLICKEY") == null) {
-            Toast.makeText(requireContext(), R.string.contact_public_key_invalid, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), R.string.contact_deeplink_invalid, Toast.LENGTH_LONG).show()
             activity.finish()
         }
 

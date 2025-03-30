@@ -13,19 +13,21 @@ import org.rivchain.cuplink.model.Contact
 import org.rivchain.cuplink.util.RlpUtils
 
 class QRShowActivity : BaseActivity() {
-    private lateinit var publicKey: ByteArray
+    private lateinit var contact: Contact
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qrshow)
 
-        if(intent == null || intent.extras == null || intent.extras?.get("EXTRA_CONTACT_PUBLICKEY") == null){
-            Toast.makeText(this, R.string.contact_public_key_invalid, Toast.LENGTH_LONG).show()
+        if(intent == null || intent.extras == null || intent.extras?.get("EXTRA_CONTACT_DEEPLINK") == null){
+            Toast.makeText(this, R.string.contact_deeplink_invalid, Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
-        publicKey = intent.extras?.get("EXTRA_CONTACT_PUBLICKEY") as ByteArray
+        val deeplink = intent.extras?.get("EXTRA_CONTACT_DEEPLINK") as String
+
+        contact = RlpUtils.parseLink(deeplink)!!
 
         title = getString(R.string.title_show_qr_code)
 
@@ -36,7 +38,6 @@ class QRShowActivity : BaseActivity() {
 
         findViewById<View>(R.id.fabShare).setOnClickListener {
             try {
-                val contact = getContactOrOwn(publicKey)!!
                 Thread {
                     val data = RlpUtils.generateLink(contact)
                     val i = Intent(Intent.ACTION_SEND)
@@ -50,7 +51,6 @@ class QRShowActivity : BaseActivity() {
             }
         }
         try {
-            val contact = getContactOrOwn(publicKey)!!
             Thread {
                 generateDeepLinkQR(contact)
             }.start()
@@ -76,7 +76,7 @@ class QRShowActivity : BaseActivity() {
             Toast.makeText(this, R.string.contact_name_invalid, Toast.LENGTH_SHORT).show()
         }
         if (contact.publicKey.isEmpty()) {
-            Toast.makeText(this, R.string.contact_public_key_invalid, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.contact_deeplink_invalid, Toast.LENGTH_SHORT).show()
         }
         val multiFormatWriter = MultiFormatWriter()
         val bitMatrix = multiFormatWriter.encode(data, BarcodeFormat.QR_CODE, 1080, 1080)
@@ -100,7 +100,7 @@ class QRShowActivity : BaseActivity() {
             Toast.makeText(this, R.string.contact_name_invalid, Toast.LENGTH_SHORT).show()
         }
         if (contact.publicKey.isEmpty()) {
-            Toast.makeText(this, R.string.contact_public_key_invalid, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.contact_deeplink_invalid, Toast.LENGTH_SHORT).show()
         }
         val multiFormatWriter = MultiFormatWriter()
         val bitMatrix = multiFormatWriter.encode(data, BarcodeFormat.QR_CODE, 1080, 1080)

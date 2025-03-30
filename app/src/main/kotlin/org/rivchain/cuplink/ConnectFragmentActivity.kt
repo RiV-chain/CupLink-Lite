@@ -2,7 +2,6 @@ package org.rivchain.cuplink
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -39,7 +38,7 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
         setContentView(R.layout.activity_connect)
 
         if(intent == null || intent.extras == null || intent.extras?.get("EXTRA_CONTACT_PUBLICKEY") == null){
-            Toast.makeText(this, R.string.contact_public_key_invalid, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.contact_deeplink_invalid, Toast.LENGTH_LONG).show()
             finish()
             return
         }
@@ -200,7 +199,7 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
         return when {
             contact.addresses.isEmpty() -> getString(R.string.contact_has_no_address_warning)
             contact.name.isEmpty() -> getString(R.string.contact_name_invalid)
-            contact.publicKey.isEmpty() -> getString(R.string.contact_public_key_invalid)
+            contact.publicKey.isEmpty() -> getString(R.string.contact_deeplink_invalid)
             else -> null
         }
     }
