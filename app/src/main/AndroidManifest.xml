@@ -194,6 +194,15 @@
             android:name=".rivmesh.TestPortActivity"
             android:noHistory="true"/>
 
+        <activity
+            android:name=".MissedCallNotificationActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true"
+            android:launchMode="singleInstance">
+        </activity>
+
         <service
             android:name=".MainService"
             android:permission="android.permission.BIND_VPN_SERVICE"

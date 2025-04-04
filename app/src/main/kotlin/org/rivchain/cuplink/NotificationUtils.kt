@@ -30,7 +30,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import org.rivchain.cuplink.BaseActivity.Companion.isNightmodeEnabled
 import org.rivchain.cuplink.CallService.Companion.ID_ONGOING_CALL_NOTIFICATION
 import org.rivchain.cuplink.CallStatusService.Companion.CHANNEL_ID
 import org.rivchain.cuplink.automotive.CarService
@@ -112,7 +111,7 @@ internal object NotificationUtils {
                 val name = contact.name
                 val message = String.format(context.getString(R.string.missed_call_from), name, missedCount)
 
-                val notification = createNotification(context, contact, message, e.date)
+                val notification = createNotification(context, contact, callerChannelId, message, e.date)
                 manager.notify(callerChannelId, notification)
             }
 
@@ -124,7 +123,13 @@ internal object NotificationUtils {
         }
     }
 
-    private fun createNotification(context: Context, contact: Contact, text: String, sinceWhen: Date): Notification {
+    private fun createNotification(
+        context: Context,
+        contact: Contact,
+        callerChannelId: Int,
+        text: String,
+        sinceWhen: Date
+    ): Notification {
         Log.d(this, "createNotification() text=$text setShowWhen=$sinceWhen")
         val channelId = "cuplink_service"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -141,8 +146,15 @@ internal object NotificationUtils {
             service.createNotificationChannel(chan)
         }
 
-        // start MainActivity
-        val notificationIntent = Intent(context, MainActivity::class.java)
+        // start NotificationResultActivity
+        val notificationIntent = Intent(context, MissedCallNotificationActivity::class.java).apply {
+            putExtra("EXTRA_NOTIFICATION_ID", callerChannelId)
+        }
+
+        val dismissPendingIntent = PendingIntent.getActivity(
+            context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         val pendingNotificationIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.getActivity(context, 0, notificationIntent,
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -229,6 +241,7 @@ internal object NotificationUtils {
         )
         customView.setImageViewBitmap(R.id.photo, avatar)
         customView.setOnClickPendingIntent(R.id.answer_btn, callPendingIntent)
+        customView.setOnClickPendingIntent(R.id.decline_btn, dismissPendingIntent)
         builder.setLargeIcon(avatar)
         builder.setCustomBigContentView(customView)
         builder.setCustomHeadsUpContentView(customView)
