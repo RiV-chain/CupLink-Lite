@@ -26,6 +26,7 @@ import androidx.car.app.notification.CarNotificationManager
 import androidx.car.app.notification.CarPendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -213,8 +214,7 @@ internal object NotificationUtils {
             context.getString(R.string.mark_as_read)
         )
 
-        val defaultColor = Color.parseColor(if (isNightmodeEnabled(context)) "#ffffff" else "#000000")
-        //val defaultColor = Color.parseColor("#888888")
+        val defaultColor = ContextCompat.getColor(context, R.color.notificationTextColor)
         customView.setTextColor(
             R.id.title,
             defaultColor
