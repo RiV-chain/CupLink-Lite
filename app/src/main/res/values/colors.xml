@@ -16,4 +16,5 @@
     <color name="redStatus">#A43345</color>
     <color name="lightRedStatus">#FF3345</color>
     <color name="yellowStatus">#E4FF45</color>
+    <color name="notificationTextColor">#000000</color>
 </resources>
