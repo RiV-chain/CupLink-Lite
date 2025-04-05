@@ -1495,13 +1495,17 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
             toggleFrontCameraButton.visibility = INVISIBLE
             setPipButtonEnabled(false)
             showPipView(false)
-            currentCall.onPiP()
+            if (this::currentCall.isInitialized) {
+                currentCall.onPiP()
+            }
         } else {
             // Restore the full-screen UI.
             uiMode = 0
             changeUiButton.visibility = VISIBLE
             toggleFrontCameraButton.visibility = VISIBLE
-            currentCall.onResumeCallActivity()
+            if (this::currentCall.isInitialized) {
+                currentCall.onResumeCallActivity()
+            }
             Log.d(this,"Unhide navigation")
         }
         updateVideoDisplay()
