@@ -36,7 +36,7 @@ import java.util.Locale
 
 internal class EventExpandableListAdapter(
     private val context: Context,
-    private var events: List<Event>,
+    events: List<Event>,
     private var contacts: List<Contact>
 ) : BaseExpandableListAdapter() {
 
@@ -80,7 +80,9 @@ internal class EventExpandableListAdapter(
             ?: latestEvent.createUnknownContact(view.context.getString(R.string.unknown_caller))
 
         val nameTv = view.findViewById<TextView>(R.id.call_name)
-        nameTv.text = contact.name
+        nameTv.text = contact.name.lowercase().replaceFirstChar {
+            it.titlecase()
+        }
 
         val dateTV = view.findViewById<TextView>(R.id.call_date)
         val dateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
