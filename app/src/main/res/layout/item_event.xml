@@ -12,7 +12,8 @@
         android:id="@+id/call_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
+        android:textAllCaps="true"
         android:fontFamily="@font/poppins_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
