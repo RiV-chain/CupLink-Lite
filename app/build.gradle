@@ -25,12 +25,12 @@ android {
         minSdkVersion 21
         compileSdkVersion 34
         targetSdkVersion 34
-        versionCode 746
-        versionName "0.6.14.11"
+        versionCode 747
+        versionName "0.6.14.12"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-        resourceConfigurations += ['de', 'en', 'es', 'fr', 'nb-rNO', 'pt-rBR', 'ru', 'uk', 'zh']
+        resourceConfigurations += ['de', 'en', 'es', 'fr', 'nb-rNO', 'pt-rBR', 'ru', 'uk', 'zh', "hi", "pl", "it", "ro"]
         setProperty("archivesBaseName", project.getParent().name + "-" + versionName)
     }
 
