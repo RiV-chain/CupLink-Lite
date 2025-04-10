@@ -648,22 +648,22 @@ abstract class RTCPeerConnection(
                         decline()
                         return
                     }
-                    pw.writeMessage(ringing)
                     if (CallActivity.isCallInProgress) {
+
                         //remoteAddress == outgoing call address
-                        if(outgoingRTCCall != null && (outgoingRTCCall as RTCPeerConnection).contact.publicKey.contentEquals(otherPublicKey)){
-                            //handle race condition for calls
-                            if(compareByteArraysAsNumbers(otherPublicKey, settings.publicKey)){
-                                //send ringing
-                                incomingRTCCall?.cleanup() // just in case
-                                incomingRTCCall = RTCCall(service, contact, socket, offer)
-                                //send accept call
-                                CallManager.getCallActivity()!!.initIncomingCall()
-                            }
-                        } else {
-                            Log.d(this, "handleIncomingMessageInternal() call in progress => busy")
-                            busy()
-                        }
+                        //if(outgoingRTCCall != null && (outgoingRTCCall as RTCPeerConnection).contact.publicKey.contentEquals(otherPublicKey)){
+                        //handle race condition for calls
+                        //if(compareByteArraysAsNumbers(otherPublicKey, settings.publicKey)){
+                        //send ringing
+                        //incomingRTCCall?.cleanup() // just in case
+                        //incomingRTCCall = RTCCall(service, contact, socket, offer)
+                        //send accept call
+                        //CallManager.getCallActivity()!!.initIncomingCall()
+                        //}
+                        //} else {
+
+                        Log.d(this, "handleIncomingMessageInternal() call in progress => busy")
+                        busy()
                         return
                     }
 
@@ -673,22 +673,23 @@ abstract class RTCPeerConnection(
                         // CallActivity accepts calls by default
                         // CallActivity is being opened from a foreground notification below
                         if (DatabaseCache.database.settings.autoAcceptCalls) {
-                                Log.d(
-                                    this,
-                                    "handleIncomingMessageInternal() start incoming call from Service"
-                                )
-                                val intent = Intent(service, CallActivity::class.java)
-                                intent.action = "ACTION_INCOMING_CALL"
-                                intent.putExtra("EXTRA_CONTACT", contact)
-                                intent.flags =
-                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                service.startActivity(intent)
+                            Log.d(
+                                this,
+                                "handleIncomingMessageInternal() start incoming call from Service"
+                            )
+                            val intent = Intent(service, CallActivity::class.java)
+                            intent.action = "ACTION_INCOMING_CALL"
+                            intent.putExtra("EXTRA_CONTACT", contact)
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            service.startActivity(intent)
                         } else {
                             val intent = Intent(service, CallService::class.java)
                                 .putExtra(CallService.SERVICE_CONTACT_KEY,
                                     contact)
                             service.startService(intent)
                         }
+                        pw.writeMessage(ringing)
                     } catch (e: Exception) {
                         incomingRTCCall?.cleanup()
                         incomingRTCCall = null
