@@ -47,7 +47,9 @@ internal class ContactListAdapter(
         val contact = contacts[position]
         val userIcon = itemView.findViewById<ImageView>(R.id.contactIcon)
         val statusCircle = itemView.findViewById<ImageView>(R.id.contactStatus)
-        itemView.findViewById<TextView>(R.id.contact_name).text = contact.name
+        itemView.findViewById<TextView>(R.id.contact_name).text = contact.name.lowercase().replaceFirstChar {
+            it.titlecase()
+        }
 
         // Generate the blockies icon from the user's public key
         val blockiesBitmap = generateBlockies(contact.publicKey)

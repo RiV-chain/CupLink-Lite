@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputEditText
 import org.rivchain.cuplink.DatabaseCache.Companion.database
 import org.rivchain.cuplink.util.Log
 import org.rivchain.cuplink.util.Utils
+import kotlin.text.replaceFirstChar
 
 class SettingsActivity : BaseActivity() {
 
@@ -235,7 +236,11 @@ class SettingsActivity : BaseActivity() {
         }
 
         // Update UI with user settings
-        findViewById<Button>(R.id.edit).text = settings.username.ifEmpty { getString(R.string.no_value) }
+        findViewById<Button>(R.id.edit).text = settings.username.ifEmpty {
+                getString(R.string.no_value)
+            }.lowercase().replaceFirstChar {
+                it.titlecase()
+            }
         findViewById<View>(R.id.editIcon).setOnClickListener {
             showChangeUsernameDialog()
         }
