@@ -118,7 +118,6 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
     private lateinit var declineButton: ImageButton
     private lateinit var toggleCameraButton: ImageButton
     private lateinit var toggleMicButton: ImageButton
-    private lateinit var toggleFrontCameraButton: ImageButton
     private lateinit var speakerphoneButton: ImageButton
 
     private lateinit var changePipButton: FrameLayout // show/hide Picture-in-Picture window
@@ -193,7 +192,6 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
         toggleMicButton = findViewById(R.id.toggleMicButton)
         acceptButton = findViewById(R.id.acceptButton)
         declineButton = findViewById(R.id.declineButton)
-        toggleFrontCameraButton = findViewById(R.id.frontFacingSwitch)
         speakerphoneButton = findViewById(R.id.speakerphoneButton)
         changePipButton = findViewById(R.id.change_pip_window)
         redButton = findViewById(R.id.redButton)
@@ -220,7 +218,6 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
         declineButton.visibility = GONE
         toggleMicButton.visibility = GONE
         toggleCameraButton.visibility = GONE
-        toggleFrontCameraButton.visibility = GONE
 
         if(intent == null || intent.extras == null || intent.extras?.get("EXTRA_CONTACT") == null){
             finish()
@@ -613,10 +610,8 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
         Log.d(this, "updateCameraButtons() cameraEnabled=$cameraEnabled")
 
         if (cameraEnabled) {
-            toggleFrontCameraButton.visibility = VISIBLE
             toggleCameraButton.setImageResource(R.drawable.selector_camera_on)
         } else {
-            toggleFrontCameraButton.visibility = GONE
             toggleCameraButton.setImageResource(R.drawable.selector_camera_off)
         }
     }
@@ -767,12 +762,12 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
 
             if (settings.enableCameraByDefault != currentCall.getCameraEnabled()) {
                 Log.d(this, "onDataChannelReady() toggle camera")
-                toggleCameraButton.performClick()
+                swapFrontBackCamera()
             }
 
             if (settings.selectFrontCameraByDefault != currentCall.getFrontCameraEnabled()) {
                 Log.d(this, "onDataChannelReady() toggle front camera")
-                toggleFrontCameraButton.performClick()
+                swapFrontBackCamera()
             }
         }
     }
@@ -992,12 +987,13 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
 
         val settings = DatabaseCache.database.settings
 
-        // swap pip and fullscreen content
+        // switch camera
         pipContainer.setOnClickListener {
-            Log.d(this, "pipRenderer.setOnClickListener()")
-            showPipEnabled = true
-            swappedVideoFeeds = !swappedVideoFeeds
-            updateVideoDisplay()
+            //Log.d(this, "pipRenderer.setOnClickListener()")
+            //showPipEnabled = true
+            //swappedVideoFeeds = !swappedVideoFeeds
+            //updateVideoDisplay()
+            swapFrontBackCamera()
         }
 
         pipContainer.setOnTouchListener(object : OnTouchListener {
@@ -1120,12 +1116,13 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
 
         updateMicrophoneIcon()
 
-        toggleFrontCameraButton.setOnClickListener {
-            Log.d(this, "frontFacingSwitch() swappedVideoFeeds=$swappedVideoFeeds, frontCameraEnabled=${currentCall.getFrontCameraEnabled()}}")
-            currentCall.switchCamera(
-                !currentCall.getFrontCameraEnabled()
-            )
-        }
+    }
+
+    private fun swapFrontBackCamera(){
+        Log.d(this, "swapFrontBackCamera() swappedVideoFeeds=$swappedVideoFeeds, frontCameraEnabled=${currentCall.getFrontCameraEnabled()}}")
+        currentCall.switchCamera(
+            !currentCall.getFrontCameraEnabled()
+        )
     }
 
     private fun initCall() {
@@ -1192,7 +1189,6 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
 
         toggleMicButton.visibility = VISIBLE
         toggleCameraButton.visibility = VISIBLE
-        toggleFrontCameraButton.visibility = GONE
     }
 
     private fun setProximitySensorEnabled(enabled: Boolean) {
@@ -1492,7 +1488,6 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
             // picture-in-picture mode.
             uiMode = 1
             changeUiButton.visibility = INVISIBLE
-            toggleFrontCameraButton.visibility = INVISIBLE
             setPipButtonEnabled(false)
             showPipView(false)
             if (this::currentCall.isInitialized) {
@@ -1502,7 +1497,6 @@ class CallActivity() : BaseActivity(), RTCCall.CallContext {
             // Restore the full-screen UI.
             uiMode = 0
             changeUiButton.visibility = VISIBLE
-            toggleFrontCameraButton.visibility = VISIBLE
             if (this::currentCall.isInitialized) {
                 currentCall.onResumeCallActivity()
             }
