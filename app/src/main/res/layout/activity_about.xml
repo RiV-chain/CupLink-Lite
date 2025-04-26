@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutActivity"
-    android:background="@color/colorBackground">
+    android:background="@drawable/call_background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/about_appbar"
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:textSize="@dimen/name_text_size"
                 android:text="@string/menu_about"/>
 
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_description_long_new"
-                android:fontFamily="@font/poppins_light"
+                android:fontFamily="@font/inter_regular"
                 android:textSize="@dimen/subtitle_text_size"
                 android:layout_marginTop="@dimen/padding_40"/>
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_20"
                 android:layout_gravity="center"
-                android:fontFamily="@font/poppins_bold"
+                android:fontFamily="@font/inter_regular"
                 android:text="@string/app_name"
                 android:textSize="@dimen/title_text_size" />
 
@@ -98,46 +98,46 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/terms"
-                    android:fontFamily="@font/poppins_regular"/>
+                    android:fontFamily="@font/inter_regular"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_5"
                     android:layout_marginEnd="@dimen/padding_5"
                     android:text="|"
-                    android:fontFamily="@font/poppins_regular"/>
+                    android:fontFamily="@font/inter_regular"/>
                 <TextView
                     android:id="@+id/privacyPolicy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/privacy_policy"
-                    android:fontFamily="@font/poppins_regular"/>
+                    android:fontFamily="@font/inter_regular"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_5"
                     android:layout_marginEnd="@dimen/padding_5"
                     android:text="|"
-                    android:fontFamily="@font/poppins_regular"/>
+                    android:fontFamily="@font/inter_regular"/>
                 <TextView
                     android:id="@+id/licenses"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/licenses"
-                    android:fontFamily="@font/poppins_regular"/>
+                    android:fontFamily="@font/inter_regular"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_5"
                     android:layout_marginEnd="@dimen/padding_5"
                     android:text="|"
-                    android:fontFamily="@font/poppins_regular"/>
+                    android:fontFamily="@font/inter_regular"/>
                 <TextView
                     android:id="@+id/docs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/docs"
-                    android:fontFamily="@font/poppins_regular"/>
+                    android:fontFamily="@font/inter_regular"/>
             </LinearLayout>
 
             <LinearLayout
@@ -149,7 +149,7 @@
                 <ImageButton
                     android:id="@+id/x"
                     android:src="@drawable/ic_x"
-                    android:background="@color/colorBackground"
+                    android:background="@color/colorTransparent"
                     android:scaleX="0.76"
                     android:scaleY="0.76"
                     android:scaleType="fitCenter"
@@ -159,7 +159,7 @@
                 <ImageButton
                     android:id="@+id/linkedIn"
                     android:src="@drawable/ic_linked_in"
-                    android:background="@color/colorBackground"
+                    android:background="@color/colorTransparent"
                     app:tint="@color/colorPrimary"
                     android:scaleX="0.62"
                     android:scaleY="0.62"
@@ -170,7 +170,7 @@
                 <ImageButton
                     android:id="@+id/gitHub"
                     android:src="@drawable/ic_github"
-                    android:background="@color/colorBackground"
+                    android:background="@color/colorTransparent"
                     app:tint="@color/colorPrimary"
                     android:scaleX="0.64"
                     android:scaleY="0.64"
@@ -181,7 +181,7 @@
                 <ImageButton
                     android:id="@+id/telegram"
                     android:src="@drawable/ic_telegram"
-                    android:background="@color/colorBackground"
+                    android:background="@color/colorTransparent"
                     app:tint="@color/colorPrimary"
                     android:scaleX="0.64"
                     android:scaleY="0.64"
@@ -193,15 +193,6 @@
         </LinearLayout>
 
      </ScrollView>
-
-    <View
-        android:id="@+id/footerShadow"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:background="@drawable/footer_background"
-        app:layout_constraintBottom_toTopOf="@id/footerLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Footer Layout -->
     <RelativeLayout
@@ -224,7 +215,7 @@
             android:text="@string/app_name"
             android:textColor="@color/light_light_grey"
             android:textSize="@dimen/subtitle_text_size"
-            android:fontFamily="@font/poppins_regular"/>
+            android:fontFamily="@font/inter_regular"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

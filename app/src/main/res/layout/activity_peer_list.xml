@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".rivmesh.PeerListActivity"
-    android:background="@color/colorBackground">
+    android:background="@drawable/call_background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:text="@string/title_activity_peer_list"
                 android:textSize="@dimen/name_text_size" />
         </androidx.appcompat.widget.Toolbar>
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@color/colorBackground">
+        android:background="@color/colorTransparent">
 
         <org.rivchain.cuplink.renderer.DescriptiveTextView
             android:id="@+id/description"
@@ -47,8 +47,8 @@
             android:layout_marginEnd="@dimen/padding_20"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:subtitleFontFamily="@font/poppins_light"
-            app:titleFontFamily="@font/poppins_regular"
+            app:subtitleFontFamily="@font/inter_regular"
+            app:titleFontFamily="@font/inter_regular"
             app:titleText="Manage Your Public Peers"
             app:subtitleText="Public Peers are decentralized nodes that securely route your video and audio calls without relaying on centralized servers. They ensure secure, private and communication. CupLink even lets you add your own Public Peers database."
             app:titleTextSize="@dimen/title_text_size"
@@ -73,8 +73,8 @@
             android:layout_marginStart="@dimen/padding_20"
             app:titleText="@string/automatic_peers_selection"
             app:subtitleText="@string/automatic_peers_selection_description"
-            app:titleFontFamily="@font/poppins_regular"
-            app:subtitleFontFamily="@font/poppins_light"
+            app:titleFontFamily="@font/inter_regular"
+            app:subtitleFontFamily="@font/inter_regular"
             app:titleTextSize="@dimen/title_text_size"
             app:subtitleTextSize="@dimen/subtitle_text_size"
             android:layout_marginTop="@dimen/padding_20"
@@ -96,8 +96,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/padding_20"
             android:layout_marginEnd="@dimen/padding_20"
-            app:layout_constraintTop_toBottomOf="@+id/automaticPeersSelection"
-            app:layout_constraintBottom_toTopOf="@+id/footerShadow">
+            app:layout_constraintTop_toBottomOf="@+id/automaticPeersSelection">
 
             <org.rivchain.cuplink.renderer.DescriptiveTextView
                 android:id="@+id/peers_database"
@@ -106,8 +105,8 @@
                 android:layout_marginTop="@dimen/padding_30"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:subtitleFontFamily="@font/poppins_light"
-                app:titleFontFamily="@font/poppins_regular"
+                app:subtitleFontFamily="@font/inter_regular"
+                app:titleFontFamily="@font/inter_regular"
                 app:titleText="Manage Your Public Peers"
                 app:subtitleText="Your peers will be synced with the link below"
                 app:titleTextSize="@dimen/title_text_size"
@@ -140,7 +139,7 @@
                     android:layout_width="0dp"
                     android:layout_height="55dp"
                     android:background="@color/colorTransparent"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:paddingStart="@dimen/padding_50"
                     android:paddingEnd="@dimen/padding_20"
                     android:text="..."
@@ -195,15 +194,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/footerShadow"
-            android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:background="@drawable/footer_background"
-            app:layout_constraintBottom_toTopOf="@id/footerLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
         <!-- Footer Layout -->
         <RelativeLayout
             android:id="@+id/footerLayout"
@@ -225,7 +215,7 @@
                 android:text="@string/app_name"
                 android:textColor="@color/light_light_grey"
                 android:textSize="@dimen/subtitle_text_size"
-                android:fontFamily="@font/poppins_regular"/>
+                android:fontFamily="@font/inter_regular"/>
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

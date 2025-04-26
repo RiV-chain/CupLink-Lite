@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".QRScanActivity"
-    android:background="@color/colorBackground">
+    android:background="@drawable/call_background">
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
         android:layout_width="match_parent"

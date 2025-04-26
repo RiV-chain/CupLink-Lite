@@ -7,5 +7,5 @@
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
     android:ellipsize="marquee"
     android:textColor="?android:textColorSecondary"
-    android:fontFamily="@font/poppins_regular"
+    android:fontFamily="@font/inter_regular"
     android:background="@color/colorTransparent"/>

@@ -7,6 +7,6 @@
         android:title=""
         app:actionLayout="@layout/menu_settings_layout"
         app:showAsAction="always"
-        android:fontFamily="@font/poppins_regular"/>
+        android:fontFamily="@font/inter_regular"/>
 
 </menu>

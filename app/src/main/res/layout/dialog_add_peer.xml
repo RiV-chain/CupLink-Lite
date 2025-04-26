@@ -10,7 +10,7 @@
         android:id="@+id/checkboxDialogTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/inter_regular"
         android:layout_margin="10dp"
         android:textSize="@dimen/name_text_size"
         android:text="@string/add_peer"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:hint="Schema"
             android:textColor="@color/light_grey"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/inter_regular"
             android:inputType="textNoSuggestions"
             android:textCursorDrawable="@null"
             style="@style/EditText.OutlinedBox"/>
@@ -66,7 +66,7 @@
             android:textColor="@color/light_grey"
             android:textCursorDrawable="@null"
             android:focusedByDefault="true"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/inter_regular"
             style="@style/EditText.OutlinedBox"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,7 +91,7 @@
             android:textColor="@color/light_grey"
             android:inputType="number"
             android:textCursorDrawable="@null"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/inter_regular"
             style="@style/EditText.OutlinedBox"/>
     </com.google.android.material.textfield.TextInputLayout>
 

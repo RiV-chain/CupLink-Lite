@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/call_background"
     tools:context=".SettingsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:text="@string/title_settings"
                 android:textSize="@dimen/name_text_size" />
 
@@ -76,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawablePadding="5dp"
-                        android:fontFamily="@font/poppins_regular"
+                        android:fontFamily="@font/inter_regular"
                         android:text="@string/menu_about"
                         android:textSize="@dimen/settings_menu_text_size"
                         android:gravity="center"
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawablePadding="5dp"
-                        android:fontFamily="@font/poppins_regular"
+                        android:fontFamily="@font/inter_regular"
                         android:text="@string/menu_backup"
                         android:textSize="@dimen/settings_menu_text_size"
                         android:gravity="center"
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawablePadding="5dp"
-                        android:fontFamily="@font/poppins_regular"
+                        android:fontFamily="@font/inter_regular"
                         android:text="@string/clear_history"
                         android:textSize="@dimen/settings_menu_text_size"
                         android:gravity="center"
@@ -114,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/poppins_regular"
+                        android:fontFamily="@font/inter_regular"
                         android:drawablePadding="5dp"
                         android:text="@string/menu_exit"
                         android:textSize="@dimen/settings_menu_text_size"
@@ -140,7 +140,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="@color/colorTransparent"
-                        android:fontFamily="@font/poppins_regular"
+                        android:fontFamily="@font/inter_regular"
                         app:iconPadding="10dp"
                         android:paddingStart="17dp"
                         android:paddingEnd="17dp"
@@ -181,7 +181,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/nicknameLayout"
                     android:background="@color/colorTransparent"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="@dimen/title_text_size"
                     android:textColor="@drawable/selector_text_color"
                     app:icon="@drawable/selector_privacy"
@@ -206,7 +206,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/fragmentContainer1"
                     android:background="@color/colorTransparent"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="@dimen/title_text_size"
                     android:textColor="@drawable/selector_text_color"
                     app:icon="@drawable/selector_sound"
@@ -231,7 +231,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/fragmentContainer2"
                     android:background="@color/colorTransparent"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="@dimen/title_text_size"
                     android:textColor="@drawable/selector_text_color"
                     app:icon="@drawable/selector_media"
@@ -256,7 +256,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/fragmentContainer3"
                     android:background="@color/colorTransparent"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="@dimen/title_text_size"
                     android:textColor="@drawable/selector_text_color"
                     app:icon="@drawable/selector_network"
@@ -281,7 +281,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/fragmentContainer4"
                     android:background="@color/colorTransparent"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="@dimen/title_text_size"
                     android:textColor="@drawable/selector_text_color"
                     app:icon="@drawable/selector_system"
@@ -306,7 +306,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/fragmentContainer5"
                     android:background="@color/colorTransparent"
                     android:textAllCaps="false"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:textSize="@dimen/title_text_size"
                     android:textColor="@drawable/selector_text_color"
                     app:icon="@drawable/selector_quality"
@@ -325,15 +325,6 @@
         </LinearLayout>
 
     </ScrollView>
-
-    <View
-        android:id="@+id/footerShadow"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:background="@drawable/footer_background"
-        app:layout_constraintBottom_toTopOf="@id/footerLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Footer Layout -->
     <RelativeLayout
@@ -356,7 +347,7 @@
             android:text="@string/app_name"
             android:textColor="@color/light_light_grey"
             android:textSize="@dimen/subtitle_text_size"
-            android:fontFamily="@font/poppins_regular"/>
+            android:fontFamily="@font/inter_regular"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

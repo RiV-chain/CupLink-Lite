@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/call_background"
     android:paddingTop="@dimen/systembar_height"
     android:paddingBottom="@dimen/systembar_height">
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,7 @@
                 android:id="@+id/tc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:gravity="center_vertical"
                 android:text="Licenses"
                 android:textSize="@dimen/title_text_size" />
@@ -68,7 +68,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/padding_20"
                     android:layout_gravity="start"
-                    android:fontFamily="@font/poppins_light"
+                    android:fontFamily="@font/inter_regular"
                     android:textAlignment="viewStart"
                     android:textColor="?android:textColorPrimary"
                     android:textSize="13sp"

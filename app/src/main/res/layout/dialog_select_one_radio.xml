@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/name_text_size"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/inter_regular"
         android:paddingBottom="16dp" />
 
     <ScrollView

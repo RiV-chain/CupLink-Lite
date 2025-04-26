@@ -7,4 +7,4 @@
     android:textColor="@color/light_grey"
     android:background="@color/colorTransparent"
     android:padding="@dimen/padding_5"
-    android:fontFamily="@font/poppins_regular"/>
+    android:fontFamily="@font/inter_regular"/>

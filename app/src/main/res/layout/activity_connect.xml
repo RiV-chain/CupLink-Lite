@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@drawable/call_background">
 
     <!-- Barcode Scanner Container -->
     <androidx.cardview.widget.CardView
@@ -55,14 +55,12 @@
             android:layout_marginStart="@dimen/padding_30"
             android:background="@color/zxing_transparent"
             android:contentDescription="@string/contact_menu_share"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintVertical_weight="1"
-            app:srcCompat="@drawable/ic_baseline_share_24"
+            app:srcCompat="@drawable/ic_share_white"
             app:tint="@color/white" />
 
         <!-- Text Input Layout -->
@@ -71,7 +69,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_5"
-            android:layout_marginStart="65dp"
+            android:layout_marginBottom="@dimen/padding_5"
+            android:layout_marginStart="75dp"
             android:layout_marginEnd="15dp"
             android:background="@drawable/next_button_background"
             android:textColorHint="@color/light_grey"
@@ -102,14 +101,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
             android:layout_marginStart="@dimen/padding_30"
             android:layout_marginEnd="@dimen/padding_30"
             app:layout_constraintBottom_toBottomOf="@+id/fabShare"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/fabShare"
-            app:srcCompat="@drawable/selector_manual_input"
+            app:srcCompat="@drawable/ic_paste_white"
             app:backgroundTint="@color/colorTransparent"
             android:background="@color/zxing_transparent"
             android:contentDescription="@string/add_contact_link_or_json" />

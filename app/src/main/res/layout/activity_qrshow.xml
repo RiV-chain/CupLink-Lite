@@ -4,13 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@drawable/call_background">
 
     <TextView
         android:id="@+id/scan_invite_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/inter_regular"
         android:gravity="center"
         android:text="@string/title_show_qr_code"
         android:textColor="@color/selectedColor"
@@ -37,7 +37,7 @@
         android:id="@+id/contact_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_bold"
+        android:fontFamily="@font/inter_regular"
         android:gravity="center"
         android:textSize="@dimen/title_text_size"
         android:textColor="@android:color/darker_gray"
