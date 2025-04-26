@@ -18,7 +18,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:textSize="20sp"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/inter_regular"
         android:textAlignment="center"
         android:text="@string/contact_name_conflict"/>
 
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@+id/conflict_contact_edit_textview_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/conflict_contact_rename_button"
-        android:fontFamily="@font/lato_bold"
+        android:fontFamily="@font/inter_regular"
         android:textSize="@dimen/button_test_size"
         android:text="@string/button_replace"
         android:textColor="@color/white" />
@@ -77,7 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/conflict_contact_edit_textview_layout"
         app:layout_constraintStart_toEndOf="@+id/conflict_contact_replace_button"
         app:layout_constraintEnd_toEndOf="parent"
-        android:fontFamily="@font/lato_bold"
+        android:fontFamily="@font/inter_regular"
         android:textSize="@dimen/button_test_size"
         android:text="@string/button_rename"
         android:textColor="@color/white" />

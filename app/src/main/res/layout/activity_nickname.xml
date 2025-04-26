@@ -7,7 +7,7 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/call_background"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -42,7 +42,7 @@
             android:layout_marginStart="@dimen/padding_40"
             android:layout_marginEnd="@dimen/padding_40"
             android:layout_marginTop="@dimen/padding_40"
-            android:fontFamily="@font/poppins_light"
+            android:fontFamily="@font/inter_regular"
             android:gravity="start"
             android:lineSpacingExtra="10sp"
             android:text=""
@@ -61,7 +61,7 @@
             android:layout_marginBottom="@dimen/padding_40"
             android:gravity="center"
             android:textSize="@dimen/name_text_size"
-            android:fontFamily="@font/poppins_light"
+            android:fontFamily="@font/inter_regular"
             android:visibility="invisible"
             android:text=""
             android:digits="0,1,2,3,4,5,6,7,8,9,abcdefghijklmnopqrstuvwxyz,ABCDEFGHIJKLMNOPQRSTUVWXYZ,-"
@@ -76,7 +76,7 @@
             android:layout_marginTop="@dimen/padding_10"
             android:layout_marginBottom="@dimen/padding_40"
             android:background="@drawable/next_button_background"
-            android:fontFamily="@font/lato_bold"
+            android:fontFamily="@font/inter_regular"
             android:text="@string/button_next"
             android:textAllCaps="false"
             android:textColor="@color/white"

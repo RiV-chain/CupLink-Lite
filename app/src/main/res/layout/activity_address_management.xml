@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:text="@string/address_management"
                 android:textSize="@dimen/name_text_size" />
 
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/padding_20"
             android:layout_marginEnd="@dimen/padding_20"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/inter_regular"
             android:text="@string/address_management_help_text"
             android:textAlignment="center"
             android:textSize="@dimen/subtitle_text_size" />
@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginEnd="@dimen/padding_20"
-                android:fontFamily="@font/lato_bold"
+                android:fontFamily="@font/inter_regular"
                 android:text="@string/button_save"
                 android:layout_weight="1"
                 android:textColor="@color/white"/>
@@ -131,7 +131,7 @@
                 android:id="@+id/reset_button"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/button_height"
-                android:fontFamily="@font/lato_bold"
+                android:fontFamily="@font/inter_regular"
                 android:text="@string/button_reset"
                 android:layout_weight="1"
                 android:textColor="@color/white" />
@@ -144,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginStart="@dimen/padding_20"
-                android:fontFamily="@font/lato_bold"
+                android:fontFamily="@font/inter_regular"
                 android:text="@string/contact_menu_add"
                 android:layout_weight="1"
                 android:textColor="@color/white" />

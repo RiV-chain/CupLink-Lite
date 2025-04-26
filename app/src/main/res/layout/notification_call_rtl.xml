@@ -52,7 +52,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:textColor="@color/light_light_grey"
-            android:fontFamily="@font/poppins_regular"
+            android:fontFamily="@font/inter_regular"
             android:gravity="end"
             tools:text="Wow Such Doge" />
 
@@ -65,7 +65,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:gravity="end"
-            android:fontFamily="@font/poppins_light"
+            android:fontFamily="@font/inter_regular"
             tools:text="CupLink Call" />
 
         <TextView
@@ -77,7 +77,7 @@
             android:singleLine="true"
             android:ellipsize="end"
             android:gravity="end"
-            android:fontFamily="@font/poppins_light"
+            android:fontFamily="@font/inter_regular"
             tools:text="to Account Name"
             android:visibility="gone"/>
 
@@ -108,7 +108,7 @@
                 android:gravity="center"
                 android:textSize="@dimen/subtitle_text_size"
                 android:textColor="#5ee067"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:drawablePadding="12dip"
                 app:drawableTint="#5ee067"
                 app:drawableRightCompat="@drawable/ic_call_accept"
@@ -132,7 +132,7 @@
                 android:gravity="center"
                 android:textSize="@dimen/subtitle_text_size"
                 android:textColor="#ef5050"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:drawablePadding="12dip"
                 app:drawableTint="#ef5050"
                 app:drawableRightCompat="@drawable/ic_call_decline"

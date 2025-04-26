@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:fontFamily="@font/poppins_light"
+        android:fontFamily="@font/inter_regular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,7 +21,7 @@
         android:id="@+id/call_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/inter_regular"
         android:textSize="@dimen/subtitle_text_size"
         app:layout_constraintStart_toEndOf="@id/call_name"
         app:layout_constraintTop_toTopOf="@id/call_name"
@@ -31,7 +31,7 @@
         android:id="@+id/call_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_light"
+        android:fontFamily="@font/inter_regular"
         android:textSize="@dimen/subtitle_text_size"
         android:layout_marginTop="8dp"
         android:layout_marginStart="5dp"
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:fontFamily="@font/poppins_light"
+        android:fontFamily="@font/inter_regular"
         android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@id/call_date"
         app:layout_constraintTop_toTopOf="@id/call_date" />
@@ -67,7 +67,8 @@
         app:layout_constraintTop_toTopOf="@id/call_name"
         app:layout_constraintBottom_toBottomOf="@id/call_name"
         android:focusable="false"
-        android:clickable="false"/>
+        android:clickable="false"
+        app:tint="@color/events" />
 
     <ImageButton
         android:id="@+id/qr_button"
@@ -79,6 +80,7 @@
         app:layout_constraintTop_toTopOf="@id/call_name"
         app:layout_constraintBottom_toBottomOf="@id/call_name"
         android:focusable="false"
-        android:clickable="false"/>
+        android:clickable="false"
+        app:tint="@color/events" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

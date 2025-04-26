@@ -16,7 +16,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toTopOf="@+id/NameEditLayout"
     android:textSize="23sp"
-    android:fontFamily="@font/poppins_regular"
+    android:fontFamily="@font/inter_regular"
     android:text="@string/paste_qr_code_data"/>
 
 <com.google.android.material.textfield.TextInputLayout
@@ -53,7 +53,7 @@
         android:layout_height="@dimen/button_height"
         android:layout_margin="@dimen/padding_20"
         android:background="@drawable/next_button_background"
-        android:fontFamily="@font/lato_bold"
+        android:fontFamily="@font/inter_regular"
         android:text="@string/button_ok"
         android:textAllCaps="false"
         android:textColor="@color/white"

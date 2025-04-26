@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/call_background"
     android:paddingTop="@dimen/systembar_height"
     android:paddingBottom="@dimen/systembar_height">
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,7 +32,7 @@
                 android:id="@+id/tc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:gravity="center_vertical"
                 android:text="Terms &amp; Conditions"
                 android:textSize="@dimen/title_text_size" />
@@ -41,7 +41,7 @@
                 android:id="@+id/pp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/inter_regular"
                 android:gravity="center_vertical"
                 android:text="Privacy Policy"
                 android:textSize="@dimen/title_text_size" />
@@ -70,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/padding_20"
-                    android:fontFamily="@font/poppins_regular"
+                    android:fontFamily="@font/inter_regular"
                     android:text=""
                     android:textSize="@dimen/subtitle_text_size" />
             </LinearLayout>
@@ -82,7 +82,7 @@
             android:layout_height="@dimen/button_height"
             android:layout_margin="@dimen/padding_40"
             android:background="@drawable/next_button_background"
-            android:fontFamily="@font/lato_bold"
+            android:fontFamily="@font/inter_regular"
             android:text="@string/accept"
             android:textAllCaps="false"
             android:textColor="@color/white"

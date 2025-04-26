@@ -26,6 +26,6 @@
             android:ellipsize="middle"
             android:singleLine="true"
             android:textIsSelectable="false"
-            android:fontFamily="@font/poppins_regular"/>
+            android:fontFamily="@font/inter_regular"/>
     </LinearLayout>
 </RelativeLayout>
