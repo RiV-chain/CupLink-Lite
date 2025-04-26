@@ -36,7 +36,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@id/call_icons"
-        app:layout_constraintTop_toBottomOf="@id/call_name" />
+        app:layout_constraintTop_toBottomOf="@id/call_name"
+        android:textColor="@color/events"/>
 
     <LinearLayout
         android:id="@+id/call_icons"

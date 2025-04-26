@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@color/colorBackground">
+        android:background="@color/colorTransparent">
 
         <org.rivchain.cuplink.renderer.DescriptiveTextView
             android:id="@+id/description"
@@ -96,8 +96,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/padding_20"
             android:layout_marginEnd="@dimen/padding_20"
-            app:layout_constraintTop_toBottomOf="@+id/automaticPeersSelection"
-            app:layout_constraintBottom_toTopOf="@+id/footerShadow">
+            app:layout_constraintTop_toBottomOf="@+id/automaticPeersSelection">
 
             <org.rivchain.cuplink.renderer.DescriptiveTextView
                 android:id="@+id/peers_database"

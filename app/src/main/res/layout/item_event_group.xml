@@ -6,7 +6,7 @@
     android:paddingEnd="10dp"
     android:orientation="horizontal"
     android:gravity="center"
-    android:background="@color/colorBackground">
+    android:background="@color/colorTransparent">
 
     <View
         android:layout_width="0dp"
