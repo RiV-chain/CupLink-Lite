@@ -31,11 +31,6 @@ class QRShowActivity : BaseActivity() {
 
         title = getString(R.string.title_show_qr_code)
 
-        findViewById<View>(R.id.fabPresenter).setOnClickListener {
-            startActivity(Intent(this, QRScanActivity::class.java))
-            finish()
-        }
-
         findViewById<View>(R.id.fabShare).setOnClickListener {
             try {
                 Thread {
