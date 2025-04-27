@@ -15,7 +15,11 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.rivchain.cuplink.adapter.ContactListAdapter
 import org.rivchain.cuplink.call.CallActivity
@@ -108,9 +112,16 @@ class ContactListFragment() : Fragment() {
                         }.start()
                     }
                     getString(R.string.contact_menu_qrcode) -> {
-                        val intent = Intent(activity, QRShowActivity::class.java)
-                        intent.putExtra("EXTRA_CONTACT_PUBLICKEY", contact.publicKey)
-                        startActivity(intent)
+                        lifecycleScope.launch {
+                            val link = withContext(Dispatchers.Default) {
+                                RlpUtils.generateLink(contact)
+                            }
+                            val intent = Intent(activity, QRShowActivity::class.java).apply {
+                                putExtra("EXTRA_CONTACT_DEEPLINK", link)
+                            }
+                            startActivity(intent)
+                        }
+
                     }
                 }
                 dialog.dismiss()

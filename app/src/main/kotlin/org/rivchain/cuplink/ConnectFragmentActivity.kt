@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.zxing.BarcodeFormat
@@ -56,13 +57,16 @@ open class ConnectFragmentActivity : AddContactActivity(), BarcodeCallback {
         findViewById<View>(R.id.fabShare).setOnClickListener {
             try {
                 val contact = getContactOrOwn(publicKey)!!
-                Thread {
-                    val data = RlpUtils.generateLink(contact)
-                    val i = Intent(Intent.ACTION_SEND)
-                    i.putExtra(Intent.EXTRA_TEXT, data)
-                    i.type = "text/plain"
+                lifecycleScope.launch {
+                    val data = withContext(Dispatchers.Default) {
+                        RlpUtils.generateLink(contact)
+                    }
+                    val i = Intent(Intent.ACTION_SEND).apply {
+                        putExtra(Intent.EXTRA_TEXT, data)
+                        type = "text/plain"
+                    }
                     startActivity(i)
-                }.start()
+                }
                 finish()
             } catch (e: Exception) {
                 // ignore
