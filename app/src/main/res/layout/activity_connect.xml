@@ -7,16 +7,16 @@
     android:background="@drawable/call_background">
 
     <!-- Barcode Scanner Container -->
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:id="@+id/barcodeScannerContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/padding_40"
         android:layout_marginLeft="@dimen/padding_20"
         android:layout_marginRight="@dimen/padding_20"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:contentPadding="@dimen/padding_5"
-        app:cardCornerRadius="@dimen/image_corner_radius"
+        android:background="@drawable/rounded_background_primary"
+        android:padding="3dp"
+        android:layout_marginBottom="@dimen/padding_5"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,15 +36,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </androidx.cardview.widget.CardView>
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/sharedManualInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_5"
         app:layout_constraintBottom_toTopOf="@+id/qrCodeContainer"
-        app:layout_constraintTop_toBottomOf="@id/barcodeScannerContainer"
-        android:layout_marginBottom="@dimen/padding_5">
+        app:layout_constraintTop_toBottomOf="@id/barcodeScannerContainer">
 
         <!-- Floating Action Button Share -->
         <ImageButton
@@ -110,120 +110,34 @@
             app:backgroundTint="@color/colorTransparent"
             android:background="@color/zxing_transparent"
             android:contentDescription="@string/add_contact_link_or_json" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Scan Me Text (Top) -->
-    <TextView
-        android:id="@+id/scan_label_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-11dp"
-        android:layout_marginBottom="-11dp"
-        android:paddingLeft="@dimen/padding_10"
-        android:paddingRight="@dimen/padding_10"
-        android:translationZ="110dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="SCAN ME"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="@dimen/subtitle_text_size"
-        app:layout_constraintBottom_toTopOf="@id/qrCodeContainer"
-        app:layout_constraintStart_toStartOf="@id/qrCodeContainer"
-        app:layout_constraintEnd_toEndOf="@id/qrCodeContainer"/>
-
     <!-- QR Code Container -->
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:id="@+id/qrCodeContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/padding_40"
         android:layout_marginLeft="@dimen/padding_20"
         android:layout_marginRight="@dimen/padding_20"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:contentPadding="@dimen/padding_5"
-        app:cardCornerRadius="@dimen/image_corner_radius"
+        android:background="@drawable/rounded_background_primary"
+        android:padding="@dimen/padding_5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_weight="4.5"
         app:layout_constraintTop_toBottomOf="@+id/sharedManualInputLayout">
-        <!-- Inner QR Code Container -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/qrCodeContainerInner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:cardCornerRadius="@dimen/image_inner_corner_radius"
-            app:layout_constraintDimensionRatio="1:1">
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/QRView"
+                android:background="@drawable/rounded_background_primary"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/padding_40"
                 android:contentDescription="@string/qr_code_image"
                 app:shapeAppearanceOverlay="@style/RoundedCornerImageView" />
-        </androidx.cardview.widget.CardView>
-    </androidx.cardview.widget.CardView>
 
-    <!-- Scan Me Text (Left) -->
-    <TextView
-        android:id="@+id/scan_label_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="-40dp"
-        android:layout_marginRight="-40dp"
-        android:paddingLeft="@dimen/padding_10"
-        android:paddingRight="@dimen/padding_10"
-        android:translationZ="110dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="SCAN ME"
-        android:rotation="90"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="@dimen/subtitle_text_size"
-        app:layout_constraintStart_toEndOf="@id/qrCodeContainer"
-        app:layout_constraintTop_toTopOf="@id/qrCodeContainer"
-        app:layout_constraintBottom_toBottomOf="@id/qrCodeContainer"/>
-
-    <!-- Scan Me Text (Right) -->
-    <TextView
-        android:id="@+id/scan_label_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="-40dp"
-        android:layout_marginRight="-40dp"
-        android:paddingLeft="@dimen/padding_10"
-        android:paddingRight="@dimen/padding_10"
-        android:translationZ="110dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="SCAN ME"
-        android:rotation="-90"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="@dimen/subtitle_text_size"
-        app:layout_constraintEnd_toStartOf="@id/qrCodeContainer"
-        app:layout_constraintTop_toTopOf="@id/qrCodeContainer"
-        app:layout_constraintBottom_toBottomOf="@id/qrCodeContainer"/>
-
-    <!-- Scan Me Text (Bottom) -->
-    <TextView
-        android:id="@+id/scan_label_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/padding_10"
-        android:paddingRight="@dimen/padding_10"
-        android:layout_marginTop="-12dp"
-        android:layout_marginBottom="20dp"
-        android:translationZ="110dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="SCAN ME"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:textSize="@dimen/subtitle_text_size"
-        app:layout_constraintTop_toBottomOf="@id/qrCodeContainer"
-        app:layout_constraintStart_toStartOf="@id/qrCodeContainer"
-        app:layout_constraintEnd_toEndOf="@id/qrCodeContainer"/>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
