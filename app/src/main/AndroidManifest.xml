@@ -134,10 +134,6 @@
             android:noHistory="true"/>
 
         <activity
-            android:name=".QRScanActivity"
-            android:noHistory="true"/>
-
-        <activity
             android:name=".AddContactActivity"
             android:noHistory="true"/>
 
