@@ -157,7 +157,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/AddAddressButton"
                 app:layout_constraintTop_toTopOf="parent"
                 app:boxBackgroundMode="none"
-                android:background="@drawable/edit_text_rounded_corner"
+                android:background="@drawable/next_button_background"
                 android:textColorHint="@color/light_grey">
 
                 <com.google.android.material.textfield.TextInputEditText
