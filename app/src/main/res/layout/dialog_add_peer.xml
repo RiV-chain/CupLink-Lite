@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding_20"
         app:boxBackgroundMode="none"
-        android:background="@drawable/edit_text_rounded_corner"
+        android:background="@drawable/next_button_background"
         android:textColorHint="@color/light_grey"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding_20"
         app:boxBackgroundMode="none"
-        android:background="@drawable/edit_text_rounded_corner"
+        android:background="@drawable/next_button_background"
         android:textColorHint="@color/light_grey"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding_20"
         app:boxBackgroundMode="none"
-        android:background="@drawable/edit_text_rounded_corner"
+        android:background="@drawable/next_button_background"
         android:textColorHint="@color/light_grey"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +112,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/port"
-        android:background="@drawable/edit_text_rounded_corner"
+        android:background="@drawable/next_button_background"
         />
 
     <com.google.android.material.button.MaterialButton

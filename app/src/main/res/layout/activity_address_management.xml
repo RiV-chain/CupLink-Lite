@@ -74,7 +74,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ChangeNameTextView"
                 app:layout_constraintBottom_toTopOf="@+id/CancelButton"
                 app:boxBackgroundMode="none"
-                android:background="@drawable/edit_text_rounded_corner"
+                android:background="@drawable/next_button_background"
                 android:textColorHint="@color/light_grey">
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding_20"
-        android:background="@drawable/edit_text_rounded_corner"
+        android:background="@drawable/next_button_background"
         android:textColorHint="@color/light_grey"
         app:boxBackgroundMode="none"
         app:layout_constraintEnd_toEndOf="@+id/save"

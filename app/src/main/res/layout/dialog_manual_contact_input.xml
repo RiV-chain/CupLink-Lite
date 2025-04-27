@@ -24,7 +24,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:background="@drawable/edit_text_rounded_corner"
+    android:background="@drawable/next_button_background"
     android:textColorHint="@color/light_grey"
     app:boxBackgroundMode="none"
     app:layout_constraintBottom_toTopOf="@+id/OkButton"
