@@ -33,6 +33,7 @@ const val MAIN_CHANNEL_ID = "CupLink Service"
 class MainApplication : Application(), AppStateReceiver.StateReceiver, LifecycleObserver {
 
     private var currentState: State = State.Disabled
+    var isBootDone: Boolean = false // Global flag
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
@@ -72,6 +73,8 @@ class MainApplication : Application(), AppStateReceiver.StateReceiver, Lifecycle
     override fun onCreate() {
         super.onCreate()
         instance = this
+        // Initialize any global variables here
+        isBootDone = false
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifecycleObserver(this))
         val receiver = AppStateReceiver(this)
         receiver.register(this)

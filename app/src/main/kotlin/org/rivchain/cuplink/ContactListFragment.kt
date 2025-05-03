@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -202,6 +203,21 @@ class ContactListFragment() : Fragment() {
         activity.runOnUiThread {
             val adapter = ContactListAdapter(activity, R.layout.item_contact, contacts)
             contactListView.adapter = adapter
+            val appInstance = requireActivity().application as MainApplication
+            if(contacts.isEmpty() && !appInstance.isBootDone) {
+                // last element processed
+                appInstance.isBootDone = true
+
+                //check boot status
+                val logo = view?.findViewById<ImageView>(R.id.appLogo)
+                logo?.visibility = View.VISIBLE
+                logo?.postDelayed({
+                    logo.animate()
+                        .alpha(0f)
+                        .setDuration(1000)
+                        .withEndAction { logo.visibility = View.GONE }
+                }, 3000)
+            }
             adapter.startPingingContacts()  // Start pinging contacts after setting the adapter
         }
     }
