@@ -275,15 +275,15 @@ internal class EventExpandableListAdapter(
                 "Yesterday" to mutableListOf<Event>(),
                 "Older" to mutableListOf<Event>()
             )
+
             val now = System.currentTimeMillis()
             val todayStart = now - (now % DateUtils.DAY_IN_MILLIS)
             val yesterdayStart = todayStart - DateUtils.DAY_IN_MILLIS
 
-            var lastEvent: Event? = null
-            var lastEventList: MutableList<Event>? = null
-            var lastCategory: String? = null
+            // For tracking unique groups per contact per day
+            val contactDayMap = mutableMapOf<String, MutableMap<String, MutableList<Event>>>()
 
-            for (event in events) {
+            for (event in events.sortedByDescending { it.date.time }) {
                 val eventTime = event.date.time
                 val category = when {
                     eventTime >= todayStart -> "Today"
@@ -291,18 +291,23 @@ internal class EventExpandableListAdapter(
                     else -> "Older"
                 }
 
-                if (lastEvent == null || lastEventList == null || !lastEvent.publicKey.contentEquals(event.publicKey) || lastCategory != category) {
-                    lastEventList = mutableListOf(event)
-                    groupedEvents[category]?.addAll(lastEventList)
-                } else {
-                    lastEventList.add(event)
-                }
-                lastEvent = event
-                lastCategory = category
+                val contactKey = Utils.byteArrayToHexString(event.publicKey)
+                val dayKey = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(event.date)
+
+                val dayMap = contactDayMap.getOrPut(category) { mutableMapOf() }
+                val key = "$contactKey-$dayKey"
+
+                dayMap.getOrPut(key) { mutableListOf() }.add(event)
             }
 
-            groupedEvents.forEach { (_, eventList) ->
-                eventList.sortByDescending { it.date.time }
+            // Flatten the grouped maps into the list
+            for ((category, dayMap) in contactDayMap) {
+                val eventList = groupedEvents[category]!!
+                for ((_, eventsPerContactDay) in dayMap) {
+                    // Sort each group and add all to list
+                    eventsPerContactDay.sortByDescending { it.date.time }
+                    eventList.addAll(eventsPerContactDay)
+                }
             }
 
             return groupedEvents.entries.map { it.key to it.value }
