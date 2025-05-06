@@ -1,10 +1,13 @@
 package org.rivchain.cuplink
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -20,6 +23,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -60,6 +64,18 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         initToolbar()
+
+        val drawable = (findViewById<ConstraintLayout>(R.id.topView)!!).background as Drawable
+        ObjectAnimator.ofInt(drawable, "alpha", 150, 255).apply {
+            duration = 5000 // Set the duration of the animation
+            repeatCount = ObjectAnimator.INFINITE // Make the animation repeat forever
+            repeatMode = ValueAnimator.REVERSE
+            addUpdateListener {
+                // Update the alpha of the Drawable directly during the animation
+                drawable.alpha = animatedValue as Int
+            }
+            start()
+        }
 
         viewPager = findViewById(R.id.container)
         viewPager.adapter = ViewPagerFragmentAdapter(this)
