@@ -4,7 +4,7 @@
 
 **Serverless, encrypted video and voice calling over v6Space™** – no accounts, no infrastructure, no compromises.
 
-**CupLink™** is a fully open-source peer-to-peer calling dApp built on top of **v6Space™**, the decentralized IPv6 mesh overlay network powered by**RiV Chain™**. It enables seamless communication—even without Internet access—by using cryptographic IPv6 identities, QR code pairing, and secure, self-routing connections. Perfect for use in home networks, company LANs, community mesh setups, or fully offline scenarios.
+**CupLink™** is a fully open-source peer-to-peer calling dApp built on top of **v6Space™**, the decentralized IPv6 mesh overlay network powered by **RiV Chain™**. It enables seamless communication—even without Internet access—by using cryptographic IPv6 identities, QR code pairing, and secure, self-routing connections. Perfect for use in home networks, company LANs, community mesh setups, or fully offline scenarios.
 
 * * *
 
