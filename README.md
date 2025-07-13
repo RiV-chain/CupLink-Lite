@@ -4,7 +4,7 @@
 
 **Serverless, encrypted video and voice calling over v6Space™** – no accounts, no infrastructure, no compromises.
 
-**CupLink™** is a fully open-source peer-to-peer calling dApp built on top of **v6Space™**, the decentralized IPv6 mesh overlay from **RiV Chain™**. It enables seamless communication—even without Internet access—by using cryptographic IPv6 identities, QR code pairing, and secure, self-routing connections. Perfect for use in home networks, company LANs, community mesh setups, or fully offline scenarios.
+**CupLink™** is a fully open-source peer-to-peer calling dApp built on top of **v6Space™**, the decentralized IPv6 mesh overlay network powered by**RiV Chain™**. It enables seamless communication—even without Internet access—by using cryptographic IPv6 identities, QR code pairing, and secure, self-routing connections. Perfect for use in home networks, company LANs, community mesh setups, or fully offline scenarios.
 
 * * *
 
@@ -12,17 +12,17 @@
 
 *   Peer-to-peer **voice and video calling** in ultra-high-definition (4K+ supported).
     
-*   **No accounts, servers, or internet required**.
+*   **No accounts, servers, or internet access required e.g Call in the same LAN**.
     
 *   **End-to-end+ encryption** at the network layer.
     
-*   Built-in **call-spy detection** and app boot protection.
+*   Built-in **call-spy detection feature** and app boot protection.
     
-*   **QR-based contact exchange** (no DHCP or DNS setup needed).
+*   **QR code based contact exchange** (no DHCP or DNS setup needed).
 
 *   **Wi-Fi Direct** support for direct local communication.
     
-*   Encrypted **backup of contacts, calls, and settings**.
+*   Encrypted **local backup of contacts, calls, and settings**.
     
 *   Public peer discovery & auto-routing using **IPv6 multicast**.
     
@@ -54,7 +54,7 @@ CupLink™ acts as a full mesh node in the **v6Space™** network. Each peer can
 
 *   Devices exchange identity and address using a QR code (contact name + static IPv6).
     
-*   CupLink™ connects directly using v6Space™’s cryptographic overlay.
+*   CupLink™ connects directly using v6Space™’s cryptographic overlay IPv6 network.
     
 *   Peer discovery happens via IPv6 multicast; fallback via public peer tables.
     
