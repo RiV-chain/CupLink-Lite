@@ -181,12 +181,12 @@ For Android-specific development:
 
 ### 📄 Licensing
 
-**CupLink™** is proprietary software developed by **RiV Chain™ Limited**:
-- **License**: Proprietary (commercial use requires licensing)
+**CupLink™** is open source software developed by **RiV Chain™ Limited**:
+- **License**: GNU General Public License v3.0 (GPLv3)
 - **Platform**: Android with VpnService framework
-- **Infrastructure**: Built on v6Space™ mesh networking (dual-license model)
-- **Commercial Use**: Requires separate licensing agreement
-- **Contact**: For licensing inquiries, contact [RiV Chain™ Limited](https://rivchain.org)
+- **Infrastructure**: Built on v6Space™ mesh networking (LGPLv3)
+- **Commercial Use**: Allowed with full GPLv3 compliance requirements
+- **Source Code**: Available at [GitHub](https://github.com/RiV-chain/CupLink)
 
 **v6Space™ Infrastructure** (used by CupLink™):
 - **License**: GNU Lesser General Public License v3.0 (LGPLv3)
@@ -194,7 +194,13 @@ For Android-specific development:
 - **Commercial Use**: Allowed with full LGPLv3 compliance requirements
 - **Source Code**: Available at [GitHub](https://github.com/RiV-chain/v6Space)
 
-#### Key LGPLv3 Requirements:
+#### Key GPLv3 Requirements:
+- **Source Code Sharing**: Must provide CupLink™ source code when distributing
+- **Application Code Sharing**: Must share source code of applications using CupLink™
+- **Build Instructions**: Must provide installation and build information
+- **Modifications**: Any modifications to CupLink™ must remain open source
+
+#### v6Space™ LGPLv3 Requirements:
 - **Source Code Sharing**: Must provide v6Space™ source code when distributing
 - **Application Code Sharing**: Must share source code of applications using v6Space™
 - **Build Instructions**: Must provide installation and build information
@@ -205,47 +211,47 @@ For complete licensing details, see:
 
 ### 🔧 Troubleshooting
 
-#### Common Issues
+#### Common CupLink™ Issues
 
-##### IPv6 Support Issues
-If you encounter errors like:
-```
-An error occurred starting multicast: listen udp6 [::]:9001: socket: address family not supported by protocol
-An error occurred starting TUN/TAP: operation not supported
-```
+##### App Won't Start
+If CupLink™ fails to launch:
 
-**Solution**: Ensure your system has IPv6 support enabled. v6Space™ requires IPv6 functionality to operate correctly.
+1. **Check Android Version**: Ensure you're running Android 5.0+ (Lollipop)
+2. **Restart Device**: Try restarting your Android device
+3. **Clear App Data**: Go to Settings > Apps > CupLink™ > Storage > Clear Data
+4. **Reinstall App**: Uninstall and reinstall CupLink™ from Google Play
 
-##### Permission Issues
-If you get permission errors when starting CupLink™:
+##### VpnService Permission Issues
+If you get permission errors:
 
-**Android**: Ensure VpnService permissions are granted and the app has necessary network permissions.
+1. **Grant VpnService Permission**: When prompted, allow CupLink™ to create VPN connections
+2. **Check Device Admin**: Ensure CupLink™ has necessary device permissions
+3. **Restart App**: Close and restart CupLink™ after granting permissions
+4. **Check Other VPNs**: Disable other VPN apps that might conflict
 
-**General**: Check that your device supports the required network capabilities.
+##### Cannot Make Calls
+If calls fail to connect:
 
-##### VpnService Issues
-If the VpnService fails to start:
+1. **Check Mesh Network**: Ensure both devices are connected to v6Space™ mesh
+2. **QR Code Issues**: Rescan QR codes if contact exchange failed
+3. **Network Connectivity**: Verify both devices have internet or local network access
+4. **Contact Verification**: Ensure contact information was exchanged correctly
 
-1. **Check Permissions**: Ensure CupLink™ has VpnService permissions
-2. **Restart App**: Close and restart the application
-3. **Check Network**: Verify your device has network connectivity
-4. **Update Android**: Ensure you're running Android 5.0+ (Lollipop)
+##### Call Quality Problems
+If experiencing poor audio/video quality:
 
-##### Mesh Network Connection Issues
-If peers cannot discover each other:
+1. **Network Stability**: Check your internet connection or local network
+2. **Device Performance**: Close other apps to free up resources
+3. **Wi-Fi vs Mobile**: Try switching between Wi-Fi and mobile data
+4. **Distance**: Ensure devices are within reasonable range for local mesh
 
-1. **Check IPv6 Support**: Ensure both devices support IPv6
-2. **Network Configuration**: Verify local network allows multicast traffic
-3. **Firewall Settings**: Check that necessary ports are open
-4. **QR Code Exchange**: Ensure QR codes are scanned correctly
+##### Contact Exchange Issues
+If QR code scanning fails:
 
-##### Call Quality Issues
-If experiencing poor call quality:
-
-1. **Network Stability**: Check mesh network connection stability
-2. **Device Performance**: Ensure sufficient device resources
-3. **Network Congestion**: Try calling during off-peak hours
-4. **Wi-Fi Direct**: Use Wi-Fi Direct for local calls when possible
+1. **Camera Permissions**: Grant camera permission to CupLink™
+2. **QR Code Quality**: Ensure QR code is clear and well-lit
+3. **Manual Entry**: Try manually entering contact information
+4. **Network Sync**: Wait for mesh network to fully establish before exchanging contacts
 
 #### Getting Help
 
