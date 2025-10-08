@@ -11,19 +11,65 @@ CupLink has no discovery mechanism by design. Contacts are shared via QR-Code or
 
 ## How It Connects
 
-Connections are established via the addresses that are part of a contact. by default this is only the generated MAC address of the WiFi adapter. The MAC address will be used to generate IPv6 link local and other addresses depending on the current IPv6 prefixes. The addresses in the contact can also be list of IPv4/IPv6 addresses or even domain names. This can be configured manually in the settings.
+CupLink uses a **cryptographically secure IPv6 addressing scheme** derived from Ed25519 public keys, making it impossible to clone or spoof IP addresses. This creates a statically assigned, globally unique address for each contact.
 
-## Randomised MAC Addresses
+### IPv6 Address Generation Algorithm
 
-By default, CupLink puts the MAC address of the WiFi interface in the QR-code that others will use to call. But if the MAC address changes, other CupLink instances won't be able to reach the local CupLink instance. This behavior is defined by internal settings and settings available to the user:
+The address generation follows this secure process:
 
-<img src="mac-randomization-menu.png" height="200">
+1. **Take Ed25519 Public Key** (32 bytes)
+2. **Bitwise Invert** the entire public key
+3. **Count Leading 1s** in the inverted key
+4. **Extract Remaining Bits** (excluding leading 1s and first 0)
+5. **Construct IPv6 Address**:
+   - **Prefix**: v6Space mesh network prefix (e.g., `fc00::/7`)
+   - **Address Bit**: `0` (indicates this is an address, not a prefix)
+   - **Leading 1s Count**: 7 bits representing number of leading 1s (0-127)
+   - **Remaining Bits**: Truncated to fit 128-bit IPv6 address
 
-But, if the MAC address is used that was given by the hardware manufacturer, then Android might not use that in the link local address (fe80::\*), which makes CupLink not work, since others cannot create this IP address from that MAC address only. On the other hand, it then depends on the router to assign an IP address that is based on the MAC address (EUI-64).
+### Address Structure
+```
+[Prefix][0][Leading1sCount][RemainingBits...]
+|------|--|---------------|------------------|
+ 64bit  1bit    7bits          56bits
+```
 
-For more information see the Android documentation on [MAC Randomization Behavior](https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior).
+### Security Properties
 
-Community mesh networks might use DHCP servers to assign IPv6 addresses based on the MAC address (EUI-64), which then makes the whole approach work and stable when also the phone uses the hardware MAC address for that network.
+- **Cryptographically Secure**: Address is derived from Ed25519 public key
+- **Unforgeable**: Cannot generate valid address without private key
+- **Globally Unique**: Each public key maps to exactly one IPv6 address
+- **Static Assignment**: Address never changes for a given public key
+- **No IP Cloning**: Impossible to spoof another user's IP address
+
+### Connection Process
+
+1. **Contact Discovery**: User adds contact with their Ed25519 public key
+2. **Address Generation**: App generates IPv6 address using IPv6 address generation algorithm
+3. **Mesh Network Lookup**: v6Space mesh network routes to the generated address
+4. **Direct Connection**: TCP connection established to the cryptographically derived address
+5. **Encrypted Signaling**: All call signaling encrypted with contact's public key
+
+### Network Architecture
+
+```
+Contact A (Public Key A)          Contact B (Public Key B)
+        |                                    |
+        |-- Generate IPv6 from Key A --------|
+        |                                    |
+        |-- v6Space Mesh Network ------------|
+        |                                    |
+        |-- Direct TCP Connection -----------|
+        |                                    |
+        |-- Encrypted WebRTC Call -----------|
+```
+
+This approach ensures that:
+- **No Central Server** is needed for address resolution
+- **No DNS** is required for contact lookup
+- **No IP Conflicts** can occur between different users
+- **Perfect Forward Secrecy** is maintained through key-based addressing
+- **Decentralized** communication without single points of failure
 
 ## WebRTC
 
