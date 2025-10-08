@@ -255,7 +255,7 @@ If QR code scanning fails:
 
 #### Getting Help
 
-- **Documentation**: [CupLink™ Documentation](https://cuplink.net/docs/)
+- **Documentation**: [CupLink™ Documentation](docs/documentation.md)
 - **Webpage**: [CupLink™ Community](https://cuplink.net)
 
 * * *
